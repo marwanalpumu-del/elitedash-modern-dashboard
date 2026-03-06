@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EliteDash | Premium Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-[#0f172a] text-slate-200">
+
+    <div class="min-h-screen flex">
+        <aside class="w-64 bg-[#1e293b] border-r border-slate-800 hidden md:flex flex-col">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-blue-500 tracking-tighter">ELITE<span class="text-white">DASH</span></h1>
+            </div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="#" class="flex items-center p-3 bg-blue-600 text-white rounded-lg">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Overview
+                </a>
+                <a href="#" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Analytics
+                </a>
+                <a href="#" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    Users
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-8">
+            <header class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-white">Dashboard</h2>
+                    <p class="text-slate-400">Welcome back, let's see the stats.</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-slate-800 p-2 rounded-full hover:bg-slate-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                    </button>
+                    <img class="w-10 h-10 rounded-full border-2 border-blue-500" src="https://ui-avatars.com/api/?name=User" alt="Avatar">
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-card p-6 rounded-2xl">
+                    <p class="text-slate-400 text-sm font-medium">Total Revenue</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">$45,231.89</h3>
+                    <span class="text-green-400 text-sm">↑ +12.5%</span>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <p class="text-slate-400 text-sm font-medium">Active Users</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">2,405</h3>
+                    <span class="text-blue-400 text-sm">↑ +4.2%</span>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <p class="text-slate-400 text-sm font-medium">Sales</p>
+                    <h3 class="text-2xl font-bold text-white mt-1">+573</h3>
+                    <span class="text-slate-400 text-sm">Since last week</span>
+                </div>
+            </div>
+
+            <div class="glass-card p-8 rounded-2xl h-64 flex items-center justify-center text-slate-500 border-dashed border-2 border-slate-700">
+                [ Chart Container - We will add ApexCharts here ]
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
