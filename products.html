@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EliteDash - المنتجات</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        body {
+            background: radial-gradient(circle at top left, #1e293b, #0f172a);
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6">
+
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-2xl font-bold">إدارة المنتجات</h1>
+            <p class="text-gray-400 text-sm">عرض وتعديل كافة المنتجات المتاحة في النظام</p>
+        </div>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all shadow-lg shadow-blue-500/20">
+            + إضافة منتج جديد
+        </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="glass p-4 rounded-2xl flex items-center justify-between">
+            <div>
+                <p class="text-gray-400 text-xs">إجمالي المنتجات</p>
+                <h3 class="text-xl font-bold">1,240</h3>
+            </div>
+            <div class="p-3 bg-blue-500/10 rounded-xl text-blue-500">📦</div>
+        </div>
+        <div class="glass p-4 rounded-2xl flex items-center justify-between">
+            <div>
+                <p class="text-gray-400 text-xs">نفذت من المخزن</p>
+                <h3 class="text-xl font-bold text-red-400">12</h3>
+            </div>
+            <div class="p-3 bg-red-500/10 rounded-xl text-red-500">⚠️</div>
+        </div>
+        <div class="glass p-4 rounded-2xl flex items-center justify-between">
+            <div>
+                <p class="text-gray-400 text-xs">المبيعات الشهرية</p>
+                <h3 class="text-xl font-bold text-green-400">+25%</h3>
+            </div>
+            <div class="p-3 bg-green-500/10 rounded-xl text-green-500">📈</div>
+        </div>
+    </div>
+
+    <div class="glass rounded-2xl overflow-hidden">
+        <div class="p-6 border-b border-white/10 flex justify-between items-center gap-4">
+            <input type="text" placeholder="بحث عن منتج..." class="bg-white/5 border border-white/10 rounded-lg px-4 py-2 w-full max-w-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select class="bg-white/5 border border-white/10 rounded-lg px-4 py-2 focus:outline-none">
+                <option>الأحدث أولاً</option>
+                <option>السعر: من الأعلى</option>
+                <option>الأكثر مبيعاً</option>
+            </select>
+        </div>
+
+        <table class="w-full text-right border-collapse">
+            <thead class="bg-white/5 text-gray-400 text-sm">
+                <tr>
+                    <th class="p-4">المنتج</th>
+                    <th class="p-4">الفئة</th>
+                    <th class="p-4">السعر</th>
+                    <th class="p-4">المخزون</th>
+                    <th class="p-4">الحالة</th>
+                    <th class="p-4 text-center">الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5">
+                <tr class="hover:bg-white/5 transition-colors">
+                    <td class="p-4 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded bg-gray-700"></div>
+                        <span>ساعة ذكية - موديل X</span>
+                    </td>
+                    <td class="p-4">إلكترونيات</td>
+                    <td class="p-4 font-semibold">$299</td>
+                    <td class="p-4">45 قطعة</td>
+                    <td class="p-4">
+                        <span class="px-3 py-1 bg-green-500/20 text-green-400 text-xs rounded-full">نشط</span>
+                    </td>
+                    <td class="p-4 text-center">
+                        <button class="text-gray-400 hover:text-white mx-2">📝</button>
+                        <button class="text-red-400 hover:text-red-500">🗑️</button>
+                    </td>
+                </tr>
+                </tbody>
+        </table>
+
+        <div class="p-4 bg-white/5 flex justify-between items-center text-sm text-gray-400 border-t border-white/10">
+            <span>عرض 1 إلى 10 من أصل 150 منتج</span>
+            <div class="flex gap-2">
+                <button class="px-3 py-1 border border-white/10 rounded hover:bg-white/10">السابق</button>
+                <button class="px-3 py-1 bg-blue-600 text-white rounded">1</button>
+                <button class="px-3 py-1 border border-white/10 rounded hover:bg-white/10">2</button>
+                <button class="px-3 py-1 border border-white/10 rounded hover:bg-white/10">التالي</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
