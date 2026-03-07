@@ -6,92 +6,119 @@
     <title>Login | EliteDash Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>tailwind.config = { darkMode: 'class' }</script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at top left, #1e293b, #0f172a);
+            background-color: #0f172a;
+            overflow: hidden;
         }
         .glass-effect {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        /* أنيميشن للخلفية لجعل الصفحة حية */
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.1) 100%);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: 0;
+            animation: move 20s infinite alternate;
+        }
+        @keyframes move {
+            from { transform: translate(-10%, -10%) rotate(0deg); }
+            to { transform: translate(20%, 20%) rotate(360deg); }
         }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
-    <div class="fixed top-0 left-0 w-64 h-64 bg-blue-600/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-    <div class="fixed bottom-0 right-0 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
+    <div class="blob" style="top: -100px; left: -100px;"></div>
+    <div class="blob" style="bottom: -150px; right: -100px; animation-duration: 30s; background: rgba(59, 130, 246, 0.15);"></div>
 
-    <div class="glass-effect w-full max-w-md p-8 rounded-3xl shadow-2xl z-10 border border-white/5">
-        <div class="text-center mb-10">
-            <h1 class="text-3xl font-bold text-white tracking-tighter mb-2 uppercase">Elite<span class="text-blue-500">Dash</span></h1>
-            <p id="welcomeMessage" class="text-slate-400 text-sm">Welcome back! Please enter your details.</p>
+    <div class="glass-effect w-full max-w-[440px] p-10 md:p-12 rounded-[2.5rem] z-10 relative">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-black text-white tracking-tighter mb-3 uppercase">
+                Elite<span class="text-blue-500">Dash</span>
+            </h1>
+            <p id="welcomeMessage" class="text-slate-400 text-sm font-medium tracking-wide">
+                Welcome back! Please enter your details.
+            </p>
         </div>
 
         <form action="index.html" id="loginForm" class="space-y-6">
-            <div>
-                <label class="block text-slate-300 text-sm font-medium mb-2">Email Address</label>
-                <div class="relative">
-                    <i data-lucide="mail" class="absolute left-3 top-3 w-5 h-5 text-slate-500"></i>
+            <div class="space-y-2">
+                <label class="block text-slate-300 text-[10px] font-bold uppercase tracking-[0.2em] ml-1">Email Address</label>
+                <div class="relative group">
+                    <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
                     <input type="email" id="emailInput" required placeholder="name@company.com" 
-                        class="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition">
+                        class="w-full bg-slate-900/60 border border-slate-700/50 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/50 transition-all duration-300">
                 </div>
             </div>
 
-            <div>
-                <label class="block text-slate-300 text-sm font-medium mb-2">Password</label>
-                <div class="relative">
-                    <i data-lucide="lock" class="absolute left-3 top-3 w-5 h-5 text-slate-500"></i>
+            <div class="space-y-2">
+                <label class="block text-slate-300 text-[10px] font-bold uppercase tracking-[0.2em] ml-1">Password</label>
+                <div class="relative group">
+                    <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
                     <input type="password" required placeholder="••••••••" 
-                        class="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition">
+                        class="w-full bg-slate-900/60 border border-slate-700/50 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/50 transition-all duration-300">
                 </div>
             </div>
 
-            <div class="flex items-center justify-between text-sm">
-                <label class="flex items-center text-slate-400 cursor-pointer">
-                    <input type="checkbox" class="mr-2 rounded border-slate-700 bg-slate-900 text-blue-500"> Remember me
+            <div class="flex items-center justify-between text-xs font-semibold">
+                <label class="flex items-center text-slate-400 cursor-pointer hover:text-slate-300 transition">
+                    <input type="checkbox" class="mr-2 w-4 h-4 rounded border-slate-700 bg-slate-900 text-blue-600 focus:ring-0"> 
+                    Remember me
                 </label>
-                <a href="#" class="text-blue-500 hover:text-blue-400 font-medium">Forgot password?</a>
+                <a href="#" class="text-blue-500 hover:text-blue-400 transition-colors">Forgot password?</a>
             </div>
 
             <button type="submit" id="loginBtn"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-lg shadow-blue-600/20 transition transform hover:-translate-y-0.5 active:scale-95">
-                Sign In
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-xl shadow-blue-600/20 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 flex items-center justify-center group">
+                <span id="btnText">Sign In</span>
+                <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
             </button>
         </form>
 
-        <p class="text-center text-slate-500 text-sm mt-8">
-            Don't have an account? <a href="#" class="text-white hover:underline font-medium">Sign up for free</a>
-        </p>
+        <div class="mt-10 pt-8 border-t border-white/5 text-center">
+            <p class="text-slate-500 text-xs font-medium">
+                Don't have an account? <a href="#" class="text-blue-500 hover:text-blue-400 font-bold ml-1 transition-colors">Create account</a>
+            </p>
+        </div>
     </div>
 
     <script>
         lucide.createIcons();
 
-        // كود الربط الذكي مع LocalStorage
+        // التفاعل مع البيانات المحفوظة
         document.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('userName');
             const savedEmail = localStorage.getItem('userEmail');
             const emailField = document.getElementById('emailInput');
             const welcomeMsg = document.getElementById('welcomeMessage');
 
-            // إذا كان المستخدم قد حفظ بياناته سابقاً، نعرضها له
-            if (savedEmail) {
-                emailField.value = savedEmail;
-            }
-            if (savedName) {
-                welcomeMsg.innerText = `Welcome back, ${savedName}!`;
-            }
+            if (savedEmail) emailField.value = savedEmail;
+            if (savedName) welcomeMsg.innerText = `Welcome back, ${savedName}!`;
+            
+            // التأكد من أن الثيم الافتراضي هو Dark في صفحة الدخول
+            localStorage.setItem('theme', 'dark');
+            document.documentElement.classList.add('dark');
         });
 
-        // تأثير بسيط عند الضغط على تسجيل الدخول
+        // أنيميشن زر تسجيل الدخول
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             const btn = document.getElementById('loginBtn');
-            btn.innerText = "Authenticating...";
-            btn.classList.add('opacity-70');
-            // سيتم الانتقال تلقائياً إلى index.html بفضل خاصية action في الفورم
+            const btnText = document.getElementById('btnText');
+            
+            btnText.innerText = "Verifying Identity...";
+            btn.classList.add('opacity-80', 'cursor-wait');
+            // التوجيه سيتم تلقائياً لـ index.html
         });
     </script>
 </body>
