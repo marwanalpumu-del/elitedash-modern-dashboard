@@ -7,93 +7,92 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = { darkMode: 'class' }
-    </script>
-
+    <script>tailwind.config = { darkMode: 'class' }</script>
     <style>
-        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        body { font-family: 'Inter', sans-serif; transition: all 0.3s; }
         .glass-card { backdrop-filter: blur(10px); transition: all 0.3s ease; }
         .dark .glass-card { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
         .light .glass-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .tab-active { color: #3b82f6; border-bottom: 2px solid #3b82f6; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-f1f5f9 min-h-screen">
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen">
 
     <div class="flex">
         <aside class="w-64 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden md:flex flex-col h-screen sticky top-0">
-            <div class="p-6 text-2xl font-bold text-blue-500 tracking-tighter uppercase">Elite<span class="text-slate-900 dark:text-white">Dash</span></div>
+            <div class="p-6 text-2xl font-bold text-blue-500 uppercase tracking-tighter">Elite<span class="text-slate-900 dark:text-white">Dash</span></div>
             <nav class="flex-1 px-4 space-y-2">
-                <a href="index.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all"><i data-lucide="layout-dashboard" class="mr-3 w-5"></i> Dashboard</a>
-                <a href="users.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all"><i data-lucide="users" class="mr-3 w-5"></i> Users</a>
-                <a href="settings.html" class="flex items-center p-3 bg-blue-600 text-white rounded-lg shadow-lg shadow-blue-500/20"><i data-lucide="settings" class="mr-3 w-5"></i> Settings</a>
+                <a href="index.html" class="flex items-center p-3 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="layout-dashboard" class="mr-3 w-5"></i> Dashboard</a>
+                <a href="users.html" class="flex items-center p-3 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="users" class="mr-3 w-5"></i> Users</a>
+                <a href="settings.html" class="flex items-center p-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-500/20"><i data-lucide="settings" class="mr-3 w-5"></i> Settings</a>
             </nav>
-            <div class="p-4 border-t border-slate-200 dark:border-slate-800">
-                <button id="themeToggle" class="w-full flex items-center justify-center p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition">
-                    <i id="themeIcon" data-lucide="moon" class="w-5 h-5 mr-2"></i>
-                    <span class="text-xs font-bold uppercase tracking-wider">Switch Theme</span>
-                </button>
-            </div>
         </aside>
 
-        <main class="flex-1 p-8 max-w-4xl mx-auto">
-            <header class="mb-10 flex justify-between items-end">
-                <div>
-                    <h2 class="text-3xl font-bold tracking-tight">Account Settings</h2>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm">Manage your profile and application preferences.</p>
-                </div>
+        <main class="flex-1 p-4 md:p-10 max-w-5xl mx-auto">
+            <header class="mb-8">
+                <h2 class="text-3xl font-bold">Account Settings</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm">Manage your profile, security and notifications.</p>
             </header>
 
             <div class="glass-card rounded-3xl overflow-hidden shadow-2xl">
-                <div class="flex border-b border-slate-200 dark:border-slate-800 px-6 bg-white/50 dark:bg-transparent">
-                    <button class="py-4 px-6 text-blue-500 border-b-2 border-blue-500 font-medium">Profile</button>
-                    <button class="py-4 px-6 text-slate-400 hover:text-blue-500 transition">Security</button>
-                    <button class="py-4 px-6 text-slate-400 hover:text-blue-500 transition">Notifications</button>
+                <div class="flex border-b border-slate-200 dark:border-slate-800 px-6 bg-white/50 dark:bg-transparent overflow-x-auto">
+                    <button onclick="switchTab('profile')" id="btn-profile" class="tab-active py-4 px-6 font-medium transition whitespace-nowrap">Profile</button>
+                    <button onclick="switchTab('security')" id="btn-security" class="py-4 px-6 text-slate-400 hover:text-blue-500 font-medium transition whitespace-nowrap">Security</button>
+                    <button onclick="switchTab('notifications')" id="btn-notifications" class="py-4 px-6 text-slate-400 hover:text-blue-500 font-medium transition whitespace-nowrap">Notifications</button>
                 </div>
 
-                <div class="p-8 space-y-8">
+                <div id="section-profile" class="p-8 space-y-8">
                     <div class="flex items-center space-x-6">
-                        <div class="relative group">
-                            <img id="profilePreview" src="https://ui-avatars.com/api/?name=Marwan&background=0D8ABC&color=fff&size=128" 
-                                 class="w-24 h-24 rounded-2xl border-4 border-white dark:border-slate-800 shadow-xl object-cover transition group-hover:opacity-90">
+                        <img id="profilePreview" src="https://ui-avatars.com/api/?name=Marwan&background=0D8ABC&color=fff" class="w-24 h-24 rounded-2xl border-4 border-white dark:border-slate-800 shadow-xl object-cover">
+                        <div class="flex space-x-3">
+                            <button onclick="document.getElementById('fileInput').click()" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md active:scale-95 transition">Change Photo</button>
+                            <button onclick="removeAvatar()" class="bg-slate-200 dark:bg-slate-800 text-slate-500 px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-500 hover:text-white transition">Remove</button>
                         </div>
-                        <div class="flex flex-col space-y-2">
-                            <div class="flex space-x-3">
-                                <button onclick="document.getElementById('fileInput').click()" 
-                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition shadow-md active:scale-95">
-                                    Change Photo
-                                </button>
-                                <button id="removePhotoBtn" 
-                                        class="bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-500 hover:text-white transition duration-300">
-                                    Remove
-                                </button>
-                            </div>
-                            <input type="file" id="fileInput" class="hidden" accept="image/*">
-                            <p class="text-slate-500 text-[10px] mt-2 uppercase font-bold tracking-widest">JPG, GIF or PNG. Max size of 800K</p>
-                        </div>
+                        <input type="file" id="fileInput" class="hidden" accept="image/*">
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-2">Full Name</label>
-                            <input id="userNameInput" type="text" class="w-full bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Full Name</label>
+                            <input id="userNameInput" type="text" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                         <div>
-                            <label class="block text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-2">Email Address</label>
-                            <input id="userEmailInput" type="email" class="w-full bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                            <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Email Address</label>
+                            <input id="userEmailInput" type="email" class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
+                </div>
 
-                    <div>
-                        <label class="block text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider mb-2">Biography</label>
-                        <textarea id="userBioInput" rows="4" class="w-full bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl py-3 px-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all"></textarea>
+                <div id="section-security" class="hidden p-8 space-y-8">
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-bold text-blue-500 uppercase tracking-widest">Update Password</h4>
+                        <input type="password" placeholder="Current Password" class="w-full bg-white dark:bg-slate-900 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="password" placeholder="New Password" class="w-full bg-white dark:bg-slate-900 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
+                    <div class="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/20 flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-sm">Two-Factor Authentication</p>
+                            <p class="text-xs text-slate-500">Secure your account with 2FA.</p>
+                        </div>
+                        <input type="checkbox" class="w-5 h-5 accent-blue-600">
+                    </div>
+                </div>
 
-                    <div class="pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-end space-x-4">
-                        <button onclick="window.history.back()" class="px-6 py-2 text-slate-400 hover:text-red-500 transition font-medium">Cancel</button>
-                        <button id="saveBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-xl font-bold shadow-lg shadow-blue-600/20 transition transform hover:-translate-y-1 active:scale-95">Save Changes</button>
+                <div id="section-notifications" class="hidden p-8 space-y-6">
+                    <h4 class="text-sm font-bold text-blue-500 uppercase tracking-widest">Email Alerts</h4>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">New User Registration</span>
+                            <input type="checkbox" checked class="w-5 h-5 accent-blue-600">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Monthly Revenue Report</span>
+                            <input type="checkbox" checked class="w-5 h-5 accent-blue-600">
+                        </div>
                     </div>
+                </div>
+
+                <div class="p-8 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+                    <button id="saveBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-3 rounded-xl font-bold shadow-lg shadow-blue-600/20 transition-all active:scale-95">Save Changes</button>
                 </div>
             </div>
         </main>
@@ -102,102 +101,54 @@
     <script>
         lucide.createIcons();
 
-        // 1. إدارة الثيم
-        const themeToggle = document.getElementById('themeToggle');
-        const themeIcon = document.getElementById('themeIcon');
-        const html = document.documentElement;
-
-        function updateTheme(isDark) {
-            if (isDark) {
-                html.classList.add('dark');
-                html.classList.remove('light');
-                themeIcon.setAttribute('data-lucide', 'sun');
-            } else {
-                html.classList.add('light');
-                html.classList.remove('dark');
-                themeIcon.setAttribute('data-lucide', 'moon');
-            }
-            lucide.createIcons();
+        // نظام تبديل التبويبات (Tabs System)
+        function switchTab(tabName) {
+            const sections = ['profile', 'security', 'notifications'];
+            sections.forEach(s => {
+                document.getElementById(`section-${s}`).classList.add('hidden');
+                document.getElementById(`btn-${s}`).classList.remove('tab-active', 'text-blue-500');
+                document.getElementById(`btn-${s}`).classList.add('text-slate-400');
+            });
+            document.getElementById(`section-${tabName}`).classList.remove('hidden');
+            document.getElementById(`btn-${tabName}`).classList.add('tab-active');
         }
 
-        themeToggle.addEventListener('click', () => {
-            const isDark = html.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            updateTheme(isDark);
-        });
-
-        // 2. إدارة الصور
+        // إدارة الصورة
         const fileInput = document.getElementById('fileInput');
         const profileImg = document.getElementById('profilePreview');
-        const removeBtn = document.getElementById('removePhotoBtn');
 
         fileInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    profileImg.src = e.target.result;
-                    window.tempImage = e.target.result;
-                }
-                reader.readAsDataURL(file);
-            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                profileImg.src = e.target.result;
+                window.tempImage = e.target.result;
+            };
+            reader.readAsDataURL(this.files[0]);
         });
 
-        // تنفيذ إزالة الصورة باستخدام localStorage.removeItem
-        removeBtn.addEventListener('click', () => {
-            if (confirm('Are you sure you want to remove your profile picture?')) {
-                localStorage.removeItem('userAvatar'); // مسح من الذاكرة
-                const currentName = document.getElementById('userNameInput').value || 'Marwan';
-                profileImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentName)}&background=0D8ABC&color=fff&size=128`;
-                window.tempImage = null; // تفريغ التغييرات غير المحفوظة
-                alert('Profile picture removed.');
+        function removeAvatar() {
+            if(confirm('Remove photo?')) {
+                localStorage.removeItem('userAvatar');
+                profileImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(document.getElementById('userNameInput').value)}&background=0D8ABC&color=fff`;
+                window.tempImage = null;
             }
+        }
+
+        // حفظ البيانات
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            localStorage.setItem('userName', document.getElementById('userNameInput').value);
+            localStorage.setItem('userEmail', document.getElementById('userEmailInput').value);
+            if(window.tempImage) localStorage.setItem('userAvatar', window.tempImage);
+            alert('Settings Synced Successfully!');
+            window.location.href = 'index.html';
         });
 
-        // 3. تحميل البيانات
+        // تحميل البيانات عند البداية
         document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            updateTheme(savedTheme === 'dark');
-
-            const savedName = localStorage.getItem('userName') || 'Marwan';
-            const savedEmail = localStorage.getItem('userEmail') || 'admin@elitedash.com';
-            const savedBio = localStorage.getItem('userBio') || 'Senior Developer';
-            const savedAvatar = localStorage.getItem('userAvatar');
-
-            document.getElementById('userNameInput').value = savedName;
-            document.getElementById('userEmailInput').value = savedEmail;
-            document.getElementById('userBioInput').value = savedBio;
-
-            if (savedAvatar) {
-                profileImg.src = savedAvatar;
-            } else {
-                profileImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(savedName)}&background=0D8ABC&color=fff&size=128`;
-            }
-        });
-
-        // 4. الحفظ
-        const saveBtn = document.getElementById('saveBtn');
-        saveBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            saveBtn.innerText = 'Updating...';
-            
-            setTimeout(() => {
-                const newName = document.getElementById('userNameInput').value;
-                localStorage.setItem('userName', newName);
-                localStorage.setItem('userEmail', document.getElementById('userEmailInput').value);
-                localStorage.setItem('userBio', document.getElementById('userBioInput').value);
-
-                // حفظ الصورة فقط إذا لم يتم حذفها
-                if (window.tempImage) {
-                    localStorage.setItem('userAvatar', window.tempImage);
-                } else if (window.tempImage === null && !localStorage.getItem('userAvatar')) {
-                    // تم التأكيد على الحذف مسبقاً
-                }
-
-                saveBtn.innerText = 'Save Changes';
-                alert('Settings saved!');
-                window.location.href = 'index.html'; 
-            }, 800);
+            document.getElementById('userNameInput').value = localStorage.getItem('userName') || 'Marwan';
+            document.getElementById('userEmailInput').value = localStorage.getItem('userEmail') || 'marwan@example.com';
+            const avatar = localStorage.getItem('userAvatar');
+            if(avatar) profileImg.src = avatar;
         });
     </script>
 </body>
