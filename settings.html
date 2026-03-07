@@ -72,5 +72,39 @@
     </div>
 
     <script>lucide.createIcons();</script>
+    <script>
+    // تفعيل أيقونات Lucide
+    lucide.createIcons();
+
+    // كود التفاعل مع زر الحفظ
+    const saveBtn = document.querySelector('button.bg-blue-600'); // زر Save Changes
+    const inputs = document.querySelectorAll('input, textarea');
+
+    saveBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // منع الصفحة من إعادة التحميل
+
+        // محاكاة عملية الحفظ
+        saveBtn.innerText = 'Saving...';
+        saveBtn.disabled = true;
+        saveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        setTimeout(() => {
+            // إعادة الزر لحالته الطبيعية
+            saveBtn.innerText = 'Save Changes';
+            saveBtn.disabled = false;
+            saveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            // إظهار رسالة نجاح احترافية
+            alert('Success! Your profile has been updated.');
+            
+            console.log('Saved Data:', {
+                name: document.querySelector('input[type="text"]').value,
+                email: document.querySelector('input[type="email"]').value,
+                bio: document.querySelector('textarea').value
+            });
+        }, 1500); // محاكاة انتظار لمدة ثانية ونصف
+    });
+</script>
+
 </body>
 </html>
