@@ -1,128 +1,76 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EliteDash - الإعدادات</title>
+    <title>Settings | EliteDash</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .input-glass {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-        .input-glass:focus {
-            border-color: #3b82f6;
-            background: rgba(59, 130, 246, 0.05);
-            outline: none;
-        }
-        body {
-            background: #0f172a;
-            color: #e2e8f0;
-        }
-        /* Toggle Switch Style */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 22px;
-        }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #334155;
-            transition: .4s; border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute; content: "";
-            height: 16px; width: 16px; left: 3px; bottom: 3px;
-            background-color: white; transition: .4s; border-radius: 50%;
-        }
-        input:checked + .slider { background-color: #3b82f6; }
-        input:checked + .slider:before { transform: translateX(22px); }
+        body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f1f5f9; }
+        .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
     </style>
 </head>
-<body class="p-4 md:p-10 max-w-5xl mx-auto">
+<body>
 
-    <div class="mb-10">
-        <h1 class="text-3xl font-bold italic tracking-wider">الإعدادات <span class="text-blue-500">.</span></h1>
-        <p class="text-slate-400 text-sm">تخصيص تفضيلات النظام والملف الشخصي</p>
-    </div>
+    <div class="min-h-screen flex">
+        <aside class="w-64 bg-[#1e293b] border-r border-slate-800 hidden md:flex flex-col">
+            <div class="p-6 text-2xl font-bold text-blue-500">ELITE<span class="text-white">DASH</span></div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="index.html" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 rounded-lg"><i data-lucide="layout-dashboard" class="mr-3 w-5"></i> Dashboard</a>
+                <a href="users.html" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 rounded-lg"><i data-lucide="users" class="mr-3 w-5"></i> Users</a>
+                <a href="settings.html" class="flex items-center p-3 bg-blue-600 text-white rounded-lg"><i data-lucide="settings" class="mr-3 w-5"></i> Settings</a>
+            </nav>
+        </aside>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <div class="lg:col-span-1 space-y-2">
-            <button class="w-full text-right px-4 py-3 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30">الحساب الشخصي</button>
-            <button class="w-full text-right px-4 py-3 rounded-xl hover:bg-white/5 transition">الأمان والخصوصية</button>
-            <button class="w-full text-right px-4 py-3 rounded-xl hover:bg-white/5 transition">التنبيهات</button>
-            <button class="w-full text-right px-4 py-3 rounded-xl hover:bg-white/5 transition text-red-400">تسجيل الخروج</button>
-        </div>
+        <main class="flex-1 p-8 max-w-4xl mx-auto">
+            <header class="mb-10">
+                <h2 class="text-3xl font-bold text-white">Account Settings</h2>
+                <p class="text-slate-400">Manage your profile and application preferences.</p>
+            </header>
 
-        <div class="lg:col-span-2 space-y-8">
-            
-            <div class="glass p-8 rounded-3xl">
-                <h2 class="text-xl font-semibold mb-6">المعلومات الأساسية</h2>
-                <div class="flex items-center gap-6 mb-8">
-                    <div class="relative">
-                        <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-2xl font-bold">JD</div>
-                        <button class="absolute bottom-0 right-0 bg-blue-600 p-1.5 rounded-full border-2 border-[#0f172a] hover:scale-110 transition">📸</button>
+            <div class="glass-card rounded-3xl overflow-hidden shadow-2xl">
+                <div class="flex border-b border-slate-800 px-6">
+                    <button class="py-4 px-6 text-blue-500 border-b-2 border-blue-500 font-medium">Profile</button>
+                    <button class="py-4 px-6 text-slate-400 hover:text-white transition">Security</button>
+                    <button class="py-4 px-6 text-slate-400 hover:text-white transition">Notifications</button>
+                </div>
+
+                <div class="p-8 space-y-8">
+                    <div class="flex items-center space-x-6">
+                        <img src="https://ui-avatars.com/api/?name=Admin&size=128" class="w-24 h-24 rounded-2xl border-4 border-slate-800 shadow-xl">
+                        <div>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">Change Photo</button>
+                            <p class="text-slate-500 text-xs mt-2">JPG, GIF or PNG. Max size of 800K</p>
+                        </div>
                     </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Full Name</label>
+                            <input type="text" value="John Doe" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-white focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm mb-2">Email Address</label>
+                            <input type="email" value="admin@elitedash.com" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-white focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                    </div>
+
                     <div>
-                        <h3 class="font-medium text-lg">المستخدم المتميز</h3>
-                        <p class="text-slate-500 text-sm">مطور واجهات ومصمم UX</p>
+                        <label class="block text-slate-400 text-sm mb-2">Biography</label>
+                        <textarea rows="4" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-white focus:ring-2 focus:ring-blue-500 outline-none">Senior Full-Stack Developer & UI Enthusiast.</textarea>
                     </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label class="text-sm text-slate-400">اسم المستخدم</label>
-                        <input type="text" value="EliteUser_2026" class="input-glass w-full px-4 py-2.5 rounded-xl">
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-sm text-slate-400">البريد الإلكتروني</label>
-                        <input type="email" value="user@elitedash.com" class="input-glass w-full px-4 py-2.5 rounded-xl">
+                    <div class="pt-6 border-t border-slate-800 flex justify-end space-x-4">
+                        <button class="px-6 py-2 text-slate-400 hover:text-white transition">Cancel</button>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-xl font-bold shadow-lg shadow-blue-600/20 transition transform hover:-translate-y-1">Save Changes</button>
                     </div>
                 </div>
             </div>
-
-            <div class="glass p-8 rounded-3xl">
-                <h2 class="text-xl font-semibold mb-6">تفضيلات النظام</h2>
-                <div class="space-y-6">
-                    <div class="flex justify-between items-center pb-4 border-b border-white/5">
-                        <div>
-                            <p class="font-medium">الوضع الليلي الذكي</p>
-                            <p class="text-xs text-slate-500">تبديل الواجهة بناءً على توقيت النظام</p>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="flex justify-between items-center pb-4 border-b border-white/5">
-                        <div>
-                            <p class="font-medium">تنبيهات البريد</p>
-                            <p class="text-xs text-slate-500">استلام تقارير المبيعات الأسبوعية</p>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                </div>
-                <div class="mt-8 flex justify-end gap-3">
-                    <button class="px-6 py-2 rounded-xl text-slate-400 hover:text-white transition">إلغاء</button>
-                    <button class="px-8 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium shadow-lg shadow-blue-500/20 transition-all">حفظ التغييرات</button>
-                </div>
-            </div>
-
-        </div>
+        </main>
     </div>
 
+    <script>lucide.createIcons();</script>
 </body>
 </html>
