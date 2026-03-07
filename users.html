@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Management | EliteDash</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f1f5f9; }
+        .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
+</head>
+<body>
+
+    <div class="min-h-screen flex">
+        <aside class="w-64 bg-[#1e293b] border-r border-slate-800 hidden md:flex flex-col">
+            <div class="p-6 text-2xl font-bold text-blue-500">ELITE<span class="text-white">DASH</span></div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="index.html" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 rounded-lg"><i data-lucide="layout-dashboard" class="mr-3 w-5"></i> Dashboard</a>
+                <a href="users.html" class="flex items-center p-3 bg-blue-600 text-white rounded-lg"><i data-lucide="users" class="mr-3 w-5"></i> Users</a>
+                <a href="#" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 rounded-lg"><i data-lucide="settings" class="mr-3 w-5"></i> Settings</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-8">
+            <header class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold">User Directory</h2>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center shadow-lg shadow-blue-500/20">
+                    <i data-lucide="plus" class="mr-2 w-4"></i> Add New User
+                </button>
+            </header>
+
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-800/50 text-slate-400 uppercase text-xs font-semibold">
+                        <tr>
+                            <th class="px-6 py-4">User</th>
+                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4">Role</th>
+                            <th class="px-6 py-4">Joined</th>
+                            <th class="px-6 py-4 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="px-6 py-4 flex items-center">
+                                <img src="https://ui-avatars.com/api/?name=Alex+Smith&background=random" class="w-10 h-10 rounded-full mr-3 border border-slate-700">
+                                <div>
+                                    <div class="font-semibold text-white">Alex Smith</div>
+                                    <div class="text-xs text-slate-500">alex@example.com</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 text-xs font-medium bg-green-500/10 text-green-500 rounded-full border border-green-500/20">Active</span>
+                            </td>
+                            <td class="px-6 py-4 text-slate-300 text-sm">Administrator</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm">Mar 12, 2026</td>
+                            <td class="px-6 py-4 text-right">
+                                <button class="text-slate-400 hover:text-white"><i data-lucide="more-horizontal"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="px-6 py-4 flex items-center">
+                                <img src="https://ui-avatars.com/api/?name=Sarah+J&background=random" class="w-10 h-10 rounded-full mr-3 border border-slate-700">
+                                <div>
+                                    <div class="font-semibold text-white">Sarah Johnson</div>
+                                    <div class="text-xs text-slate-500">sarah.j@example.com</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 text-xs font-medium bg-yellow-500/10 text-yellow-500 rounded-full border border-yellow-500/20">Pending</span>
+                            </td>
+                            <td class="px-6 py-4 text-slate-300 text-sm">Editor</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm">Feb 28, 2026</td>
+                            <td class="px-6 py-4 text-right">
+                                <button class="text-slate-400 hover:text-white"><i data-lucide="more-horizontal"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>
