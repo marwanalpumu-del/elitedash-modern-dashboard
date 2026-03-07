@@ -3,156 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders Management | EliteDash</title>
+    <title>Orders Management | EliteDash Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>tailwind.config = { darkMode: 'class' }</script>
     <style>
-        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
-        .glass-card { backdrop-filter: blur(12px); transition: all 0.3s ease; }
-        .dark .glass-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .light .glass-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.05); }
-        @media (max-width: 768px) { main { padding-bottom: 90px; } }
+        body { font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
+        .glass-card { backdrop-filter: blur(12px); border-radius: 24px; transition: all 0.3s ease; }
+        .dark .glass-card { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .light .glass-card { background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        .glass-card:hover { transform: translateY(-2px); }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen">
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen flex">
 
-    <div class="flex">
-        <aside class="w-64 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden md:flex flex-col h-screen sticky top-0">
-            <div class="p-6">
-                <h1 class="text-2xl font-bold text-blue-500 tracking-tighter uppercase">Elite<span class="text-slate-900 dark:text-white">Dash</span></h1>
-            </div>
-            <nav class="flex-1 px-4 space-y-2">
-                <a href="index.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="layout-dashboard" class="mr-3 w-5 h-5"></i> Overview</a>
-                <a href="users.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="users" class="mr-3 w-5 h-5"></i> Users</a>
-                <a href="orders.html" class="flex items-center p-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-500/20 transition-all"><i data-lucide="shopping-bag" class="mr-3 w-5 h-5"></i> Orders</a>
-                <a href="invoices.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="file-text" class="mr-3 w-5 h-5"></i> Invoices</a>
-                <a href="settings.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="settings" class="mr-3 w-5 h-5"></i> Settings</a>
-            </nav>
-        </aside>
-
-        <main class="flex-1 p-6 md:p-10 max-w-6xl mx-auto">
-            <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
-                <div>
-                    <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Orders Management</h2>
-                    <p class="text-slate-500 dark:text-slate-400 text-xs md:sm">Track and manage your customer transactions.</p>
-                </div>
-                
-                <div class="flex flex-col md:flex-row gap-4 items-center">
-                    <div class="relative w-full md:w-64">
-                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                        <input type="text" placeholder="Find order ID..." class="w-full bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                    </div>
-                    <button class="w-full md:w-auto bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-6 py-2.5 rounded-2xl flex items-center justify-center border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all font-bold text-sm">
-                        <i data-lucide="download" class="mr-2 w-4 h-4"></i> Export
-                    </button>
-                </div>
-            </header>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="glass-card p-7 rounded-[2rem]">
-                    <p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest">Total Orders</p>
-                    <h3 class="text-2xl font-bold mt-2">1,284</h3>
-                    <div class="mt-2 flex items-center text-green-500 text-[10px] font-bold">
-                        <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +12.5% vs last month
-                    </div>
-                </div>
-                <div class="glass-card p-7 rounded-[2rem]">
-                    <p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest">Pending Payment</p>
-                    <h3 class="text-2xl font-bold mt-2">43</h3>
-                    <div class="mt-2 flex items-center text-yellow-500 text-[10px] font-bold">
-                        <i data-lucide="alert-circle" class="w-3 h-3 mr-1"></i> Action required
-                    </div>
-                </div>
-                <div class="glass-card p-7 rounded-[2rem]">
-                    <p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest">Net Revenue</p>
-                    <h3 class="text-2xl font-bold mt-2">$42,930</h3>
-                    <div class="mt-2 flex items-center text-blue-500 text-[10px] font-bold">
-                        <i data-lucide="refresh-cw" class="w-3 h-3 mr-1"></i> Updated just now
-                    </div>
+    <aside class="w-72 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden lg:flex flex-col h-screen sticky top-0 z-50">
+        <div class="p-8">
+            <h1 class="text-2xl font-black text-blue-600 tracking-tighter uppercase">Elite<span class="text-slate-900 dark:text-white">Dash</span></h1>
+        </div>
+        <nav class="flex-1 px-6 space-y-2">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 ml-3">Operations</p>
+            <a href="index.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
+                <i data-lucide="layout-grid" class="mr-3 w-5 h-5"></i> Dashboard
+            </a>
+            <a href="users.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
+                <i data-lucide="users" class="mr-3 w-5 h-5"></i> User Directory
+            </a>
+            <a href="orders.html" class="flex items-center p-4 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-600/20 font-semibold text-sm">
+                <i data-lucide="shopping-bag" class="mr-3 w-5 h-5"></i> Orders
+            </a>
+            <a href="invoices.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
+                <i data-lucide="file-text" class="mr-3 w-5 h-5"></i> Invoices
+            </a>
+            <a href="settings.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
+                <i data-lucide="settings" class="mr-3 w-5 h-5"></i> Settings
+            </a>
+        </nav>
+        <div class="p-6 border-t border-slate-100 dark:border-slate-800">
+            <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl">
+                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold">M</div>
+                <div class="overflow-hidden">
+                    <p class="text-xs font-bold truncate">Marwan</p>
+                    <p class="text-[10px] text-slate-500 truncate">Admin Account</p>
                 </div>
             </div>
+        </div>
+    </aside>
 
-            <div class="glass-card rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead class="bg-slate-50 dark:bg-slate-800/30 text-slate-500 dark:text-slate-400 uppercase text-[10px] font-bold tracking-widest">
-                            <tr>
-                                <th class="px-8 py-5">Order ID</th>
-                                <th class="px-8 py-5">Customer</th>
-                                <th class="px-8 py-5">Status</th>
-                                <th class="px-8 py-5">Total</th>
-                                <th class="px-8 py-5">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition cursor-pointer">
-                                <td class="px-8 py-5 font-mono text-blue-500 text-xs font-bold tracking-tighter">#ORD-7231</td>
-                                <td class="px-8 py-5 flex items-center">
-                                    <div class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-bold mr-4 text-xs border border-indigo-500/20">JD</div>
-                                    <span class="text-sm font-semibold">John Doe</span>
-                                </td>
-                                <td class="px-8 py-5">
-                                    <span class="px-3 py-1 bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20 rounded-full text-[10px] font-bold uppercase">Completed</span>
-                                </td>
-                                <td class="px-8 py-5 font-bold text-sm">$299.00</td>
-                                <td class="px-8 py-5 text-slate-400 text-xs italic">Today, 02:45 PM</td>
-                            </tr>
-                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition cursor-pointer">
-                                <td class="px-8 py-5 font-mono text-blue-500 text-xs font-bold tracking-tighter">#ORD-7232</td>
-                                <td class="px-8 py-5 flex items-center">
-                                    <div class="w-9 h-9 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center font-bold mr-4 text-xs border border-orange-500/20">AS</div>
-                                    <span class="text-sm font-semibold">Anna Smith</span>
-                                </td>
-                                <td class="px-8 py-5">
-                                    <span class="px-3 py-1 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/20 rounded-full text-[10px] font-bold uppercase">Processing</span>
-                                </td>
-                                <td class="px-8 py-5 font-bold text-sm">$1,420.50</td>
-                                <td class="px-8 py-5 text-slate-400 text-xs italic">Yesterday, 10:20 AM</td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <main class="flex-1 p-6 lg:p-12 pb-24 lg:pb-12 overflow-x-hidden">
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+            <div>
+                <h2 class="text-3xl font-bold tracking-tight">Orders Management</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Real-time monitoring of sales and fulfillment.</p>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="relative group">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
+                    <input type="text" id="orderSearch" placeholder="Find order ID..." class="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl py-3 pl-12 pr-6 text-sm w-full md:w-64 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                </div>
+                <button class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-all shadow-sm">
+                    <i data-lucide="filter" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div class="glass-card p-8 border-l-4 border-l-blue-500">
+                <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest">Total Orders</p>
+                <h3 class="text-3xl font-bold mt-2">1,284</h3>
+                <div class="mt-2 flex items-center text-green-500 text-[10px] font-bold">
+                    <i data-lucide="trending-up" class="w-3 h-3 mr-1"></i> +12.5% vs last month
                 </div>
             </div>
-        </main>
-    </div>
+            <div class="glass-card p-8 border-l-4 border-l-yellow-500">
+                <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest">Pending Payment</p>
+                <h3 class="text-3xl font-bold mt-2">43</h3>
+                <div class="mt-2 flex items-center text-yellow-500 text-[10px] font-bold">
+                    <i data-lucide="alert-circle" class="w-3 h-3 mr-1"></i> Action required
+                </div>
+            </div>
+            <div class="glass-card p-8 border-l-4 border-l-emerald-500">
+                <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest">Net Revenue</p>
+                <h3 class="text-3xl font-bold mt-2">$42,930</h3>
+                <div class="mt-2 flex items-center text-blue-500 text-[10px] font-bold">
+                    <i data-lucide="refresh-cw" class="w-3 h-3 mr-1"></i> Updated just now
+                </div>
+            </div>
+        </div>
 
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-[#1e293b]/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 px-2 py-3 flex justify-around items-center z-50">
-        <a href="index.html" class="flex flex-col items-center text-slate-400">
-            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-            <span class="text-[8px] mt-1 font-medium">Home</span>
-        </a>
-        <a href="users.html" class="flex flex-col items-center text-slate-400">
-            <i data-lucide="users" class="w-5 h-5"></i>
-            <span class="text-[8px] mt-1 font-medium">Users</span>
-        </a>
-        <a href="orders.html" class="flex flex-col items-center text-blue-600">
-            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-            <span class="text-[8px] mt-1 font-bold">Orders</span>
-        </a>
-        <a href="invoices.html" class="flex flex-col items-center text-slate-400">
-            <i data-lucide="file-text" class="w-5 h-5"></i>
-            <span class="text-[8px] mt-1 font-medium">Bills</span>
-        </a>
-        <a href="settings.html" class="flex flex-col items-center text-slate-400">
-            <i data-lucide="settings" class="w-5 h-5"></i>
-            <span class="text-[8px] mt-1 font-medium">Settings</span>
-        </a>
+        <div class="glass-card overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50/50 dark:bg-slate-800/30 text-slate-400 uppercase text-[10px] font-black tracking-[0.15em]">
+                        <tr>
+                            <th class="px-8 py-5">Order ID</th>
+                            <th class="px-8 py-5">Customer</th>
+                            <th class="px-8 py-5">Status</th>
+                            <th class="px-8 py-5">Total Amount</th>
+                            <th class="px-8 py-5">Timestamp</th>
+                            <th class="px-8 py-5 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer">
+                            <td class="px-8 py-6 font-mono text-blue-500 text-xs font-black tracking-tight">#ORD-7231</td>
+                            <td class="px-8 py-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-bold text-xs border border-indigo-500/20">JD</div>
+                                    <span class="text-sm font-bold">John Doe</span>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-full text-[10px] font-black uppercase">Completed</span>
+                            </td>
+                            <td class="px-8 py-6 font-bold text-sm">$299.00</td>
+                            <td class="px-8 py-6 text-slate-400 text-xs italic">Today, 02:45 PM</td>
+                            <td class="px-8 py-6 text-right">
+                                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer">
+                            <td class="px-8 py-6 font-mono text-blue-500 text-xs font-black tracking-tight">#ORD-7232</td>
+                            <td class="px-8 py-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center font-bold text-xs border border-orange-500/20">AS</div>
+                                    <span class="text-sm font-bold">Anna Smith</span>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <span class="px-3 py-1 bg-yellow-500/10 text-yellow-600 border border-yellow-500/20 rounded-full text-[10px] font-black uppercase">Processing</span>
+                            </td>
+                            <td class="px-8 py-6 font-bold text-sm">$1,420.50</td>
+                            <td class="px-8 py-6 text-slate-400 text-xs italic">Yesterday, 10:20 AM</td>
+                            <td class="px-8 py-6 text-right">
+                                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 p-4 px-8 flex justify-between items-center z-50">
+        <a href="index.html" class="text-slate-400 p-2"><i data-lucide="layout-grid" class="w-6 h-6"></i></a>
+        <a href="users.html" class="text-slate-400 p-2"><i data-lucide="users" class="w-6 h-6"></i></a>
+        <a href="orders.html" class="text-blue-600 p-2"><i data-lucide="shopping-bag" class="w-6 h-6"></i></a>
+        <a href="settings.html" class="text-slate-400 p-2"><i data-lucide="settings" class="w-6 h-6"></i></a>
     </div>
 
     <script>
         lucide.createIcons();
 
-        // مزامنة الثيم مع التغيير في الإعدادات
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            if (savedTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.add('light');
-                document.documentElement.classList.remove('dark');
-            }
+        // Theme Sync
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.classList.add(savedTheme);
+
+        // Search Filter for Orders
+        document.getElementById('orderSearch').addEventListener('keyup', function(e) {
+            const term = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#orderTableBody tr');
+            rows.forEach(row => {
+                const orderID = row.querySelector('.font-mono').textContent.toLowerCase();
+                const customer = row.querySelector('.font-bold').textContent.toLowerCase();
+                row.style.display = (orderID.includes(term) || customer.includes(term)) ? "" : "none";
+            });
         });
     </script>
 </body>
