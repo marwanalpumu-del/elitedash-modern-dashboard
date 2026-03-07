@@ -7,82 +7,106 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>tailwind.config = { darkMode: 'class' }</script>
     <style>
-        body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f1f5f9; }
-        .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        /* أنيميشن بسيط للظهور */
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        .glass-card { backdrop-filter: blur(12px); transition: all 0.3s ease; }
+        .dark .glass-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .light .glass-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.05); }
+        @media (max-width: 768px) { main { padding-bottom: 90px; } }
         .modal-fade-in { animation: fadeIn 0.2s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen">
 
-    <div class="min-h-screen flex">
-        <aside class="w-64 bg-[#1e293b] border-r border-slate-800 hidden md:flex flex-col h-screen sticky top-0">
-            <div class="p-6 text-2xl font-bold text-blue-500 tracking-tighter uppercase">ELITE<span class="text-white">DASH</span></div>
+    <div class="flex">
+        <aside class="w-64 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden md:flex flex-col h-screen sticky top-0">
+            <div class="p-6">
+                <h1 class="text-2xl font-bold text-blue-500 tracking-tighter uppercase">Elite<span class="text-slate-900 dark:text-white">Dash</span></h1>
+            </div>
             <nav class="flex-1 px-4 space-y-2">
-                <a href="index.html" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 rounded-lg transition-all"><i data-lucide="layout-dashboard" class="mr-3 w-5"></i> Dashboard</a>
-                <a href="users.html" class="flex items-center p-3 bg-blue-600 text-white rounded-lg shadow-lg shadow-blue-600/20"><i data-lucide="users" class="mr-3 w-5"></i> Users</a>
-                <a href="settings.html" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 rounded-lg transition-all"><i data-lucide="settings" class="mr-3 w-5"></i> Settings</a>
+                <a href="index.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="layout-dashboard" class="mr-3 w-5 h-5"></i> Overview</a>
+                <a href="users.html" class="flex items-center p-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-500/20"><i data-lucide="users" class="mr-3 w-5 h-5"></i> Users</a>
+                <a href="orders.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="shopping-bag" class="mr-3 w-5 h-5"></i> Orders</a>
+                <a href="invoices.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="file-text" class="mr-3 w-5 h-5"></i> Invoices</a>
+                <a href="settings.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="settings" class="mr-3 w-5 h-5"></i> Settings</a>
             </nav>
         </aside>
 
-        <main class="flex-1 p-8">
-            <header class="flex justify-between items-center mb-8">
-                <h2 class="text-3xl font-bold tracking-tight">User Directory</h2>
-                <button onclick="toggleUserModal(true)" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl flex items-center shadow-lg shadow-blue-500/20 transition-all active:scale-95">
-                    <i data-lucide="plus" class="mr-2 w-4"></i> Add New User
-                </button>
+        <main class="flex-1 p-6 md:p-10 max-w-6xl mx-auto">
+            <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold tracking-tight">User Directory</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs md:sm">Manage your team and customer accounts.</p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row gap-4 items-center">
+                    <div class="relative w-full md:w-64">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                        <input type="text" placeholder="Search users..." class="w-full bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                    </div>
+                    <button onclick="toggleUserModal(true)" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 transition-all active:scale-95 font-bold text-sm">
+                        <i data-lucide="plus" class="mr-2 w-4 h-4"></i> Add User
+                    </button>
+                </div>
             </header>
 
-            <div class="glass-card rounded-2xl overflow-hidden shadow-xl">
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-slate-800/50 text-slate-400 uppercase text-[10px] font-bold tracking-widest">
-                        <tr>
-                            <th class="px-6 py-4">User</th>
-                            <th class="px-6 py-4">Status</th>
-                            <th class="px-6 py-4">Role</th>
-                            <th class="px-6 py-4">Joined</th>
-                            <th class="px-6 py-4 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody" class="divide-y divide-slate-800">
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-6 py-4 flex items-center">
-                                <img src="https://ui-avatars.com/api/?name=Alex+Smith&background=random" class="w-10 h-10 rounded-xl mr-3 border border-slate-700">
-                                <div>
-                                    <div class="font-semibold text-white text-sm">Alex Smith</div>
-                                    <div class="text-[10px] text-slate-500">alex@example.com</div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4"><span class="px-2 py-1 text-[10px] font-bold bg-green-500/10 text-green-500 rounded-lg border border-green-500/20 uppercase">Active</span></td>
-                            <td class="px-6 py-4 text-slate-300 text-sm">Administrator</td>
-                            <td class="px-6 py-4 text-slate-500 text-sm">Mar 12, 2026</td>
-                            <td class="px-6 py-4 text-right"><button class="text-slate-500 hover:text-white"><i data-lucide="more-horizontal" class="w-4"></i></button></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="glass-card rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-slate-50 dark:bg-slate-800/30 text-slate-500 dark:text-slate-400 uppercase text-[10px] font-bold tracking-widest">
+                            <tr>
+                                <th class="px-8 py-5">User</th>
+                                <th class="px-8 py-5">Status</th>
+                                <th class="px-8 py-5">Role</th>
+                                <th class="px-8 py-5">Joined</th>
+                                <th class="px-8 py-5 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition">
+                                <td class="px-8 py-5 flex items-center">
+                                    <img src="https://ui-avatars.com/api/?name=Alex+Smith&background=random" class="w-10 h-10 rounded-2xl mr-4 border border-slate-200 dark:border-slate-700">
+                                    <div>
+                                        <div class="font-bold text-sm">Alex Smith</div>
+                                        <div class="text-[10px] text-slate-500">alex@example.com</div>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-5">
+                                    <span class="px-3 py-1 text-[10px] font-bold bg-green-500/10 text-green-500 rounded-full border border-green-500/20 uppercase">Active</span>
+                                </td>
+                                <td class="px-8 py-5 text-slate-600 dark:text-slate-300 text-sm font-medium">Administrator</td>
+                                <td class="px-8 py-5 text-slate-400 text-sm italic">Mar 12, 2026</td>
+                                <td class="px-8 py-5 text-right">
+                                    <button class="text-slate-400 hover:text-blue-500 p-2 transition"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                                    <button class="text-slate-400 hover:text-red-500 p-2 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     </div>
 
-    <div id="userModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md rounded-3xl p-8 shadow-2xl modal-fade-in">
-            <h3 class="text-2xl font-bold mb-2">Add New User</h3>
-            <p class="text-slate-400 text-sm mb-6">Enter user details to add them to the system.</p>
+    <div id="userModal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl modal-fade-in border border-slate-200 dark:border-slate-800">
+            <h3 class="text-2xl font-bold mb-2">New Member</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mb-8">Set up account details for the new user.</p>
             
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1 ml-1">Full Name</label>
-                    <input id="userName" type="text" placeholder="e.g. Marwan" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+            <div class="space-y-5">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-bold uppercase text-slate-500 tracking-wider ml-1">Full Name</label>
+                    <input id="userName" type="text" placeholder="e.g. Marwan" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                 </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1 ml-1">Email Address</label>
-                    <input id="userEmail" type="email" placeholder="example@mail.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-bold uppercase text-slate-500 tracking-wider ml-1">Email Address</label>
+                    <input id="userEmail" type="email" placeholder="marwan@example.com" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                 </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1 ml-1">Role</label>
-                    <select id="userRole" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-bold uppercase text-slate-500 tracking-wider ml-1">Assign Role</label>
+                    <select id="userRole" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all appearance-none">
                         <option value="Administrator">Administrator</option>
                         <option value="Editor">Editor</option>
                         <option value="Viewer">Viewer</option>
@@ -90,29 +114,56 @@
                 </div>
             </div>
 
-            <div class="flex items-center justify-end space-x-4 mt-8">
-                <button onclick="toggleUserModal(false)" class="text-slate-400 hover:text-white font-medium transition">Cancel</button>
-                <button onclick="addNewUser()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-blue-600/20 transition-all active:scale-95">
-                    Save User
+            <div class="flex items-center justify-end space-x-6 mt-10">
+                <button onclick="toggleUserModal(false)" class="text-slate-400 hover:text-slate-600 dark:hover:text-white font-bold text-sm transition">Cancel</button>
+                <button onclick="addNewUser()" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-3.5 rounded-2xl font-bold shadow-xl shadow-blue-600/20 transition-all active:scale-95 text-sm">
+                    Create User
                 </button>
             </div>
         </div>
     </div>
 
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-[#1e293b]/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 px-2 py-3 flex justify-around items-center z-50">
+        <a href="index.html" class="flex flex-col items-center text-slate-400">
+            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+            <span class="text-[8px] mt-1 font-medium">Home</span>
+        </a>
+        <a href="users.html" class="flex flex-col items-center text-blue-600">
+            <i data-lucide="users" class="w-5 h-5"></i>
+            <span class="text-[8px] mt-1 font-bold">Users</span>
+        </a>
+        <a href="orders.html" class="flex flex-col items-center text-slate-400">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+            <span class="text-[8px] mt-1 font-medium">Orders</span>
+        </a>
+        <a href="invoices.html" class="flex flex-col items-center text-slate-400">
+            <i data-lucide="file-text" class="w-5 h-5"></i>
+            <span class="text-[8px] mt-1 font-medium">Bills</span>
+        </a>
+        <a href="settings.html" class="flex flex-col items-center text-slate-400">
+            <i data-lucide="settings" class="w-5 h-5"></i>
+            <span class="text-[8px] mt-1 font-medium">Settings</span>
+        </a>
+    </div>
+
     <script>
         lucide.createIcons();
 
-        // فتح وإغلاق المودال
+        // مزامنة الثيم من localStorage
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.add('light');
+            }
+        });
+
         function toggleUserModal(show) {
             const modal = document.getElementById('userModal');
-            if (show) {
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
+            modal.classList.toggle('hidden', !show);
         }
 
-        // إضافة المستخدم للجدول
         function addNewUser() {
             const name = document.getElementById('userName').value;
             const email = document.getElementById('userEmail').value;
@@ -120,33 +171,36 @@
             const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
             if (!name || !email) {
-                alert('Please fill in name and email');
+                alert('Missing information!');
                 return;
             }
 
             const tableBody = document.getElementById('userTableBody');
             const newRow = document.createElement('tr');
-            newRow.className = "hover:bg-slate-800/30 transition border-t border-slate-800";
+            newRow.className = "hover:bg-slate-50 dark:hover:bg-slate-800/30 transition border-t border-slate-100 dark:border-slate-800";
             
             newRow.innerHTML = `
-                <td class="px-6 py-4 flex items-center">
-                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random" class="w-10 h-10 rounded-xl mr-3 border border-slate-700">
+                <td class="px-8 py-5 flex items-center">
+                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random" class="w-10 h-10 rounded-2xl mr-4 border border-slate-200 dark:border-slate-700">
                     <div>
-                        <div class="font-semibold text-white text-sm">${name}</div>
+                        <div class="font-bold text-sm">${name}</div>
                         <div class="text-[10px] text-slate-500">${email}</div>
                     </div>
                 </td>
-                <td class="px-6 py-4"><span class="px-2 py-1 text-[10px] font-bold bg-green-500/10 text-green-500 rounded-lg border border-green-500/20 uppercase">Active</span></td>
-                <td class="px-6 py-4 text-slate-300 text-sm">${role}</td>
-                <td class="px-6 py-4 text-slate-500 text-sm">${today}</td>
-                <td class="px-6 py-4 text-right"><button class="text-slate-500 hover:text-white"><i data-lucide="more-horizontal" class="w-4"></i></button></td>
+                <td class="px-8 py-5"><span class="px-3 py-1 text-[10px] font-bold bg-green-500/10 text-green-500 rounded-full border border-green-500/20 uppercase">Active</span></td>
+                <td class="px-8 py-5 text-slate-600 dark:text-slate-300 text-sm font-medium">${role}</td>
+                <td class="px-8 py-5 text-slate-400 text-sm italic">${today}</td>
+                <td class="px-8 py-5 text-right">
+                    <button class="text-slate-400 hover:text-blue-500 p-2 transition"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                    <button class="text-slate-400 hover:text-red-500 p-2 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </td>
             `;
 
-            tableBody.prepend(newRow); // إضافة في أول الجدول
-            lucide.createIcons(); // لتفعيل أيقونة النقاط الثلاث في السطر الجديد
-            
-            // تنظيف وإغلاق
+            tableBody.prepend(newRow);
+            lucide.createIcons();
             toggleUserModal(false);
+            
+            // Clear inputs
             document.getElementById('userName').value = '';
             document.getElementById('userEmail').value = '';
         }
