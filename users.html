@@ -10,31 +10,34 @@
     <style>
         body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f1f5f9; }
         .glass-card { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        /* أنيميشن بسيط للظهور */
+        .modal-fade-in { animation: fadeIn 0.2s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
 
     <div class="min-h-screen flex">
-        <aside class="w-64 bg-[#1e293b] border-r border-slate-800 hidden md:flex flex-col">
-            <div class="p-6 text-2xl font-bold text-blue-500">ELITE<span class="text-white">DASH</span></div>
+        <aside class="w-64 bg-[#1e293b] border-r border-slate-800 hidden md:flex flex-col h-screen sticky top-0">
+            <div class="p-6 text-2xl font-bold text-blue-500 tracking-tighter uppercase">ELITE<span class="text-white">DASH</span></div>
             <nav class="flex-1 px-4 space-y-2">
-                <a href="index.html" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 rounded-lg"><i data-lucide="layout-dashboard" class="mr-3 w-5"></i> Dashboard</a>
-                <a href="users.html" class="flex items-center p-3 bg-blue-600 text-white rounded-lg"><i data-lucide="users" class="mr-3 w-5"></i> Users</a>
-                <a href="#" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 rounded-lg"><i data-lucide="settings" class="mr-3 w-5"></i> Settings</a>
+                <a href="index.html" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 rounded-lg transition-all"><i data-lucide="layout-dashboard" class="mr-3 w-5"></i> Dashboard</a>
+                <a href="users.html" class="flex items-center p-3 bg-blue-600 text-white rounded-lg shadow-lg shadow-blue-600/20"><i data-lucide="users" class="mr-3 w-5"></i> Users</a>
+                <a href="settings.html" class="flex items-center p-3 text-slate-400 hover:bg-slate-800 rounded-lg transition-all"><i data-lucide="settings" class="mr-3 w-5"></i> Settings</a>
             </nav>
         </aside>
 
         <main class="flex-1 p-8">
             <header class="flex justify-between items-center mb-8">
-                <h2 class="text-3xl font-bold">User Directory</h2>
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center shadow-lg shadow-blue-500/20">
+                <h2 class="text-3xl font-bold tracking-tight">User Directory</h2>
+                <button onclick="toggleUserModal(true)" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl flex items-center shadow-lg shadow-blue-500/20 transition-all active:scale-95">
                     <i data-lucide="plus" class="mr-2 w-4"></i> Add New User
                 </button>
             </header>
 
-            <div class="glass-card rounded-2xl overflow-hidden">
+            <div class="glass-card rounded-2xl overflow-hidden shadow-xl">
                 <table class="w-full text-left border-collapse">
-                    <thead class="bg-slate-800/50 text-slate-400 uppercase text-xs font-semibold">
+                    <thead class="bg-slate-800/50 text-slate-400 uppercase text-[10px] font-bold tracking-widest">
                         <tr>
                             <th class="px-6 py-4">User</th>
                             <th class="px-6 py-4">Status</th>
@@ -43,40 +46,19 @@
                             <th class="px-6 py-4 text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800">
+                    <tbody id="userTableBody" class="divide-y divide-slate-800">
                         <tr class="hover:bg-slate-800/30 transition">
                             <td class="px-6 py-4 flex items-center">
-                                <img src="https://ui-avatars.com/api/?name=Alex+Smith&background=random" class="w-10 h-10 rounded-full mr-3 border border-slate-700">
+                                <img src="https://ui-avatars.com/api/?name=Alex+Smith&background=random" class="w-10 h-10 rounded-xl mr-3 border border-slate-700">
                                 <div>
-                                    <div class="font-semibold text-white">Alex Smith</div>
-                                    <div class="text-xs text-slate-500">alex@example.com</div>
+                                    <div class="font-semibold text-white text-sm">Alex Smith</div>
+                                    <div class="text-[10px] text-slate-500">alex@example.com</div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 text-xs font-medium bg-green-500/10 text-green-500 rounded-full border border-green-500/20">Active</span>
-                            </td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 text-[10px] font-bold bg-green-500/10 text-green-500 rounded-lg border border-green-500/20 uppercase">Active</span></td>
                             <td class="px-6 py-4 text-slate-300 text-sm">Administrator</td>
                             <td class="px-6 py-4 text-slate-500 text-sm">Mar 12, 2026</td>
-                            <td class="px-6 py-4 text-right">
-                                <button class="text-slate-400 hover:text-white"><i data-lucide="more-horizontal"></i></button>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-6 py-4 flex items-center">
-                                <img src="https://ui-avatars.com/api/?name=Sarah+J&background=random" class="w-10 h-10 rounded-full mr-3 border border-slate-700">
-                                <div>
-                                    <div class="font-semibold text-white">Sarah Johnson</div>
-                                    <div class="text-xs text-slate-500">sarah.j@example.com</div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 text-xs font-medium bg-yellow-500/10 text-yellow-500 rounded-full border border-yellow-500/20">Pending</span>
-                            </td>
-                            <td class="px-6 py-4 text-slate-300 text-sm">Editor</td>
-                            <td class="px-6 py-4 text-slate-500 text-sm">Feb 28, 2026</td>
-                            <td class="px-6 py-4 text-right">
-                                <button class="text-slate-400 hover:text-white"><i data-lucide="more-horizontal"></i></button>
-                            </td>
+                            <td class="px-6 py-4 text-right"><button class="text-slate-500 hover:text-white"><i data-lucide="more-horizontal" class="w-4"></i></button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -84,6 +66,90 @@
         </main>
     </div>
 
-    <script>lucide.createIcons();</script>
+    <div id="userModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-8 shadow-2xl modal-fade-in">
+            <h3 class="text-2xl font-bold mb-2">Add New User</h3>
+            <p class="text-slate-400 text-sm mb-6">Enter user details to add them to the system.</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1 ml-1">Full Name</label>
+                    <input id="userName" type="text" placeholder="e.g. Marwan" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1 ml-1">Email Address</label>
+                    <input id="userEmail" type="email" placeholder="example@mail.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-slate-500 mb-1 ml-1">Role</label>
+                    <select id="userRole" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                        <option value="Administrator">Administrator</option>
+                        <option value="Editor">Editor</option>
+                        <option value="Viewer">Viewer</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end space-x-4 mt-8">
+                <button onclick="toggleUserModal(false)" class="text-slate-400 hover:text-white font-medium transition">Cancel</button>
+                <button onclick="addNewUser()" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-blue-600/20 transition-all active:scale-95">
+                    Save User
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // فتح وإغلاق المودال
+        function toggleUserModal(show) {
+            const modal = document.getElementById('userModal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // إضافة المستخدم للجدول
+        function addNewUser() {
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const role = document.getElementById('userRole').value;
+            const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            if (!name || !email) {
+                alert('Please fill in name and email');
+                return;
+            }
+
+            const tableBody = document.getElementById('userTableBody');
+            const newRow = document.createElement('tr');
+            newRow.className = "hover:bg-slate-800/30 transition border-t border-slate-800";
+            
+            newRow.innerHTML = `
+                <td class="px-6 py-4 flex items-center">
+                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random" class="w-10 h-10 rounded-xl mr-3 border border-slate-700">
+                    <div>
+                        <div class="font-semibold text-white text-sm">${name}</div>
+                        <div class="text-[10px] text-slate-500">${email}</div>
+                    </div>
+                </td>
+                <td class="px-6 py-4"><span class="px-2 py-1 text-[10px] font-bold bg-green-500/10 text-green-500 rounded-lg border border-green-500/20 uppercase">Active</span></td>
+                <td class="px-6 py-4 text-slate-300 text-sm">${role}</td>
+                <td class="px-6 py-4 text-slate-500 text-sm">${today}</td>
+                <td class="px-6 py-4 text-right"><button class="text-slate-500 hover:text-white"><i data-lucide="more-horizontal" class="w-4"></i></button></td>
+            `;
+
+            tableBody.prepend(newRow); // إضافة في أول الجدول
+            lucide.createIcons(); // لتفعيل أيقونة النقاط الثلاث في السطر الجديد
+            
+            // تنظيف وإغلاق
+            toggleUserModal(false);
+            document.getElementById('userName').value = '';
+            document.getElementById('userEmail').value = '';
+        }
+    </script>
 </body>
 </html>
