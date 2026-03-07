@@ -11,38 +11,25 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
-        // إعداد Tailwind ليدعم التبديل اليدوي للوضع المظلم عبر الكلاس
-        tailwind.config = {
-            darkMode: 'class',
-        }
+        tailwind.config = { darkMode: 'class' }
     </script>
 
     <style>
         body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        .glass-card { backdrop-filter: blur(12px); transition: all 0.3s ease; }
+        .dark .glass-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
+        .light .glass-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.05); shadow: 0 8px 20px rgba(0, 0, 0, 0.05); }
         
-        /* تأثير الزجاج - متكيف مع الوضعين */
-        .glass-card {
-            backdrop-filter: blur(12px);
-            transition: all 0.3s ease;
-        }
-        /* الوضع المظلم (الافتراضي عندك) */
-        .dark .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-        /* الوضع الفاتح */
-        .light .glass-card {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        /* منع المحتوى من الاختفاء خلف القائمة السفلية في الجوال */
+        @media (max-width: 768px) {
+            main { padding-bottom: 80px; }
         }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-f1f5f9">
 
     <div class="min-h-screen flex">
-        <aside class="w-64 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden md:flex flex-col transition-colors">
+        <aside class="w-64 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden md:flex flex-col transition-colors sticky top-0 h-screen">
             <div class="p-6">
                 <h1 class="text-2xl font-bold text-blue-500 tracking-tighter uppercase">Elite<span class="text-slate-900 dark:text-white">Dash</span></h1>
             </div>
@@ -66,38 +53,31 @@
             </div>
         </aside>
 
-        <main class="flex-1 p-8 overflow-y-auto">
-            <header class="flex flex-wrap justify-between items-center gap-4 mb-10">
-                <div class="flex-1 min-w-[200px]">
-                    <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Analytics Overview</h2>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm">Monitoring performance and revenue.</p>
+        <main class="flex-1 p-6 md:p-8 overflow-y-auto">
+            <header class="flex justify-between items-center gap-4 mb-10">
+                <div class="flex-1">
+                    <h2 class="text-xl md:text-3xl font-bold tracking-tight">Analytics Overview</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs md:sm">Performance and revenue.</p>
                 </div>
                 
-                <div class="flex items-center space-x-3 md:space-x-4">
-                    <button id="themeToggle" class="bg-white dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
-                        <i id="themeIcon" data-lucide="moon" class="w-5 h-5 text-slate-600 dark:text-slate-300"></i>
-                    </button>
-
-                    <button class="bg-white dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition">
-                        <i data-lucide="bell" class="w-5 h-5 text-slate-600 dark:text-slate-300"></i>
+                <div class="flex items-center space-x-2 md:space-x-4">
+                    <button id="themeToggle" class="bg-white dark:bg-slate-800 p-2 md:p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 transition">
+                        <i id="themeIcon" data-lucide="moon" class="w-4 h-4 md:w-5 md:h-5"></i>
                     </button>
 
                     <div class="relative">
-                        <button id="userMenuBtn" class="flex items-center space-x-2 bg-white dark:bg-slate-800/50 p-1.5 pr-4 rounded-2xl border border-slate-200 dark:border-slate-700 shrink-0 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all outline-none">
-                            <img id="mainAvatar" class="w-8 h-8 rounded-xl border border-blue-500 object-cover" src="https://ui-avatars.com/api/?name=Marwan&background=0D8ABC&color=fff" alt="User">
-                            <span id="userNameDisplay" class="text-xs md:text-sm font-semibold whitespace-nowrap">Marwan</span>
-                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400"></i>
+                        <button id="userMenuBtn" class="flex items-center space-x-2 bg-white dark:bg-slate-800/50 p-1 md:p-1.5 pr-3 md:pr-4 rounded-2xl border border-slate-200 dark:border-slate-700 shrink-0 outline-none">
+                            <img id="mainAvatar" class="w-7 h-7 md:w-8 md:h-8 rounded-xl border border-blue-500 object-cover" src="https://ui-avatars.com/api/?name=Marwan&background=0D8ABC&color=fff" alt="User">
+                            <span id="userNameDisplay" class="text-[10px] md:text-sm font-semibold whitespace-nowrap">Marwan</span>
+                            <i data-lucide="chevron-down" class="w-3 h-3 md:w-4 md:h-4 text-slate-400"></i>
                         </button>
 
                         <div id="userDropdown" class="hidden absolute right-0 mt-3 w-48 glass-card rounded-2xl p-2 z-50 shadow-2xl">
-                            <a href="settings.html" class="flex items-center space-x-2 p-2 hover:bg-blue-600/10 text-slate-700 dark:text-slate-300 rounded-xl transition text-sm">
+                            <a href="settings.html" class="flex items-center space-x-2 p-2 hover:bg-blue-600/10 text-slate-700 dark:text-slate-300 rounded-xl text-sm">
                                 <i data-lucide="user" class="w-4 h-4"></i> <span>Profile</span>
                             </a>
-                            <a href="settings.html" class="flex items-center space-x-2 p-2 hover:bg-blue-600/10 text-slate-700 dark:text-slate-300 rounded-xl transition text-sm">
-                                <i data-lucide="settings" class="w-4 h-4"></i> <span>Settings</span>
-                            </a>
                             <div class="h-[1px] bg-slate-200 dark:bg-slate-700 my-1"></div>
-                            <a href="login.html" class="flex items-center space-x-2 p-2 hover:bg-red-500/10 text-red-500 rounded-xl transition text-sm">
+                            <a href="login.html" class="flex items-center space-x-2 p-2 hover:bg-red-500/10 text-red-500 rounded-xl text-sm">
                                 <i data-lucide="log-out" class="w-4 h-4"></i> <span>Logout</span>
                             </a>
                         </div>
@@ -105,62 +85,50 @@
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="glass-card p-6 rounded-3xl">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Total Revenue</p>
-                            <h3 class="text-2xl font-bold mt-2">$45,231.89</h3>
-                        </div>
-                        <span class="p-2 bg-green-500/10 text-green-600 dark:text-green-500 rounded-lg text-xs font-bold">↑ 12%</span>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+                <div class="glass-card p-5 md:p-6 rounded-3xl">
+                    <p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider">Total Revenue</p>
+                    <h3 class="text-xl md:text-2xl font-bold mt-2">$45,231.89</h3>
                 </div>
-                <div class="glass-card p-6 rounded-3xl">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Active Users</p>
-                            <h3 class="text-2xl font-bold mt-2">2,405</h3>
-                        </div>
-                        <span class="p-2 bg-blue-500/10 text-blue-600 dark:text-blue-500 rounded-lg text-xs font-bold">↑ 4%</span>
-                    </div>
+                <div class="glass-card p-5 md:p-6 rounded-3xl">
+                    <p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider">Active Users</p>
+                    <h3 class="text-xl md:text-2xl font-bold mt-2">2,405</h3>
                 </div>
-                <div class="glass-card p-6 rounded-3xl">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Conversion</p>
-                            <h3 class="text-2xl font-bold mt-2">3.2%</h3>
-                        </div>
-                        <span class="p-2 bg-purple-500/10 text-purple-600 dark:text-purple-500 rounded-lg text-xs font-bold">Stable</span>
-                    </div>
+                <div class="glass-card p-5 md:p-6 rounded-3xl">
+                    <p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-wider">Conversion</p>
+                    <h3 class="text-xl md:text-2xl font-bold mt-2">3.2%</h3>
                 </div>
             </div>
 
-            <div class="glass-card p-8 rounded-3xl">
-                <div class="flex justify-between items-center mb-8">
-                    <h4 class="text-lg font-bold">Revenue Growth</h4>
-                    <select class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-xs rounded-lg p-2 outline-none">
-                        <option>Last 7 Days</option>
-                        <option>Last 30 Days</option>
-                    </select>
-                </div>
+            <div class="glass-card p-5 md:p-8 rounded-3xl">
+                <h4 class="text-base md:text-lg font-bold mb-6">Revenue Growth</h4>
                 <div id="main-chart" class="w-full"></div> 
             </div>
         </main>
     </div>
 
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-[#1e293b]/80 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 px-6 py-3 flex justify-around items-center z-50">
+        <a href="index.html" class="flex flex-col items-center text-blue-600">
+            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+            <span class="text-[9px] mt-1 font-bold">Home</span>
+        </a>
+        <a href="users.html" class="flex flex-col items-center text-slate-400">
+            <i data-lucide="users" class="w-5 h-5"></i>
+            <span class="text-[9px] mt-1 font-bold">Users</span>
+        </a>
+        <a href="settings.html" class="flex flex-col items-center text-slate-400">
+            <i data-lucide="settings" class="w-5 h-5"></i>
+            <span class="text-[9px] mt-1 font-bold">Settings</span>
+        </a>
+    </div>
+
     <script>
-        // 1. تهيئة الأيقونات
         lucide.createIcons();
 
-        // 2. وظيفة تحديث بيانات المستخدم (الاسم والصورة)
         function loadUserData() {
             const savedName = localStorage.getItem('userName') || 'Marwan';
             const savedAvatar = localStorage.getItem('userAvatar');
-            
-            // تحديث الاسم في الهيدر والترحيب
             document.getElementById('userNameDisplay').innerText = savedName;
-
-            // تحديث الصورة
             const mainAvatar = document.getElementById('mainAvatar');
             if (savedAvatar) {
                 mainAvatar.src = savedAvatar;
@@ -169,7 +137,6 @@
             }
         }
 
-        // 3. نظام تبديل الوضع (Dark/Light)
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const html = document.documentElement;
@@ -185,12 +152,8 @@
                 themeIcon.setAttribute('data-lucide', 'moon');
             }
             lucide.createIcons();
-            
-            // تحديث ألوان الرسم البياني برمجياً
             if (window.chart) {
-                window.chart.updateOptions({
-                    theme: { mode: isDark ? 'dark' : 'light' }
-                });
+                window.chart.updateOptions({ theme: { mode: isDark ? 'dark' : 'light' } });
             }
         }
 
@@ -200,35 +163,25 @@
             updateTheme(isDark);
         });
 
-        // 4. القائمة المنسدلة
         const userBtn = document.getElementById('userMenuBtn');
         const userMenu = document.getElementById('userDropdown');
-        userBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            userMenu.classList.toggle('hidden');
-        });
+        userBtn.addEventListener('click', (e) => { e.stopPropagation(); userMenu.classList.toggle('hidden'); });
         document.addEventListener('click', () => userMenu.classList.add('hidden'));
 
-        // 5. إعدادات ApexCharts
         var options = {
-            chart: {
-                type: 'area', height: 350, toolbar: { show: false },
-                fontFamily: 'Inter, sans-serif',
-                animations: { enabled: true }
-            },
+            chart: { type: 'area', height: 300, toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
             stroke: { curve: 'smooth', width: 3 },
             fill: { type: 'gradient', gradient: { opacityFrom: 0.4, opacityTo: 0.05 } },
             series: [{ name: 'Revenue', data: [4200, 5800, 4900, 7100, 8200, 12500, 11000] }],
             xaxis: { categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] },
             colors: ['#3b82f6'],
             grid: { borderColor: '#e2e8f0', strokeDashArray: 4 },
-            theme: { mode: 'dark' } // سيتم تحديثه تلقائياً بواسطة وظيفة updateTheme
+            theme: { mode: 'dark' }
         };
 
         window.chart = new ApexCharts(document.querySelector("#main-chart"), options);
         window.chart.render();
 
-        // 6. التشغيل عند التحميل
         document.addEventListener('DOMContentLoaded', () => {
             loadUserData();
             const savedTheme = localStorage.getItem('theme') || 'dark';
