@@ -9,17 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     
     <script>
-        // إعداد Tailwind لدعم التبديل اليدوي
         tailwind.config = { darkMode: 'class' }
     </script>
 
     <style>
         body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
         .glass-card { backdrop-filter: blur(10px); transition: all 0.3s ease; }
-        
-        /* ألوان الوضع المظلم */
         .dark .glass-card { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); }
-        /* ألوان الوضع الفاتح */
         .light .glass-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
     </style>
 </head>
@@ -62,11 +58,17 @@
                             <img id="profilePreview" src="https://ui-avatars.com/api/?name=Marwan&background=0D8ABC&color=fff&size=128" 
                                  class="w-24 h-24 rounded-2xl border-4 border-white dark:border-slate-800 shadow-xl object-cover transition group-hover:opacity-90">
                         </div>
-                        <div>
-                            <button onclick="document.getElementById('fileInput').click()" 
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition shadow-md active:scale-95">
-                                Change Photo
-                            </button>
+                        <div class="flex flex-col space-y-2">
+                            <div class="flex space-x-3">
+                                <button onclick="document.getElementById('fileInput').click()" 
+                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition shadow-md active:scale-95">
+                                    Change Photo
+                                </button>
+                                <button id="removePhotoBtn" 
+                                        class="bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-500 hover:text-white transition duration-300">
+                                    Remove
+                                </button>
+                            </div>
                             <input type="file" id="fileInput" class="hidden" accept="image/*">
                             <p class="text-slate-500 text-[10px] mt-2 uppercase font-bold tracking-widest">JPG, GIF or PNG. Max size of 800K</p>
                         </div>
@@ -98,10 +100,9 @@
     </div>
 
     <script>
-        // 1. تهيئة الأيقونات
         lucide.createIcons();
 
-        // 2. إدارة الثيم (Dark/Light)
+        // 1. إدارة الثيم
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const html = document.documentElement;
@@ -125,9 +126,10 @@
             updateTheme(isDark);
         });
 
-        // 3. إدارة رفع الصور (Base64)
+        // 2. إدارة الصور
         const fileInput = document.getElementById('fileInput');
         const profileImg = document.getElementById('profilePreview');
+        const removeBtn = document.getElementById('removePhotoBtn');
 
         fileInput.addEventListener('change', function() {
             const file = this.files[0];
@@ -135,20 +137,28 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     profileImg.src = e.target.result;
-                    // حفظ الصورة مؤقتاً في متغير لاستخدامها عند ضغط "Save"
                     window.tempImage = e.target.result;
                 }
                 reader.readAsDataURL(file);
             }
         });
 
-        // 4. تحميل البيانات عند الفتح
+        // تنفيذ إزالة الصورة باستخدام localStorage.removeItem
+        removeBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to remove your profile picture?')) {
+                localStorage.removeItem('userAvatar'); // مسح من الذاكرة
+                const currentName = document.getElementById('userNameInput').value || 'Marwan';
+                profileImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentName)}&background=0D8ABC&color=fff&size=128`;
+                window.tempImage = null; // تفريغ التغييرات غير المحفوظة
+                alert('Profile picture removed.');
+            }
+        });
+
+        // 3. تحميل البيانات
         document.addEventListener('DOMContentLoaded', () => {
-            // تحميل الثيم
             const savedTheme = localStorage.getItem('theme') || 'dark';
             updateTheme(savedTheme === 'dark');
 
-            // تحميل البيانات الشخصية
             const savedName = localStorage.getItem('userName') || 'Marwan';
             const savedEmail = localStorage.getItem('userEmail') || 'admin@elitedash.com';
             const savedBio = localStorage.getItem('userBio') || 'Senior Developer';
@@ -165,11 +175,10 @@
             }
         });
 
-        // 5. تنفيذ الحفظ النهائي
+        // 4. الحفظ
         const saveBtn = document.getElementById('saveBtn');
         saveBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            
             saveBtn.innerText = 'Updating...';
             
             setTimeout(() => {
@@ -178,14 +187,15 @@
                 localStorage.setItem('userEmail', document.getElementById('userEmailInput').value);
                 localStorage.setItem('userBio', document.getElementById('userBioInput').value);
 
-                // إذا قام المستخدم باختيار صورة جديدة، نحفظها
+                // حفظ الصورة فقط إذا لم يتم حذفها
                 if (window.tempImage) {
                     localStorage.setItem('userAvatar', window.tempImage);
+                } else if (window.tempImage === null && !localStorage.getItem('userAvatar')) {
+                    // تم التأكيد على الحذف مسبقاً
                 }
 
                 saveBtn.innerText = 'Save Changes';
-                alert('Success! Your profile and settings have been synced.');
-                // التوجه للرئيسية لرؤية التغييرات
+                alert('Settings saved!');
                 window.location.href = 'index.html'; 
             }, 800);
         });
