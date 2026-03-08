@@ -1,273 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users Management | EliteDash Premium</title>
+    <title>EliteDash | Users</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>tailwind.config = { darkMode: 'class' }</script>
-    <style>
-        body { font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
-        .glass-card { backdrop-filter: blur(12px); border-radius: 24px; transition: all 0.3s ease; }
-        .dark .glass-card { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .light .glass-card { background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
-        .modal-fade-in { animation: fadeIn 0.2s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        
-        /* Toast Notification Styles */
-        #toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
-        .toast { animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; min-width: 280px; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .toast.hiding { animation: slideOut 0.4s forwards; }
-        @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: #334155; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen flex">
+<body class="bg-[#0f172a] text-slate-200 min-h-screen flex">
 
-    <div id="toast-container"></div>
-
-    <aside class="w-72 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden lg:flex flex-col h-screen sticky top-0 z-50">
-        <div class="p-8">
-            <h1 class="text-2xl font-black text-blue-600 tracking-tighter uppercase">Elite<span class="text-slate-900 dark:text-white">Dash</span></h1>
-        </div>
-        <nav class="flex-1 px-6 space-y-2">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 ml-3">Overview</p>
-            <a href="index.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
-                <i data-lucide="layout-grid" class="mr-3 w-5 h-5"></i> Dashboard
+    <aside class="w-72 border-r border-slate-800 p-8 hidden lg:flex flex-col h-screen sticky top-0">
+        <h1 class="text-2xl font-black text-blue-500 italic mb-10 tracking-tighter">ELITEDASH</h1>
+        <nav class="space-y-3 flex-1">
+            <a href="index.html" class="flex items-center p-4 text-slate-400 hover:bg-slate-800 rounded-2xl transition font-semibold">
+                <i data-lucide="layout-grid" class="mr-3 ml-3 w-5 h-5"></i> <span data-i18n="dash">Dashboard</span>
             </a>
-            <a href="users.html" class="flex items-center p-4 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-600/20 font-semibold text-sm">
-                <i data-lucide="users" class="mr-3 w-5 h-5"></i> User Directory
+            <a href="users.html" class="flex items-center p-4 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-600/20 font-bold">
+                <i data-lucide="users" class="mr-3 ml-3 w-5 h-5"></i> <span data-i18n="users">Users</span>
             </a>
-            <a href="orders.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
-                <i data-lucide="shopping-bag" class="mr-3 w-5 h-5"></i> Orders
+            <a href="orders.html" class="flex items-center p-4 text-slate-400 hover:bg-slate-800 rounded-2xl transition font-semibold">
+                <i data-lucide="shopping-bag" class="mr-3 ml-3 w-5 h-5"></i> <span data-i18n="orders">Orders</span>
             </a>
-            <a href="invoices.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
-                <i data-lucide="file-text" class="mr-3 w-5 h-5"></i> Invoices
-            </a>
-            <a href="settings.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
-                <i data-lucide="settings" class="mr-3 w-5 h-5"></i> Settings
+            <a href="settings.html" class="flex items-center p-4 text-slate-400 hover:bg-slate-800 rounded-2xl transition font-semibold">
+                <i data-lucide="settings" class="mr-3 ml-3 w-5 h-5"></i> <span data-i18n="settings">Settings</span>
             </a>
         </nav>
-        <div class="p-6 border-t border-slate-100 dark:border-slate-800">
-            <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl">
-                <div id="sideAvatar" class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold overflow-hidden shadow-inner">M</div>
-                <div class="overflow-hidden">
-                    <p id="sideName" class="text-xs font-bold truncate">Marwan</p>
-                    <p class="text-[10px] text-slate-500 truncate">Administrator</p>
-                </div>
-            </div>
-        </div>
+        <button onclick="switchLang()" class="mt-4 p-4 bg-slate-800/50 border border-slate-700 rounded-2xl text-xs font-bold">English / العربية</button>
     </aside>
 
-    <main class="flex-1 p-6 lg:p-12 pb-24 lg:pb-12 overflow-x-hidden">
-        <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-            <div>
-                <h2 class="text-3xl font-bold tracking-tight">User Directory</h2>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage your team members and their access levels.</p>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <div class="relative group">
-                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
-                    <input type="text" id="searchInput" placeholder="Search users..." class="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl py-3 pl-12 pr-6 text-sm w-full md:w-64 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                </div>
-                <button onclick="toggleUserModal(true)" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl flex items-center shadow-lg shadow-blue-500/20 transition-all active:scale-95 font-bold text-sm">
-                    <i data-lucide="plus" class="mr-2 w-4 h-4"></i> Add User
-                </button>
-            </div>
+    <main class="flex-1 p-8 lg:p-12">
+        <header class="flex justify-between items-center mb-10">
+            <h2 class="text-3xl font-bold" data-i18n="users">User Directory</h2>
+            <button class="bg-blue-600 px-6 py-3 rounded-2xl font-bold shadow-lg shadow-blue-600/20" data-i18n="add">Add Member</button>
         </header>
 
-        <div class="glass-card overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50/50 dark:bg-slate-800/30 text-slate-400 uppercase text-[10px] font-black tracking-[0.15em]">
-                        <tr>
-                            <th class="px-8 py-5">User Info</th>
-                            <th class="px-8 py-5">Status</th>
-                            <th class="px-8 py-5">Role</th>
-                            <th class="px-8 py-5">Joined Date</th>
-                            <th class="px-8 py-5 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
-                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all">
-                            <td class="px-8 py-5 flex items-center">
-                                <img src="https://ui-avatars.com/api/?name=Faried+Ali&background=E0E7FF&color=4338CA" class="w-11 h-11 rounded-2xl mr-4 border-2 border-white dark:border-slate-700 shadow-sm">
-                                <div>
-                                    <div class="font-bold text-sm">Faried Ali</div>
-                                    <div class="text-[10px] text-slate-400">fariedali00@gmail.com</div>
-                                </div>
-                            </td>
-                            <td class="px-8 py-5">
-                                <span class="px-3 py-1 text-[10px] font-black bg-emerald-500/10 text-emerald-500 rounded-full border border-emerald-500/20 uppercase">Active</span>
-                            </td>
-                            <td class="px-8 py-5 text-slate-600 dark:text-slate-300 text-sm font-semibold">Administrator</td>
-                            <td class="px-8 py-5 text-slate-400 text-xs italic font-medium">Mar 7, 2026</td>
-                            <td class="px-8 py-5 text-right space-x-2">
-                                <button class="text-slate-400 hover:text-blue-500 p-2 transition-colors"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
-                                <button class="delete-btn text-slate-400 hover:text-red-500 p-2 transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="bg-slate-800/40 rounded-[2.5rem] border border-slate-800 overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-900/50 text-slate-500 text-[10px] uppercase font-black tracking-widest">
+                    <tr>
+                        <th class="p-8" data-i18n="nameLabel">User</th>
+                        <th class="p-8" data-i18n="roleLabel">Role</th>
+                        <th class="p-8" data-i18n="statusLabel">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800">
+                    <tr>
+                        <td class="p-8 flex items-center">
+                            <div class="w-10 h-10 bg-indigo-500 rounded-xl mr-4 ml-4 shadow-lg shadow-indigo-500/20"></div>
+                            <div><p class="font-bold">Ahmed Hassan</p><p class="text-xs text-slate-500 italic">ahmed@elite.com</p></div>
+                        </td>
+                        <td class="p-8"><span class="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full text-[10px] font-bold">Administrator</span></td>
+                        <td class="p-8 text-emerald-500 text-xs font-bold italic">Active</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </main>
 
-    <div id="userModal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[100] flex items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl modal-fade-in border border-slate-200 dark:border-slate-800">
-            <h3 class="text-2xl font-bold mb-2">Create New User</h3>
-            <p class="text-slate-500 text-sm mb-8">Fill in the details to invite a new member.</p>
-            <div class="space-y-5">
-                <div>
-                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-2 ml-1">Full Name</label>
-                    <input id="userName" type="text" placeholder="e.g. Ali Mohammed" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-2 ml-1">Email Address</label>
-                    <input id="userEmail" type="email" placeholder="ali@example.com" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold uppercase text-slate-400 mb-2 ml-1">Role Type</label>
-                    <select id="userRole" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                        <option value="Administrator">Administrator</option>
-                        <option value="Editor">Editor</option>
-                        <option value="Viewer">Viewer</option>
-                    </select>
-                </div>
-            </div>
-            <div class="flex items-center justify-end space-x-6 mt-10">
-                <button onclick="toggleUserModal(false)" class="text-slate-400 hover:text-slate-600 dark:hover:text-white font-bold text-sm transition">Cancel</button>
-                <button onclick="addNewUser()" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-2xl font-bold shadow-xl shadow-blue-600/20 transition-all active:scale-95 text-sm">Save User</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        lucide.createIcons();
-
-        // 1. Toast System
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const types = {
-                success: { bg: 'bg-green-500', icon: 'check-circle' },
-                error: { bg: 'bg-rose-500', icon: 'alert-circle' },
-                info: { bg: 'bg-blue-500', icon: 'info' }
-            };
-            const config = types[type] || types.success;
-
-            toast.className = `toast flex items-center p-4 rounded-2xl shadow-2xl text-white ${config.bg} backdrop-blur-md border border-white/10`;
-            toast.innerHTML = `<i data-lucide="${config.icon}" class="w-5 h-5 mr-3"></i><span class="text-xs font-bold">${message}</span>`;
-            
-            container.appendChild(toast);
-            lucide.createIcons();
-            setTimeout(() => {
-                toast.classList.add('hiding');
-                setTimeout(() => toast.remove(), 400);
-            }, 3000);
-        }
-
-        // 2. Initial Sync
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.className = savedTheme;
-
-            // Sync Sidebar Profile
-            const currentName = localStorage.getItem('userName') || 'Marwan';
-            const currentAvatar = localStorage.getItem('userAvatar');
-            document.getElementById('sideName').textContent = currentName;
-            if(currentAvatar) {
-                document.getElementById('sideAvatar').innerHTML = `<img src="${currentAvatar}" class="w-full h-full object-cover">`;
-            }
-        });
-
-        // 3. Live Search
-        document.getElementById('searchInput').addEventListener('keyup', function(e) {
-            const term = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('#userTableBody tr');
-            rows.forEach(row => {
-                const name = row.querySelector('.font-bold').textContent.toLowerCase();
-                const email = row.querySelector('.text-\\[10px\\]').textContent.toLowerCase();
-                row.style.display = (name.includes(term) || email.includes(term)) ? "" : "none";
-            });
-        });
-
-        // 4. Enhanced Delete with Toast
-        document.getElementById('userTableBody').addEventListener('click', function(e) {
-            const deleteBtn = e.target.closest('.delete-btn');
-            if (deleteBtn) {
-                const row = deleteBtn.closest('tr');
-                const userName = row.querySelector('.font-bold').textContent;
-                
-                // بدلاً من confirm التقليدي، يمكننا حذفها فوراً مع خيار التراجع (Undo) مستقبلاً،
-                // لكن حالياً سنكتفي بالحذف مع تنبيه.
-                row.style.opacity = '0.5';
-                if(confirm(`Are you sure you want to remove ${userName}?`)) {
-                    row.remove();
-                    showToast(`${userName} has been removed`, 'error');
-                } else {
-                    row.style.opacity = '1';
-                }
-            }
-        });
-
-        function toggleUserModal(show) {
-            document.getElementById('userModal').classList.toggle('hidden', !show);
-            if(show) document.getElementById('userName').focus();
-        }
-
-        // 5. Add User with Validations & Toast
-        function addNewUser() {
-            const name = document.getElementById('userName').value.trim();
-            const email = document.getElementById('userEmail').value.trim();
-            const role = document.getElementById('userRole').value;
-            const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-
-            if (!name || !email) {
-                showToast('Please enter both name and email', 'error');
-                return;
-            }
-
-            const tableBody = document.getElementById('userTableBody');
-            const newRow = document.createElement('tr');
-            newRow.className = "hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all border-t border-slate-100 dark:border-slate-800 opacity-0 transform translate-y-4 transition-all duration-500";
-            
-            newRow.innerHTML = `
-                <td class="px-8 py-5 flex items-center">
-                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random" class="w-11 h-11 rounded-2xl mr-4 border-2 border-white dark:border-slate-700 shadow-sm">
-                    <div><div class="font-bold text-sm">${name}</div><div class="text-[10px] text-slate-400">${email}</div></div>
-                </td>
-                <td class="px-8 py-5"><span class="px-3 py-1 text-[10px] font-black bg-emerald-500/10 text-emerald-500 rounded-full border border-emerald-500/20 uppercase">Active</span></td>
-                <td class="px-8 py-5 text-slate-600 dark:text-slate-300 text-sm font-semibold">${role}</td>
-                <td class="px-8 py-5 text-slate-400 text-xs italic font-medium">${today}</td>
-                <td class="px-8 py-5 text-right space-x-2">
-                    <button class="text-slate-400 hover:text-blue-500 p-2"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
-                    <button class="delete-btn text-slate-400 hover:text-red-500 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                </td>`;
-            
-            tableBody.prepend(newRow);
-            
-            // Animation Trigger
-            setTimeout(() => {
-                newRow.classList.remove('opacity-0', 'translate-y-4');
-            }, 50);
-
-            lucide.createIcons();
-            toggleUserModal(false);
-            
-            // Clear inputs
-            document.getElementById('userName').value = ''; 
-            document.getElementById('userEmail').value = '';
-            
-            showToast(`${name} added to the directory!`, 'success');
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
