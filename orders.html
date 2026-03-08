@@ -15,12 +15,20 @@
         .light .glass-card { background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
         .glass-card:hover { transform: translateY(-2px); }
         
+        /* Modal Animation */
+        .modal-enter { animation: modalIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        #toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
+        
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #334155; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen flex">
+
+    <div id="toast-container"></div>
 
     <aside class="w-72 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden lg:flex flex-col h-screen sticky top-0 z-50">
         <div class="p-8">
@@ -46,9 +54,9 @@
         </nav>
         <div class="p-6 border-t border-slate-100 dark:border-slate-800">
             <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl">
-                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold">M</div>
+                <div id="sideAvatar" class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold overflow-hidden">M</div>
                 <div class="overflow-hidden">
-                    <p class="text-xs font-bold truncate">Marwan</p>
+                    <p id="sideName" class="text-xs font-bold truncate">Marwan</p>
                     <p class="text-[10px] text-slate-500 truncate">Admin Account</p>
                 </div>
             </div>
@@ -111,8 +119,8 @@
                         </tr>
                     </thead>
                     <tbody id="orderTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
-                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer">
-                            <td class="px-8 py-6 font-mono text-blue-500 text-xs font-black tracking-tight">#ORD-7231</td>
+                        <tr onclick="viewOrder('#ORD-7231')" class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer group">
+                            <td class="px-8 py-6 font-mono text-blue-500 text-xs font-black tracking-tight group-hover:underline">#ORD-7231</td>
                             <td class="px-8 py-6">
                                 <div class="flex items-center gap-3">
                                     <div class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-bold text-xs border border-indigo-500/20">JD</div>
@@ -125,11 +133,11 @@
                             <td class="px-8 py-6 font-bold text-sm">$299.00</td>
                             <td class="px-8 py-6 text-slate-400 text-xs italic">Today, 02:45 PM</td>
                             <td class="px-8 py-6 text-right">
-                                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
+                                <button onclick="event.stopPropagation();" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
                             </td>
                         </tr>
-                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer">
-                            <td class="px-8 py-6 font-mono text-blue-500 text-xs font-black tracking-tight">#ORD-7232</td>
+                        <tr onclick="viewOrder('#ORD-7232')" class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer group">
+                            <td class="px-8 py-6 font-mono text-blue-500 text-xs font-black tracking-tight group-hover:underline">#ORD-7232</td>
                             <td class="px-8 py-6">
                                 <div class="flex items-center gap-3">
                                     <div class="w-9 h-9 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center font-bold text-xs border border-orange-500/20">AS</div>
@@ -142,7 +150,7 @@
                             <td class="px-8 py-6 font-bold text-sm">$1,420.50</td>
                             <td class="px-8 py-6 text-slate-400 text-xs italic">Yesterday, 10:20 AM</td>
                             <td class="px-8 py-6 text-right">
-                                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
+                                <button onclick="event.stopPropagation();" class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"><i data-lucide="more-horizontal" class="w-4 h-4"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -151,28 +159,97 @@
         </div>
     </main>
 
-    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 p-4 px-8 flex justify-between items-center z-50">
-        <a href="index.html" class="text-slate-400 p-2"><i data-lucide="layout-grid" class="w-6 h-6"></i></a>
-        <a href="users.html" class="text-slate-400 p-2"><i data-lucide="users" class="w-6 h-6"></i></a>
-        <a href="orders.html" class="text-blue-600 p-2"><i data-lucide="shopping-bag" class="w-6 h-6"></i></a>
-        <a href="settings.html" class="text-slate-400 p-2"><i data-lucide="settings" class="w-6 h-6"></i></a>
+    <div id="orderModal" class="hidden fixed inset-0 bg-slate-950/60 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg rounded-[2.5rem] p-10 shadow-2xl modal-enter border border-slate-200 dark:border-slate-800">
+            <div class="flex justify-between items-start mb-8">
+                <div>
+                    <h3 id="modalOrderID" class="text-2xl font-black font-mono text-blue-500 mb-1">#ORD-0000</h3>
+                    <p class="text-slate-500 text-sm">Order fulfillment details and logistics.</p>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-rose-500 transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            
+            <div class="space-y-6">
+                <div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800">
+                    <span class="text-xs font-bold text-slate-400 uppercase">Fulfillment Status</span>
+                    <select class="bg-transparent text-sm font-bold outline-none text-blue-500">
+                        <option>Processing</option>
+                        <option>Shipped</option>
+                        <option>Completed</option>
+                        <option>Cancelled</option>
+                    </select>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 rounded-2xl bg-slate-50/50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
+                        <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Customer Info</p>
+                        <p id="modalCustomerName" class="text-sm font-bold">Loading...</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-50/50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
+                        <p class="text-[10px] font-black text-slate-400 uppercase mb-1">Total Price</p>
+                        <p id="modalOrderPrice" class="text-sm font-bold text-emerald-500">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-4 mt-10">
+                <button onclick="showToast('Invoice generated!', 'success')" class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-4 rounded-2xl font-bold text-sm hover:opacity-90 transition active:scale-95">Print Invoice</button>
+                <button onclick="closeModal()" class="flex-1 bg-blue-600 text-white py-4 rounded-2xl font-bold text-sm shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition active:scale-95">Update Status</button>
+            </div>
+        </div>
     </div>
 
     <script>
         lucide.createIcons();
 
-        // Theme Sync
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.classList.add(savedTheme);
+        // 1. Initial Sync
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.className = savedTheme;
 
-        // Search Filter for Orders
+            const currentName = localStorage.getItem('userName') || 'Marwan';
+            const currentAvatar = localStorage.getItem('userAvatar');
+            document.getElementById('sideName').textContent = currentName;
+            if(currentAvatar) {
+                document.getElementById('sideAvatar').innerHTML = `<img src="${currentAvatar}" class="w-full h-full object-cover">`;
+            }
+        });
+
+        // 2. Toast System
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `flex items-center p-4 rounded-2xl shadow-2xl text-white bg-blue-600 backdrop-blur-md border border-white/10 animate-bounce`;
+            toast.innerHTML = `<i data-lucide="check" class="w-4 h-4 mr-2"></i><span class="text-xs font-bold">${message}</span>`;
+            container.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // 3. Modal Logic
+        function viewOrder(id) {
+            const row = Array.from(document.querySelectorAll('#orderTableBody tr')).find(r => r.innerText.includes(id));
+            const name = row.querySelector('.text-sm.font-bold').innerText;
+            const price = row.querySelector('.font-bold.text-sm').innerText;
+
+            document.getElementById('modalOrderID').innerText = id;
+            document.getElementById('modalCustomerName').innerText = name;
+            document.getElementById('modalOrderPrice').innerText = price;
+            
+            document.getElementById('orderModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').classList.add('hidden');
+        }
+
+        // 4. Search Filter
         document.getElementById('orderSearch').addEventListener('keyup', function(e) {
             const term = e.target.value.toLowerCase();
             const rows = document.querySelectorAll('#orderTableBody tr');
             rows.forEach(row => {
-                const orderID = row.querySelector('.font-mono').textContent.toLowerCase();
-                const customer = row.querySelector('.font-bold').textContent.toLowerCase();
-                row.style.display = (orderID.includes(term) || customer.includes(term)) ? "" : "none";
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(term) ? "" : "none";
             });
         });
     </script>
