@@ -6,6 +6,7 @@
     <title>Dashboard | EliteDash Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>tailwind.config = { darkMode: 'class' }</script>
     <style>
@@ -19,11 +20,8 @@
         .light .glass-card { background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
         .glass-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
         
-        /* تحسين مظهر شريط التمرير */
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen flex">
@@ -54,9 +52,9 @@
 
         <div class="p-6 border-t border-slate-100 dark:border-slate-800">
             <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl">
-                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold shadow-inner">M</div>
+                <div id="sideAvatar" class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold overflow-hidden shadow-inner">M</div>
                 <div class="overflow-hidden">
-                    <p class="text-xs font-bold truncate">Marwan</p>
+                    <p id="sideName" class="text-xs font-bold truncate">Marwan</p>
                     <p class="text-[10px] text-slate-500 truncate">marwan@elite.com</p>
                 </div>
             </div>
@@ -66,8 +64,8 @@
     <main class="flex-1 p-6 lg:p-12 pb-24 lg:pb-12 overflow-x-hidden">
         <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
             <div>
-                <h2 class="text-3xl font-bold tracking-tight">Analytics Overview</h2>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Welcome back, Marwan. Here is what's happening today.</p>
+                <h2 id="welcomeText" class="text-3xl font-bold tracking-tight">Analytics Overview</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 font-medium">Welcome back, Marwan. Here is your business data.</p>
             </div>
             
             <div class="flex items-center gap-3">
@@ -91,7 +89,6 @@
                 <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Total Revenue</p>
                 <h3 class="text-4xl font-bold mt-2">$45,231.89</h3>
             </div>
-
             <div class="glass-card p-8 border-t-4 border-t-purple-500">
                 <div class="flex justify-between items-center mb-6">
                     <div class="p-3 bg-purple-500/10 text-purple-600 rounded-2xl"><i data-lucide="users"></i></div>
@@ -100,7 +97,6 @@
                 <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Active Users</p>
                 <h3 class="text-4xl font-bold mt-2">2,405</h3>
             </div>
-
             <div class="glass-card p-8 border-t-4 border-t-orange-500 md:col-span-2 xl:col-span-1">
                 <div class="flex justify-between items-center mb-6">
                     <div class="p-3 bg-orange-500/10 text-orange-600 rounded-2xl"><i data-lucide="activity"></i></div>
@@ -115,7 +111,7 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
                 <div>
                     <h4 class="font-bold text-xl">Revenue Growth</h4>
-                    <p class="text-xs text-slate-500">Comparison of sales across the last 7 days.</p>
+                    <p class="text-xs text-slate-500">Interactive sales data for the last 7 days.</p>
                 </div>
                 <div class="flex p-1.5 bg-slate-100 dark:bg-slate-800 rounded-2xl">
                     <button class="px-6 py-2 bg-white dark:bg-slate-700 shadow-sm rounded-xl text-xs font-bold transition-all">Weekly</button>
@@ -123,37 +119,8 @@
                 </div>
             </div>
             
-            <div class="h-80 flex items-end justify-between gap-3 md:gap-6 pt-10 border-b border-slate-100 dark:border-slate-800 pb-2">
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-[10px] px-2 py-1 rounded">4,200</div>
-                    <div class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl transition-all" style="height: 35%"></div>
-                    <span class="mt-4 text-[10px] font-bold text-slate-400">MON</span>
-                </div>
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-[10px] px-2 py-1 rounded">5,800</div>
-                    <div class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl transition-all" style="height: 50%"></div>
-                    <span class="mt-4 text-[10px] font-bold text-slate-400">TUE</span>
-                </div>
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-[10px] px-2 py-1 rounded">4,900</div>
-                    <div class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl transition-all" style="height: 40%"></div>
-                    <span class="mt-4 text-[10px] font-bold text-slate-400">WED</span>
-                </div>
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-[10px] px-2 py-1 rounded">7,100</div>
-                    <div class="bg-blue-600 w-full rounded-t-2xl shadow-xl shadow-blue-500/20" style="height: 65%"></div>
-                    <span class="mt-4 text-[10px] font-bold text-slate-400">THU</span>
-                </div>
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-[10px] px-2 py-1 rounded">8,200</div>
-                    <div class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl transition-all" style="height: 75%"></div>
-                    <span class="mt-4 text-[10px] font-bold text-slate-400">FRI</span>
-                </div>
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="absolute -top-10 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-800 text-white text-[10px] px-2 py-1 rounded">12,500</div>
-                    <div class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl transition-all" style="height: 95%"></div>
-                    <span class="mt-4 text-[10px] font-bold text-slate-400">SAT</span>
-                </div>
+            <div class="h-80 w-full">
+                <canvas id="revenueChart"></canvas>
             </div>
         </div>
     </main>
@@ -168,17 +135,93 @@
     <script>
         lucide.createIcons();
 
-        // نظام تبديل الثيم
+        // 1. نظام تبديل الثيم والمزامنة مع LocalStorage
         const themeBtn = document.getElementById('themeToggle');
         themeBtn.addEventListener('click', () => {
             document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+            // إعادة رسم الشارت لتغيير ألوان الشبكة عند تغيير الثيم
+            window.location.reload(); 
         });
 
-        // تهيئة الثيم المحفوظ
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
         }
+
+        // 2. جلب اسم المستخدم وصورته
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentName = localStorage.getItem('userName') || 'Marwan';
+            const currentAvatar = localStorage.getItem('userAvatar');
+            
+            document.getElementById('sideName').textContent = currentName;
+            document.getElementById('welcomeText').textContent = `Welcome, ${currentName}!`;
+            
+            if(currentAvatar) {
+                document.getElementById('sideAvatar').innerHTML = `<img src="${currentAvatar}" class="w-full h-full object-cover">`;
+            }
+
+            // 3. إعداد الرسم البياني Chart.js
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            const isDark = document.documentElement.classList.contains('dark');
+
+            // إنشاء تدرج لوني تحت الخط
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(37, 99, 235, 0.2)');
+            gradient.addColorStop(1, 'rgba(37, 99, 235, 0)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+                    datasets: [{
+                        label: 'Revenue ($)',
+                        data: [4200, 5800, 4900, 7100, 8200, 12500, 10000],
+                        borderColor: '#2563eb',
+                        borderWidth: 4,
+                        tension: 0.4, 
+                        fill: true,
+                        backgroundColor: gradient,
+                        pointRadius: 5,
+                        pointHoverRadius: 8,
+                        pointBackgroundColor: '#2563eb',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 11, weight: '600' }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 11, weight: '600' }
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index',
+                    }
+                }
+            });
+        });
     </script>
 </body>
 </html>
