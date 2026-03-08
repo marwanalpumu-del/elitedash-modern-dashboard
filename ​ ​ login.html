@@ -6,16 +6,28 @@
     <title>Login | EliteDash Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script>tailwind.config = { darkMode: 'class' }</script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; overflow: hidden; }
+        /* الخطوط الذكية */
+        html[lang="ar"] body { font-family: 'Cairo', sans-serif; }
+        html[lang="en"] body { font-family: 'Inter', sans-serif; }
+
+        body { background-color: #f8fafc; transition: all 0.5s ease; overflow: hidden; }
+        .dark body { background-color: #0f172a; }
+
         .glass-effect {
-            background: rgba(30, 41, 59, 0.4);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+        .dark .glass-effect {
+            background: rgba(30, 41, 59, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
+
         .blob {
             position: absolute; width: 500px; height: 500px;
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.1) 100%);
@@ -26,54 +38,53 @@
             from { transform: translate(-10%, -10%) rotate(0deg); }
             to { transform: translate(20%, 20%) rotate(360deg); }
         }
-        /* Pulse for loading state */
-        .loading-pulse { animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4 dark:text-white">
+
+    <div class="fixed top-6 right-6 flex gap-3 z-50">
+        <button onclick="toggleTheme()" class="glass-effect p-3 rounded-2xl hover:scale-110 transition-all text-slate-600 dark:text-yellow-400">
+            <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+            <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-blue-600"></i>
+        </button>
+        <button onclick="switchLang()" class="glass-effect px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all dark:text-white">
+            EN / AR
+        </button>
+    </div>
 
     <div class="blob" style="top: -100px; left: -100px;"></div>
     <div class="blob" style="bottom: -150px; right: -100px; animation-duration: 30s; background: rgba(59, 130, 246, 0.15);"></div>
 
     <div class="glass-effect w-full max-w-[440px] p-10 md:p-12 rounded-[2.5rem] z-10 relative">
         <div class="text-center mb-12">
-            <h1 class="text-4xl font-black text-white tracking-tighter mb-3 uppercase italic">
+            <h1 class="text-4xl font-black text-slate-900 dark:text-white tracking-tighter mb-3 uppercase italic">
                 Elite<span class="text-blue-500 not-italic">Dash</span>
             </h1>
-            <p id="welcomeMessage" class="text-slate-400 text-sm font-medium tracking-wide">
+            <p id="welcomeMessage" data-i18n="welcome" class="text-slate-500 dark:text-slate-400 text-sm font-medium tracking-wide">
                 Welcome back! Please enter your details.
             </p>
         </div>
 
         <form id="loginForm" class="space-y-6">
             <div class="space-y-2">
-                <label class="block text-slate-300 text-[10px] font-bold uppercase tracking-[0.2em] ml-1">Email Address</label>
+                <label class="block text-slate-500 dark:text-slate-300 text-[10px] font-bold uppercase tracking-[0.2em] ml-1">Identity (Name)</label>
                 <div class="relative group">
-                    <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
-                    <input type="email" id="emailInput" required placeholder="name@company.com" 
-                        class="w-full bg-slate-900/60 border border-slate-700/50 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/50 transition-all duration-300">
+                    <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
+                    <input type="text" id="userInput" required placeholder="Marwan" 
+                        class="w-full bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/50 rounded-2xl py-4 pl-12 pr-4 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all duration-300">
                 </div>
             </div>
 
             <div class="space-y-2">
-                <label class="block text-slate-300 text-[10px] font-bold uppercase tracking-[0.2em] ml-1">Password</label>
+                <label class="block text-slate-500 dark:text-slate-300 text-[10px] font-bold uppercase tracking-[0.2em] ml-1">Access Key</label>
                 <div class="relative group">
-                    <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
+                    <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
                     <input type="password" id="passwordInput" required placeholder="••••••••" 
-                        class="w-full bg-slate-900/60 border border-slate-700/50 rounded-2xl py-4 pl-12 pr-12 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/50 transition-all duration-300">
-                    <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
+                        class="w-full bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700/50 rounded-2xl py-4 pl-12 pr-12 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/40 transition-all duration-300">
+                    <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-500 transition-colors">
                         <i id="eyeIcon" data-lucide="eye" class="w-5 h-5"></i>
                     </button>
                 </div>
-            </div>
-
-            <div class="flex items-center justify-between text-xs font-semibold">
-                <label class="flex items-center text-slate-400 cursor-pointer hover:text-slate-300 transition">
-                    <input type="checkbox" id="rememberMe" class="mr-2 w-4 h-4 rounded border-slate-700 bg-slate-900 text-blue-600 focus:ring-0"> 
-                    Remember me
-                </label>
-                <a href="#" class="text-blue-500 hover:text-blue-400 transition-colors">Forgot password?</a>
             </div>
 
             <button type="submit" id="loginBtn"
@@ -82,33 +93,11 @@
                 <i id="btnIcon" data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
             </button>
         </form>
-
-        <div class="mt-10 pt-8 border-t border-white/5 text-center">
-            <p class="text-slate-500 text-xs font-medium">
-                Don't have an account? <a href="#" class="text-blue-500 hover:text-blue-400 font-bold ml-1 transition-colors">Create account</a>
-            </p>
-        </div>
     </div>
 
+    <script src="app.js"></script>
     <script>
-        lucide.createIcons();
-
-        // التفاعل مع البيانات المحفوظة
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedName = localStorage.getItem('userName');
-            const savedEmail = localStorage.getItem('userEmail');
-            const emailField = document.getElementById('emailInput');
-            const welcomeMsg = document.getElementById('welcomeMessage');
-
-            if (savedEmail) emailField.value = savedEmail;
-            if (savedName && savedName !== 'Marwan') {
-                welcomeMsg.innerText = `Welcome back, ${savedName}!`;
-            } else {
-                welcomeMsg.innerText = "Welcome back, Marwan!";
-            }
-        });
-
-        // إظهار/إخفاء كلمة المرور
+        // إظهار وإخفاء كلمة المرور
         function togglePassword() {
             const passInput = document.getElementById('passwordInput');
             const eyeIcon = document.getElementById('eyeIcon');
@@ -122,26 +111,18 @@
             lucide.createIcons();
         }
 
-        // معالجة تسجيل الدخول
+        // معالجة تسجيل الدخول وربطه بـ app.js
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const btn = document.getElementById('loginBtn');
+            const nameInput = document.getElementById('userInput').value;
+            localStorage.setItem('userName', nameInput);
+            
             const btnText = document.getElementById('btnText');
-            const btnIcon = document.getElementById('btnIcon');
-            const email = document.getElementById('emailInput').value;
-            const remember = document.getElementById('rememberMe').checked;
-
-            // حفظ الإيميل إذا اختار "تذكرني"
-            if (remember) localStorage.setItem('userEmail', email);
-
-            // أنيميشن التحميل
-            btnText.innerText = "Authenticating...";
-            btn.classList.add('loading-pulse', 'cursor-wait');
-            btnIcon.style.display = 'none';
-
+            btnText.innerText = (localStorage.getItem('appLang') === 'ar') ? "...جاري الدخول" : "Authenticating...";
+            
             setTimeout(() => {
                 window.location.href = 'index.html';
-            }, 1200);
+            }, 800);
         });
     </script>
 </body>
