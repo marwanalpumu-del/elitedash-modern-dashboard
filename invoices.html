@@ -13,14 +13,22 @@
         .glass-card { backdrop-filter: blur(12px); border-radius: 24px; transition: all 0.3s ease; }
         .dark .glass-card { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); }
         .light .glass-card { background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
-        .chart-bar { transition: height 1s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s; }
         
+        /* Chart Animation */
+        .chart-bar { transition: height 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); height: 0; }
+        
+        #toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
+        .toast { animation: slideIn 0.4s ease forwards; min-width: 280px; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #334155; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen flex">
+
+    <div id="toast-container"></div>
 
     <aside class="w-72 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden lg:flex flex-col h-screen sticky top-0 z-50">
         <div class="p-8">
@@ -37,7 +45,7 @@
             <a href="orders.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
                 <i data-lucide="shopping-bag" class="mr-3 w-5 h-5"></i> Orders
             </a>
-            <a href="invoices.html" class="flex items-center p-4 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-500/20 font-semibold text-sm">
+            <a href="invoices.html" class="flex items-center p-4 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-600/20 font-semibold text-sm">
                 <i data-lucide="file-text" class="mr-3 w-5 h-5"></i> Invoices
             </a>
             <a href="settings.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
@@ -46,9 +54,9 @@
         </nav>
         <div class="p-6 border-t border-slate-100 dark:border-slate-800">
             <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl">
-                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold">M</div>
+                <div id="sideAvatar" class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold overflow-hidden shadow-inner">M</div>
                 <div class="overflow-hidden">
-                    <p class="text-xs font-bold truncate">Marwan</p>
+                    <p id="sideName" class="text-xs font-bold truncate">Marwan</p>
                     <p class="text-[10px] text-slate-500 truncate">Financial Manager</p>
                 </div>
             </div>
@@ -67,46 +75,60 @@
                     <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
                     <input type="text" id="invoiceSearch" placeholder="Search invoices..." class="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl py-3 pl-12 pr-6 text-sm w-full md:w-64 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
                 </div>
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl flex items-center shadow-lg shadow-blue-500/20 transition-all active:scale-95 font-bold text-sm">
+                <button onclick="showToast('Invoice generator coming soon!', 'info')" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl flex items-center shadow-lg shadow-blue-500/20 transition-all active:scale-95 font-bold text-sm">
                     <i data-lucide="plus" class="mr-2 w-4 h-4"></i> Create Invoice
                 </button>
             </div>
         </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="glass-card p-6 border-l-4 border-l-emerald-500">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Revenue</p>
+                <h4 class="text-2xl font-bold">$42,850.00</h4>
+                <p class="text-emerald-500 text-[10px] font-bold mt-2 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> +12% from last month</p>
+            </div>
+            <div class="glass-card p-6 border-l-4 border-l-blue-500">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Pending Invoices</p>
+                <h4 class="text-2xl font-bold">$8,240.00</h4>
+                <p class="text-blue-500 text-[10px] font-bold mt-2">7 invoices awaiting payment</p>
+            </div>
+            <div class="glass-card p-6 border-l-4 border-l-rose-500">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Overdue Balance</p>
+                <h4 class="text-2xl font-bold">$1,150.00</h4>
+                <p class="text-rose-500 text-[10px] font-bold mt-2 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3"></i> 2 clients need attention</p>
+            </div>
+        </div>
 
         <div class="glass-card p-10 mb-12 border-t-4 border-t-blue-500">
             <div class="flex justify-between items-center mb-10">
                 <h3 class="text-xl font-bold flex items-center gap-2"><i data-lucide="bar-chart-3" class="text-blue-500"></i> Revenue Growth</h3>
                 <div class="flex items-center gap-3">
                     <span class="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest"><span class="w-3 h-3 bg-blue-600 rounded-full"></span> This Year</span>
-                    <select class="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-[10px] font-bold p-2 outline-none">
-                        <option>Last 6 Months</option>
-                        <option>Last 12 Months</option>
-                    </select>
                 </div>
             </div>
             <div class="h-64 flex items-end justify-between gap-4 md:gap-8 px-2 border-b border-slate-100 dark:border-slate-800 pb-2">
                 <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" style="height: 40%"></div>
+                    <div id="bar-1" class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" data-height="40%"></div>
                     <span class="mt-4 text-[10px] font-black text-slate-400">JAN</span>
                 </div>
                 <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" style="height: 60%"></div>
+                    <div id="bar-2" class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" data-height="60%"></div>
                     <span class="mt-4 text-[10px] font-black text-slate-400">FEB</span>
                 </div>
                 <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" style="height: 35%"></div>
+                    <div id="bar-3" class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" data-height="35%"></div>
                     <span class="mt-4 text-[10px] font-black text-slate-400">MAR</span>
                 </div>
                 <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="bg-blue-600 w-full rounded-t-2xl chart-bar shadow-xl shadow-blue-500/20" style="height: 85%"></div>
+                    <div id="bar-4" class="bg-blue-600 w-full rounded-t-2xl chart-bar shadow-xl shadow-blue-500/20" data-height="85%"></div>
                     <span class="mt-4 text-[10px] font-black text-blue-500">APR</span>
                 </div>
                 <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" style="height: 50%"></div>
+                    <div id="bar-5" class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" data-height="50%"></div>
                     <span class="mt-4 text-[10px] font-black text-slate-400">MAY</span>
                 </div>
                 <div class="group relative flex-1 flex flex-col items-center">
-                    <div class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" style="height: 75%"></div>
+                    <div id="bar-6" class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" data-height="75%"></div>
                     <span class="mt-4 text-[10px] font-black text-slate-400">JUN</span>
                 </div>
             </div>
@@ -129,9 +151,9 @@
                         </tr>
                     </thead>
                     <tbody id="invoiceTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
-                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer">
+                        <tr onclick="previewInvoice('INV-2026-001')" class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer group">
                             <td class="px-8 py-6">
-                                <span class="text-sm font-bold block">INV-2026-001</span>
+                                <span class="text-sm font-bold block group-hover:text-blue-500 transition-colors">INV-2026-001</span>
                                 <span class="text-[10px] text-slate-400 italic font-medium">Issued: Mar 01, 2026</span>
                             </td>
                             <td class="px-8 py-6">
@@ -142,12 +164,12 @@
                                 <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-full text-[10px] font-black uppercase">PAID</span>
                             </td>
                             <td class="px-8 py-6 text-right">
-                                <button class="p-2 text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="download-cloud" class="w-5 h-5"></i></button>
+                                <button onclick="event.stopPropagation(); showToast('Downloading INV-2026-001...', 'success')" class="p-2 text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="download-cloud" class="w-5 h-5"></i></button>
                             </td>
                         </tr>
-                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer">
+                        <tr onclick="previewInvoice('INV-2026-002')" class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer group">
                             <td class="px-8 py-6">
-                                <span class="text-sm font-bold block">INV-2026-002</span>
+                                <span class="text-sm font-bold block group-hover:text-blue-500 transition-colors">INV-2026-002</span>
                                 <span class="text-[10px] text-slate-400 italic font-medium">Issued: Mar 05, 2026</span>
                             </td>
                             <td class="px-8 py-6">
@@ -158,7 +180,7 @@
                                 <span class="px-3 py-1 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-full text-[10px] font-black uppercase">OVERDUE</span>
                             </td>
                             <td class="px-8 py-6 text-right">
-                                <button class="p-2 text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="download-cloud" class="w-5 h-5"></i></button>
+                                <button onclick="event.stopPropagation(); showToast('Downloading INV-2026-002...', 'success')" class="p-2 text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="download-cloud" class="w-5 h-5"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -167,29 +189,62 @@
         </div>
     </main>
 
-    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 p-4 px-8 flex justify-between items-center z-50">
-        <a href="index.html" class="text-slate-400 p-2"><i data-lucide="layout-grid" class="w-6 h-6"></i></a>
-        <a href="users.html" class="text-slate-400 p-2"><i data-lucide="users" class="w-6 h-6"></i></a>
-        <a href="orders.html" class="text-slate-400 p-2"><i data-lucide="shopping-bag" class="w-6 h-6"></i></a>
-        <a href="invoices.html" class="text-blue-600 p-2"><i data-lucide="file-text" class="w-6 h-6"></i></a>
-        <a href="settings.html" class="text-slate-400 p-2"><i data-lucide="settings" class="w-6 h-6"></i></a>
-    </div>
-
     <script>
         lucide.createIcons();
 
-        // Theme Sync
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.classList.add(savedTheme);
+        // 1. Theme & Profile Sync
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.className = savedTheme;
 
-        // Live Search for Invoices
+            const currentName = localStorage.getItem('userName') || 'Marwan';
+            const currentAvatar = localStorage.getItem('userAvatar');
+            document.getElementById('sideName').textContent = currentName;
+            if(currentAvatar) {
+                document.getElementById('sideAvatar').innerHTML = `<img src="${currentAvatar}" class="w-full h-full object-cover">`;
+            }
+
+            // 2. Animate Chart Bars on Load
+            setTimeout(() => {
+                const bars = document.querySelectorAll('.chart-bar');
+                bars.forEach(bar => {
+                    bar.style.height = bar.getAttribute('data-height');
+                });
+            }, 300);
+        });
+
+        // 3. Toast Notification
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const types = {
+                success: { bg: 'bg-emerald-500', icon: 'check-circle' },
+                info: { bg: 'bg-blue-500', icon: 'info' }
+            };
+            const config = types[type] || types.success;
+
+            toast.className = `toast flex items-center p-4 rounded-2xl shadow-2xl text-white ${config.bg} backdrop-blur-md border border-white/10`;
+            toast.innerHTML = `<i data-lucide="${config.icon}" class="w-5 h-5 mr-3"></i><span class="text-xs font-bold">${message}</span>`;
+            
+            container.appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        function previewInvoice(id) {
+            showToast(`Opening preview for ${id}`, 'info');
+        }
+
+        // 4. Live Search
         document.getElementById('invoiceSearch').addEventListener('keyup', function(e) {
             const term = e.target.value.toLowerCase();
             const rows = document.querySelectorAll('#invoiceTableBody tr');
             rows.forEach(row => {
-                const ref = row.querySelector('.text-sm.font-bold').textContent.toLowerCase();
-                const client = row.querySelector('.text-sm.font-semibold').textContent.toLowerCase();
-                row.style.display = (ref.includes(term) || client.includes(term)) ? "" : "none";
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(term) ? "" : "none";
             });
         });
     </script>
