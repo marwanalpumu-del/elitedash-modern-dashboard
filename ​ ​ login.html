@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,32 +9,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script>tailwind.config = { darkMode: 'class' }</script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            overflow: hidden;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; overflow: hidden; }
         .glass-effect {
             background: rgba(30, 41, 59, 0.4);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        /* أنيميشن للخلفية لجعل الصفحة حية */
         .blob {
-            position: absolute;
-            width: 500px;
-            height: 500px;
+            position: absolute; width: 500px; height: 500px;
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(147, 51, 234, 0.1) 100%);
-            filter: blur(80px);
-            border-radius: 50%;
-            z-index: 0;
+            filter: blur(80px); border-radius: 50%; z-index: 0;
             animation: move 20s infinite alternate;
         }
         @keyframes move {
             from { transform: translate(-10%, -10%) rotate(0deg); }
             to { transform: translate(20%, 20%) rotate(360deg); }
         }
+        /* Pulse for loading state */
+        .loading-pulse { animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
@@ -44,15 +38,15 @@
 
     <div class="glass-effect w-full max-w-[440px] p-10 md:p-12 rounded-[2.5rem] z-10 relative">
         <div class="text-center mb-12">
-            <h1 class="text-4xl font-black text-white tracking-tighter mb-3 uppercase">
-                Elite<span class="text-blue-500">Dash</span>
+            <h1 class="text-4xl font-black text-white tracking-tighter mb-3 uppercase italic">
+                Elite<span class="text-blue-500 not-italic">Dash</span>
             </h1>
             <p id="welcomeMessage" class="text-slate-400 text-sm font-medium tracking-wide">
                 Welcome back! Please enter your details.
             </p>
         </div>
 
-        <form action="index.html" id="loginForm" class="space-y-6">
+        <form id="loginForm" class="space-y-6">
             <div class="space-y-2">
                 <label class="block text-slate-300 text-[10px] font-bold uppercase tracking-[0.2em] ml-1">Email Address</label>
                 <div class="relative group">
@@ -66,14 +60,17 @@
                 <label class="block text-slate-300 text-[10px] font-bold uppercase tracking-[0.2em] ml-1">Password</label>
                 <div class="relative group">
                     <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-blue-500 transition-colors"></i>
-                    <input type="password" required placeholder="••••••••" 
-                        class="w-full bg-slate-900/60 border border-slate-700/50 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/50 transition-all duration-300">
+                    <input type="password" id="passwordInput" required placeholder="••••••••" 
+                        class="w-full bg-slate-900/60 border border-slate-700/50 rounded-2xl py-4 pl-12 pr-12 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/50 transition-all duration-300">
+                    <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
+                        <i id="eyeIcon" data-lucide="eye" class="w-5 h-5"></i>
+                    </button>
                 </div>
             </div>
 
             <div class="flex items-center justify-between text-xs font-semibold">
                 <label class="flex items-center text-slate-400 cursor-pointer hover:text-slate-300 transition">
-                    <input type="checkbox" class="mr-2 w-4 h-4 rounded border-slate-700 bg-slate-900 text-blue-600 focus:ring-0"> 
+                    <input type="checkbox" id="rememberMe" class="mr-2 w-4 h-4 rounded border-slate-700 bg-slate-900 text-blue-600 focus:ring-0"> 
                     Remember me
                 </label>
                 <a href="#" class="text-blue-500 hover:text-blue-400 transition-colors">Forgot password?</a>
@@ -82,7 +79,7 @@
             <button type="submit" id="loginBtn"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-xl shadow-blue-600/20 transition-all duration-300 transform hover:-translate-y-1 active:scale-95 flex items-center justify-center group">
                 <span id="btnText">Sign In</span>
-                <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                <i id="btnIcon" data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
             </button>
         </form>
 
@@ -104,21 +101,47 @@
             const welcomeMsg = document.getElementById('welcomeMessage');
 
             if (savedEmail) emailField.value = savedEmail;
-            if (savedName) welcomeMsg.innerText = `Welcome back, ${savedName}!`;
-            
-            // التأكد من أن الثيم الافتراضي هو Dark في صفحة الدخول
-            localStorage.setItem('theme', 'dark');
-            document.documentElement.classList.add('dark');
+            if (savedName && savedName !== 'Marwan') {
+                welcomeMsg.innerText = `Welcome back, ${savedName}!`;
+            } else {
+                welcomeMsg.innerText = "Welcome back, Marwan!";
+            }
         });
 
-        // أنيميشن زر تسجيل الدخول
+        // إظهار/إخفاء كلمة المرور
+        function togglePassword() {
+            const passInput = document.getElementById('passwordInput');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (passInput.type === "password") {
+                passInput.type = "text";
+                eyeIcon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                passInput.type = "password";
+                eyeIcon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+
+        // معالجة تسجيل الدخول
         document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             const btn = document.getElementById('loginBtn');
             const btnText = document.getElementById('btnText');
-            
-            btnText.innerText = "Verifying Identity...";
-            btn.classList.add('opacity-80', 'cursor-wait');
-            // التوجيه سيتم تلقائياً لـ index.html
+            const btnIcon = document.getElementById('btnIcon');
+            const email = document.getElementById('emailInput').value;
+            const remember = document.getElementById('rememberMe').checked;
+
+            // حفظ الإيميل إذا اختار "تذكرني"
+            if (remember) localStorage.setItem('userEmail', email);
+
+            // أنيميشن التحميل
+            btnText.innerText = "Authenticating...";
+            btn.classList.add('loading-pulse', 'cursor-wait');
+            btnIcon.style.display = 'none';
+
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1200);
         });
     </script>
 </body>
