@@ -3,174 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings | EliteDash</title>
-    
+    <title>Account Settings | EliteDash Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = { darkMode: 'class' }
-    </script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>tailwind.config = { darkMode: 'class' }</script>
     <style>
-        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
-        .glass-card { backdrop-filter: blur(12px); transition: all 0.3s ease; }
-        .dark .glass-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .light .glass-card { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(0, 0, 0, 0.05); }
-        .tab-active { color: #3b82f6; border-bottom: 2px solid #3b82f6; }
+        body { font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
+        .glass-card { backdrop-filter: blur(12px); border-radius: 24px; transition: all 0.3s ease; }
+        .dark .glass-card { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .light .glass-card { background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        .tab-active { color: #3b82f6 !important; position: relative; }
+        .tab-active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #3b82f6; border-radius: 10px; }
         
-        @media (max-width: 768px) {
-            main { padding-bottom: 90px; }
-        }
+        /* Custom UI Switch */
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px; }
+        .dark .slider { background-color: #334155; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #3b82f6; }
+        input:checked + .slider:before { transform: translateX(20px); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen">
+<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen flex">
 
-    <div class="flex">
-        <aside class="w-64 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden md:flex flex-col h-screen sticky top-0">
-            <div class="p-6">
-                <h1 class="text-2xl font-bold text-blue-500 tracking-tighter uppercase">Elite<span class="text-slate-900 dark:text-white">Dash</span></h1>
-            </div>
-            <nav class="flex-1 px-4 space-y-2">
-                <a href="index.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="layout-dashboard" class="mr-3 w-5 h-5"></i> Overview</a>
-                <a href="users.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="users" class="mr-3 w-5 h-5"></i> Users</a>
-                <a href="orders.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="shopping-bag" class="mr-3 w-5 h-5"></i> Orders</a>
-                <a href="invoices.html" class="flex items-center p-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all"><i data-lucide="file-text" class="mr-3 w-5 h-5"></i> Invoices</a>
-                <a href="settings.html" class="flex items-center p-3 bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-500/20"><i data-lucide="settings" class="mr-3 w-5 h-5"></i> Settings</a>
-            </nav>
-        </aside>
-
-        <main class="flex-1 p-6 md:p-10 max-w-5xl mx-auto">
-            <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
-                <div>
-                    <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Account Settings</h2>
-                    <p class="text-slate-500 dark:text-slate-400 text-xs md:sm">Manage your profile, security and preferences.</p>
+    <aside class="w-72 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden lg:flex flex-col h-screen sticky top-0 z-50">
+        <div class="p-8">
+            <h1 class="text-2xl font-black text-blue-600 tracking-tighter uppercase">Elite<span class="text-slate-900 dark:text-white">Dash</span></h1>
+        </div>
+        <nav class="flex-1 px-6 space-y-2">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 ml-3">Preferences</p>
+            <a href="index.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
+                <i data-lucide="layout-grid" class="mr-3 w-5 h-5"></i> Dashboard
+            </a>
+            <a href="users.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
+                <i data-lucide="users" class="mr-3 w-5 h-5"></i> User Directory
+            </a>
+            <a href="orders.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
+                <i data-lucide="shopping-bag" class="mr-3 w-5 h-5"></i> Orders
+            </a>
+            <a href="invoices.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
+                <i data-lucide="file-text" class="mr-3 w-5 h-5"></i> Invoices
+            </a>
+            <a href="settings.html" class="flex items-center p-4 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-600/20 font-semibold text-sm">
+                <i data-lucide="settings" class="mr-3 w-5 h-5"></i> Settings
+            </a>
+        </nav>
+        <div class="p-6 border-t border-slate-100 dark:border-slate-800">
+            <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl">
+                <div id="sideAvatar" class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold overflow-hidden">
+                    <span id="sideInitial">M</span>
                 </div>
-                
-                <div class="relative w-full md:w-72">
-                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                    <input type="text" placeholder="Search settings..." class="w-full bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl py-2.5 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                </div>
-            </header>
-
-            <div class="glass-card rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800">
-                <div class="flex border-b border-slate-200 dark:border-slate-800 px-6 bg-white/50 dark:bg-slate-800/20 overflow-x-auto no-scrollbar">
-                    <button onclick="switchTab('profile')" id="btn-profile" class="tab-active py-5 px-6 font-semibold text-sm transition whitespace-nowrap">Profile</button>
-                    <button onclick="switchTab('security')" id="btn-security" class="py-5 px-6 text-slate-400 hover:text-blue-500 font-semibold text-sm transition whitespace-nowrap">Security</button>
-                    <button onclick="switchTab('notifications')" id="btn-notifications" class="py-5 px-6 text-slate-400 hover:text-blue-500 font-semibold text-sm transition whitespace-nowrap">Notifications</button>
-                </div>
-
-                <div id="section-profile" class="p-8 space-y-8">
-                    <div class="flex flex-col md:flex-row md:items-center gap-6">
-                        <img id="profilePreview" src="https://ui-avatars.com/api/?name=Marwan&background=0D8ABC&color=fff" class="w-24 h-24 rounded-3xl border-4 border-white dark:border-slate-700 shadow-xl object-cover">
-                        <div class="flex flex-wrap gap-3">
-                            <button onclick="document.getElementById('fileInput').click()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 active:scale-95 transition">Change Photo</button>
-                            <button onclick="removeAvatar()" class="bg-slate-100 dark:bg-slate-800 text-slate-500 px-5 py-2.5 rounded-xl text-xs font-bold hover:bg-red-500 hover:text-white transition active:scale-95">Remove</button>
-                        </div>
-                        <input type="file" id="fileInput" class="hidden" accept="image/*">
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label class="block text-[10px] font-bold uppercase text-slate-500 tracking-wider">Full Name</label>
-                            <input id="userNameInput" type="text" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-2xl p-3.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="block text-[10px] font-bold uppercase text-slate-500 tracking-wider">Email Address</label>
-                            <input id="userEmailInput" type="email" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-2xl p-3.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 transition">
-                        </div>
-                    </div>
-                </div>
-
-                <div id="section-security" class="hidden p-8 space-y-8">
-                    <div class="space-y-4">
-                        <h4 class="text-sm font-bold text-blue-500 uppercase tracking-widest">Update Password</h4>
-                        <input type="password" placeholder="Current Password" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-700 rounded-2xl p-3.5 text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                        <input type="password" placeholder="New Password" class="w-full bg-slate-50 dark:bg-slate-900/50 border border-slate-700 rounded-2xl p-3.5 text-sm outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-
-                <div class="p-8 border-t border-slate-200 dark:border-slate-800 flex justify-end bg-slate-50/50 dark:bg-slate-800/10">
-                    <button id="saveBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-12 py-3.5 rounded-2xl font-bold shadow-xl shadow-blue-500/20 transition-all active:scale-95 text-sm">Save Changes</button>
+                <div class="overflow-hidden">
+                    <p id="sideName" class="text-xs font-bold truncate">Marwan</p>
+                    <p class="text-[10px] text-slate-500 truncate">System Admin</p>
                 </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </aside>
 
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-[#1e293b]/90 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 px-2 py-3 flex justify-around items-center z-50">
-        <a href="index.html" class="flex flex-col items-center text-slate-400">
-            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-            <span class="text-[8px] mt-1 font-medium">Home</span>
-        </a>
-        <a href="users.html" class="flex flex-col items-center text-slate-400">
-            <i data-lucide="users" class="w-5 h-5"></i>
-            <span class="text-[8px] mt-1 font-medium">Users</span>
-        </a>
-        <a href="orders.html" class="flex flex-col items-center text-slate-400">
-            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-            <span class="text-[8px] mt-1 font-medium">Orders</span>
-        </a>
-        <a href="invoices.html" class="flex flex-col items-center text-slate-400">
-            <i data-lucide="file-text" class="w-5 h-5"></i>
-            <span class="text-[8px] mt-1 font-medium">Bills</span>
-        </a>
-        <a href="settings.html" class="flex flex-col items-center text-blue-600">
-            <i data-lucide="settings" class="w-5 h-5"></i>
-            <span class="text-[8px] mt-1 font-bold">Settings</span>
-        </a>
+    <main class="flex-1 p-6 lg:p-12 pb-24 lg:pb-12 overflow-x-hidden">
+        <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+            <div>
+                <h2 class="text-3xl font-bold tracking-tight">Account Settings</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Customize your workspace and personal info.</p>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button id="saveBtnTop" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-2xl font-bold shadow-lg shadow-blue-500/20 transition-all active:scale-95 text-sm">
+                    Save Changes
+                </button>
+            </div>
+        </header>
+
+        <div class="glass-card overflow-hidden">
+            <div class="flex border-b border-slate-100 dark:border-slate-800 px-8 bg-white/30 dark:bg-slate-800/20 overflow-x-auto no-scrollbar">
+                <button onclick="switchTab('profile')" id="btn-profile" class="tab-active py-6 px-6 font-bold text-sm transition-all whitespace-nowrap text-slate-400">Profile Details</button>
+                <button onclick="switchTab('appearance')" id="btn-appearance" class="py-6 px-6 font-bold text-sm transition-all whitespace-nowrap text-slate-400">Appearance</button>
+                <button onclick="switchTab('security')" id="btn-security" class="py-6 px-6 font-bold text-sm transition-all whitespace-nowrap text-slate-400">Security</button>
+            </div>
+
+            <div id="section-profile" class="p-10 space-y-10">
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-8">
+                    <div class="relative group">
+                        <img id="profilePreview" src="https://ui-avatars.com/api/?name=Marwan&background=2563eb&color=fff" class="w-32 h-32 rounded-[2rem] border-4 border-white dark:border-slate-800 shadow-2xl object-cover transition-transform group-hover:scale-105">
+                        <button onclick="document.getElementById('fileInput').click()" class="absolute -bottom-2 -right-2 bg-blue-600 text-white p-3 rounded-2xl shadow-xl hover:bg-blue-700 transition">
+                            <i data-lucide="camera" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-1">Profile Photo</h4>
+                        <p class="text-slate-400 text-xs mb-4">PNG, JPG or GIF. Max size 2MB.</p>
+                        <div class="flex gap-3">
+                            <button onclick="document.getElementById('fileInput').click()" class="bg-slate-100 dark:bg-slate-800 text-xs font-black px-4 py-2 rounded-xl uppercase">Upload</button>
+                            <button onclick="removeAvatar()" class="text-rose-500 text-xs font-black px-4 py-2 hover:bg-rose-500/10 rounded-xl uppercase">Remove</button>
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" class="hidden" accept="image/*">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-3">
+                        <label class="block text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Display Name</label>
+                        <input id="userNameInput" type="text" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                    </div>
+                    <div class="space-y-3">
+                        <label class="block text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Email Address</label>
+                        <input id="userEmailInput" type="email" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm font-semibold outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+                    </div>
+                </div>
+            </div>
+
+            <div id="section-appearance" class="hidden p-10 space-y-8">
+                <div class="flex items-center justify-between p-6 bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-blue-600/10 p-3 rounded-2xl text-blue-600"><i data-lucide="moon" class="w-6 h-6"></i></div>
+                        <div>
+                            <h5 class="font-bold text-sm">Dark Interface</h5>
+                            <p class="text-xs text-slate-500">Enable high-contrast dark mode for eye comfort.</p>
+                        </div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="section-security" class="hidden p-10 space-y-6">
+                <div class="max-w-md space-y-4">
+                    <h4 class="text-sm font-black text-blue-500 uppercase tracking-widest mb-6">Password Management</h4>
+                    <input type="password" placeholder="Current Password" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-700 rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="password" placeholder="New Password" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-700 rounded-2xl p-4 text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                    <button class="bg-slate-800 text-white dark:bg-white dark:text-slate-900 px-6 py-3 rounded-xl font-bold text-xs">Update Security Keys</button>
+                </div>
+            </div>
+
+            <div class="p-10 border-t border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/10 flex justify-end">
+                <button id="saveBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-12 py-4 rounded-2xl font-bold shadow-xl shadow-blue-500/20 transition-all active:scale-95 text-sm">Save All Changes</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 p-4 px-8 flex justify-between items-center z-50">
+        <a href="index.html" class="text-slate-400 p-2"><i data-lucide="layout-grid" class="w-6 h-6"></i></a>
+        <a href="users.html" class="text-slate-400 p-2"><i data-lucide="users" class="w-6 h-6"></i></a>
+        <a href="orders.html" class="text-slate-400 p-2"><i data-lucide="shopping-bag" class="w-6 h-6"></i></a>
+        <a href="settings.html" class="text-blue-600 p-2"><i data-lucide="settings" class="w-6 h-6"></i></a>
     </div>
 
     <script>
         lucide.createIcons();
 
-        // التبديل بين التبويبات
+        // 1. Tab Switcher Logic
         function switchTab(tabName) {
-            const sections = ['profile', 'security', 'notifications'];
-            sections.forEach(s => {
-                const section = document.getElementById(`section-${s}`);
-                if (section) section.classList.add('hidden');
-                const btn = document.getElementById(`btn-${s}`);
-                if (btn) {
-                    btn.classList.remove('tab-active', 'text-blue-500');
-                    btn.classList.add('text-slate-400');
-                }
+            const tabs = ['profile', 'appearance', 'security'];
+            tabs.forEach(t => {
+                document.getElementById(`section-${t}`).classList.add('hidden');
+                document.getElementById(`btn-${t}`).classList.remove('tab-active');
             });
             document.getElementById(`section-${tabName}`).classList.remove('hidden');
             document.getElementById(`btn-${tabName}`).classList.add('tab-active');
         }
 
-        // الحفظ التلقائي ومزامنة البيانات مع index
-        document.getElementById('saveBtn').addEventListener('click', () => {
-            localStorage.setItem('userName', document.getElementById('userNameInput').value);
-            localStorage.setItem('userEmail', document.getElementById('userEmailInput').value);
-            if(window.tempImage) localStorage.setItem('userAvatar', window.tempImage);
-            alert('Profile Updated Successfully!');
-            window.location.href = 'index.html';
-        });
-
-        // استرجاع البيانات عند التحميل
+        // 2. Initial Data Loading
         document.addEventListener('DOMContentLoaded', () => {
-            // مزامنة الثيم
+            // Theme setup
             const savedTheme = localStorage.getItem('theme') || 'dark';
-            if (savedTheme === 'dark') document.documentElement.classList.add('dark');
-            
-            // مزامنة الاسم والبيانات
-            document.getElementById('userNameInput').value = localStorage.getItem('userName') || 'Marwan';
-            document.getElementById('userEmailInput').value = localStorage.getItem('userEmail') || 'marwan@example.com';
-            const avatar = localStorage.getItem('userAvatar');
-            if(avatar) document.getElementById('profilePreview').src = avatar;
+            document.documentElement.classList.add(savedTheme);
+            document.getElementById('themeToggle').checked = (savedTheme === 'dark');
+
+            // User Info Setup
+            const currentName = localStorage.getItem('userName') || 'Marwan';
+            const currentEmail = localStorage.getItem('userEmail') || 'marwan@example.com';
+            const currentAvatar = localStorage.getItem('userAvatar');
+
+            document.getElementById('userNameInput').value = currentName;
+            document.getElementById('userEmailInput').value = currentEmail;
+            document.getElementById('sideName').textContent = currentName;
+            document.getElementById('sideInitial').textContent = currentName.charAt(0);
+
+            if(currentAvatar) {
+                document.getElementById('profilePreview').src = currentAvatar;
+                document.getElementById('sideAvatar').innerHTML = `<img src="${currentAvatar}" class="w-full h-full object-cover">`;
+            }
         });
 
-        // إدارة الصورة الشخصية
-        const fileInput = document.getElementById('fileInput');
-        fileInput.addEventListener('change', function() {
+        // 3. Theme Toggle Action
+        document.getElementById('themeToggle').addEventListener('change', function(e) {
+            const theme = e.target.checked ? 'dark' : 'light';
+            document.documentElement.classList.remove('dark', 'light');
+            document.documentElement.classList.add(theme);
+            localStorage.setItem('theme', theme);
+        });
+
+        // 4. Avatar Management
+        document.getElementById('fileInput').addEventListener('change', function() {
             const reader = new FileReader();
             reader.onload = (e) => {
                 document.getElementById('profilePreview').src = e.target.result;
-                window.tempImage = e.target.result;
+                window.newAvatar = e.target.result;
             };
             reader.readAsDataURL(this.files[0]);
         });
+
+        function removeAvatar() {
+            const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(document.getElementById('userNameInput').value)}&background=2563eb&color=fff`;
+            document.getElementById('profilePreview').src = defaultAvatar;
+            window.newAvatar = 'removed';
+        }
+
+        // 5. Save Action (Global Sync)
+        function saveData() {
+            const newName = document.getElementById('userNameInput').value;
+            const newEmail = document.getElementById('userEmailInput').value;
+
+            localStorage.setItem('userName', newName);
+            localStorage.setItem('userEmail', newEmail);
+            
+            if(window.newAvatar === 'removed') {
+                localStorage.removeItem('userAvatar');
+            } else if(window.newAvatar) {
+                localStorage.setItem('userAvatar', window.newAvatar);
+            }
+
+            alert('EliteDash Settings Updated!');
+            window.location.reload(); // Refresh to sync Sidebar
+        }
+
+        document.getElementById('saveBtn').addEventListener('click', saveData);
+        document.getElementById('saveBtnTop').addEventListener('click', saveData);
     </script>
 </body>
 </html>
