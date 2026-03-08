@@ -1,252 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoices & Billing | EliteDash Premium</title>
+    <title>Invoice | EliteDash SaaS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
-        .glass-card { backdrop-filter: blur(12px); border-radius: 24px; transition: all 0.3s ease; }
-        .dark .glass-card { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .light .glass-card { background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
-        
-        /* Chart Animation */
-        .chart-bar { transition: height 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); height: 0; }
-        
-        #toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
-        .toast { animation: slideIn 0.4s ease forwards; min-width: 280px; }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+        @media print {
+            body { background: white; color: black; }
+            .no-print { display: none; }
+            .glass-card { border: none; background: white; shadow: none; }
+            .dark { background: white; color: black; }
+        }
+        body { font-family: 'Inter', 'Cairo', sans-serif; background: #0f172a; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen flex">
+<body class="p-4 md:p-12 text-slate-300 min-h-screen">
 
-    <div id="toast-container"></div>
-
-    <aside class="w-72 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden lg:flex flex-col h-screen sticky top-0 z-50">
-        <div class="p-8">
-            <h1 class="text-2xl font-black text-blue-600 tracking-tighter uppercase">Elite<span class="text-slate-900 dark:text-white">Dash</span></h1>
+    <div class="max-w-4xl mx-auto mb-8 flex justify-between items-center no-print">
+        <a href="orders.html" class="flex items-center text-sm font-bold text-slate-500 hover:text-blue-500 transition">
+            <i data-lucide="chevron-left" class="mr-2 ml-2 w-4 h-4"></i> <span data-i18n="back">Back</span>
+        </a>
+        <div class="flex gap-4">
+            <button onclick="switchLang()" class="bg-slate-800 px-4 py-2 rounded-xl text-xs font-bold border border-slate-700">EN / AR</button>
+            <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-bold flex items-center shadow-lg shadow-blue-600/20 transition">
+                <i data-lucide="printer" class="mr-2 ml-2 w-4 h-4"></i> <span data-i18n="print">Print</span>
+            </button>
         </div>
-        <nav class="flex-1 px-6 space-y-2">
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 ml-3">Financials</p>
-            <a href="index.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
-                <i data-lucide="layout-grid" class="mr-3 w-5 h-5"></i> Dashboard
-            </a>
-            <a href="users.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
-                <i data-lucide="users" class="mr-3 w-5 h-5"></i> User Directory
-            </a>
-            <a href="orders.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
-                <i data-lucide="shopping-bag" class="mr-3 w-5 h-5"></i> Orders
-            </a>
-            <a href="invoices.html" class="flex items-center p-4 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-600/20 font-semibold text-sm">
-                <i data-lucide="file-text" class="mr-3 w-5 h-5"></i> Invoices
-            </a>
-            <a href="settings.html" class="flex items-center p-4 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all font-semibold text-sm">
-                <i data-lucide="settings" class="mr-3 w-5 h-5"></i> Settings
-            </a>
-        </nav>
-        <div class="p-6 border-t border-slate-100 dark:border-slate-800">
-            <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl">
-                <div id="sideAvatar" class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white font-bold overflow-hidden shadow-inner">M</div>
-                <div class="overflow-hidden">
-                    <p id="sideName" class="text-xs font-bold truncate">Marwan</p>
-                    <p class="text-[10px] text-slate-500 truncate">Financial Manager</p>
-                </div>
-            </div>
-        </div>
-    </aside>
+    </div>
 
-    <main class="flex-1 p-6 lg:p-12 pb-24 lg:pb-12 overflow-x-hidden">
-        <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+    <div class="max-w-4xl mx-auto bg-slate-800/30 border border-slate-700 p-8 md:p-16 rounded-[3rem] glass-card relative overflow-hidden">
+        
+        <div class="flex flex-col md:flex-row justify-between items-start gap-8 mb-16">
             <div>
-                <h2 class="text-3xl font-bold tracking-tight">Financial Reports</h2>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Review your revenue and manage customer billing.</p>
+                <h1 class="text-4xl font-black text-blue-500 italic mb-2">ELITEDASH</h1>
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Premium Software Solutions</p>
             </div>
-            
-            <div class="flex items-center gap-4">
-                <div class="relative group">
-                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors"></i>
-                    <input type="text" id="invoiceSearch" placeholder="Search invoices..." class="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-2xl py-3 pl-12 pr-6 text-sm w-full md:w-64 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
-                </div>
-                <button onclick="showToast('Invoice generator coming soon!', 'info')" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl flex items-center shadow-lg shadow-blue-500/20 transition-all active:scale-95 font-bold text-sm">
-                    <i data-lucide="plus" class="mr-2 w-4 h-4"></i> Create Invoice
-                </button>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="glass-card p-6 border-l-4 border-l-emerald-500">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Revenue</p>
-                <h4 class="text-2xl font-bold">$42,850.00</h4>
-                <p class="text-emerald-500 text-[10px] font-bold mt-2 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> +12% from last month</p>
-            </div>
-            <div class="glass-card p-6 border-l-4 border-l-blue-500">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Pending Invoices</p>
-                <h4 class="text-2xl font-bold">$8,240.00</h4>
-                <p class="text-blue-500 text-[10px] font-bold mt-2">7 invoices awaiting payment</p>
-            </div>
-            <div class="glass-card p-6 border-l-4 border-l-rose-500">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Overdue Balance</p>
-                <h4 class="text-2xl font-bold">$1,150.00</h4>
-                <p class="text-rose-500 text-[10px] font-bold mt-2 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3"></i> 2 clients need attention</p>
+            <div class="text-right rtl:text-left">
+                <h2 class="text-2xl font-black text-white uppercase mb-1" data-i18n="invoice">Invoice</h2>
+                <p class="text-blue-500 font-mono font-bold">#INV-2026-0812</p>
             </div>
         </div>
 
-        <div class="glass-card p-10 mb-12 border-t-4 border-t-blue-500">
-            <div class="flex justify-between items-center mb-10">
-                <h3 class="text-xl font-bold flex items-center gap-2"><i data-lucide="bar-chart-3" class="text-blue-500"></i> Revenue Growth</h3>
-                <div class="flex items-center gap-3">
-                    <span class="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest"><span class="w-3 h-3 bg-blue-600 rounded-full"></span> This Year</span>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+            <div>
+                <p class="text-[10px] font-black text-slate-500 uppercase mb-3 tracking-widest" data-i18n="billTo">Bill To</p>
+                <h3 class="text-xl font-bold text-white mb-1">Ahmed Mohammed</h3>
+                <p class="text-sm text-slate-400">Riyadh, Saudi Arabia<br>ahmed@example.com</p>
             </div>
-            <div class="h-64 flex items-end justify-between gap-4 md:gap-8 px-2 border-b border-slate-100 dark:border-slate-800 pb-2">
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div id="bar-1" class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" data-height="40%"></div>
-                    <span class="mt-4 text-[10px] font-black text-slate-400">JAN</span>
+            <div class="md:text-right rtl:md:text-left">
+                <div class="mb-4">
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1 tracking-widest" data-i18n="issueDate">Issue Date</p>
+                    <p class="text-sm font-bold text-white">March 08, 2026</p>
                 </div>
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div id="bar-2" class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" data-height="60%"></div>
-                    <span class="mt-4 text-[10px] font-black text-slate-400">FEB</span>
-                </div>
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div id="bar-3" class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" data-height="35%"></div>
-                    <span class="mt-4 text-[10px] font-black text-slate-400">MAR</span>
-                </div>
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div id="bar-4" class="bg-blue-600 w-full rounded-t-2xl chart-bar shadow-xl shadow-blue-500/20" data-height="85%"></div>
-                    <span class="mt-4 text-[10px] font-black text-blue-500">APR</span>
-                </div>
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div id="bar-5" class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" data-height="50%"></div>
-                    <span class="mt-4 text-[10px] font-black text-slate-400">MAY</span>
-                </div>
-                <div class="group relative flex-1 flex flex-col items-center">
-                    <div id="bar-6" class="bg-blue-600/10 group-hover:bg-blue-600/30 w-full rounded-t-2xl chart-bar" data-height="75%"></div>
-                    <span class="mt-4 text-[10px] font-black text-slate-400">JUN</span>
+                <div>
+                    <p class="text-[10px] font-black text-slate-500 uppercase mb-1 tracking-widest" data-i18n="dueDate">Due Date</p>
+                    <p class="text-sm font-bold text-white">March 20, 2026</p>
                 </div>
             </div>
         </div>
 
-        <div class="glass-card overflow-hidden">
-            <div class="p-8 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
-                <h3 class="font-bold text-lg flex items-center gap-2"><i data-lucide="list" class="text-blue-500"></i> Recent Invoices</h3>
-                <button class="text-xs font-bold text-blue-500 hover:underline">View All</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50/50 dark:bg-slate-800/30 text-slate-400 uppercase text-[10px] font-black tracking-[0.15em]">
-                        <tr>
-                            <th class="px-8 py-5">Invoice Reference</th>
-                            <th class="px-8 py-5">Client Name</th>
-                            <th class="px-8 py-5">Amount</th>
-                            <th class="px-8 py-5">Status</th>
-                            <th class="px-8 py-5 text-right">Download</th>
-                        </tr>
-                    </thead>
-                    <tbody id="invoiceTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
-                        <tr onclick="previewInvoice('INV-2026-001')" class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer group">
-                            <td class="px-8 py-6">
-                                <span class="text-sm font-bold block group-hover:text-blue-500 transition-colors">INV-2026-001</span>
-                                <span class="text-[10px] text-slate-400 italic font-medium">Issued: Mar 01, 2026</span>
-                            </td>
-                            <td class="px-8 py-6">
-                                <span class="text-sm font-semibold">Sparkle Clean Co.</span>
-                            </td>
-                            <td class="px-8 py-6 font-bold text-sm text-blue-600">$1,250.00</td>
-                            <td class="px-8 py-6">
-                                <span class="px-3 py-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-full text-[10px] font-black uppercase">PAID</span>
-                            </td>
-                            <td class="px-8 py-6 text-right">
-                                <button onclick="event.stopPropagation(); showToast('Downloading INV-2026-001...', 'success')" class="p-2 text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="download-cloud" class="w-5 h-5"></i></button>
-                            </td>
-                        </tr>
-                        <tr onclick="previewInvoice('INV-2026-002')" class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-all cursor-pointer group">
-                            <td class="px-8 py-6">
-                                <span class="text-sm font-bold block group-hover:text-blue-500 transition-colors">INV-2026-002</span>
-                                <span class="text-[10px] text-slate-400 italic font-medium">Issued: Mar 05, 2026</span>
-                            </td>
-                            <td class="px-8 py-6">
-                                <span class="text-sm font-semibold">Lucid Themes Inc.</span>
-                            </td>
-                            <td class="px-8 py-6 font-bold text-sm text-blue-600">$840.00</td>
-                            <td class="px-8 py-6">
-                                <span class="px-3 py-1 bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-full text-[10px] font-black uppercase">OVERDUE</span>
-                            </td>
-                            <td class="px-8 py-6 text-right">
-                                <button onclick="event.stopPropagation(); showToast('Downloading INV-2026-002...', 'success')" class="p-2 text-slate-400 hover:text-blue-600 transition-colors"><i data-lucide="download-cloud" class="w-5 h-5"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="mb-16">
+            <table class="w-full text-left rtl:text-right">
+                <thead class="border-b border-slate-700">
+                    <tr class="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        <th class="py-4" data-i18n="item">Item Description</th>
+                        <th class="py-4 text-center" data-i18n="qty">Qty</th>
+                        <th class="py-4 text-right rtl:text-left" data-i18n="price">Price</th>
+                        <th class="py-4 text-right rtl:text-left" data-i18n="total">Total</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/50">
+                    <tr>
+                        <td class="py-6 font-bold text-white">SaaS Professional License</td>
+                        <td class="py-6 text-center font-mono">01</td>
+                        <td class="py-6 text-right rtl:text-left font-mono">$450.00</td>
+                        <td class="py-6 text-right rtl:text-left font-bold text-white">$450.00</td>
+                    </tr>
+                    <tr>
+                        <td class="py-6 font-bold text-white">Premium Support (1 Year)</td>
+                        <td class="py-6 text-center font-mono">01</td>
+                        <td class="py-6 text-right rtl:text-left font-mono">$150.00</td>
+                        <td class="py-6 text-right rtl:text-left font-bold text-white">$150.00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex justify-end rtl:justify-start">
+            <div class="w-full md:w-64 space-y-4">
+                <div class="flex justify-between text-sm">
+                    <span class="text-slate-500" data-i18n="subtotal">Subtotal</span>
+                    <span class="font-bold text-white">$600.00</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-slate-500" data-i18n="tax">Tax (15%)</span>
+                    <span class="font-bold text-white">$90.00</span>
+                </div>
+                <div class="pt-4 border-t border-slate-700 flex justify-between items-center">
+                    <span class="text-lg font-black text-white" data-i18n="grandTotal">Grand Total</span>
+                    <span class="text-2xl font-black text-blue-500">$690.00</span>
+                </div>
             </div>
         </div>
-    </main>
 
-    <script>
-        lucide.createIcons();
+        <div class="mt-20 pt-8 border-t border-slate-800 text-center">
+            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-[0.3em]">Thank you for your business</p>
+        </div>
+    </div>
 
-        // 1. Theme & Profile Sync
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.className = savedTheme;
-
-            const currentName = localStorage.getItem('userName') || 'Marwan';
-            const currentAvatar = localStorage.getItem('userAvatar');
-            document.getElementById('sideName').textContent = currentName;
-            if(currentAvatar) {
-                document.getElementById('sideAvatar').innerHTML = `<img src="${currentAvatar}" class="w-full h-full object-cover">`;
-            }
-
-            // 2. Animate Chart Bars on Load
-            setTimeout(() => {
-                const bars = document.querySelectorAll('.chart-bar');
-                bars.forEach(bar => {
-                    bar.style.height = bar.getAttribute('data-height');
-                });
-            }, 300);
-        });
-
-        // 3. Toast Notification
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const types = {
-                success: { bg: 'bg-emerald-500', icon: 'check-circle' },
-                info: { bg: 'bg-blue-500', icon: 'info' }
-            };
-            const config = types[type] || types.success;
-
-            toast.className = `toast flex items-center p-4 rounded-2xl shadow-2xl text-white ${config.bg} backdrop-blur-md border border-white/10`;
-            toast.innerHTML = `<i data-lucide="${config.icon}" class="w-5 h-5 mr-3"></i><span class="text-xs font-bold">${message}</span>`;
-            
-            container.appendChild(toast);
-            lucide.createIcons();
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 400);
-            }, 3000);
-        }
-
-        function previewInvoice(id) {
-            showToast(`Opening preview for ${id}`, 'info');
-        }
-
-        // 4. Live Search
-        document.getElementById('invoiceSearch').addEventListener('keyup', function(e) {
-            const term = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('#invoiceTableBody tr');
-            rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(term) ? "" : "none";
-            });
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
