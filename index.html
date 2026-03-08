@@ -22,9 +22,38 @@
         
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+
+        /* --- Toast Notification Styles --- */
+        #toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .toast {
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            min-width: 280px;
+            pointer-events: auto;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .toast.hiding {
+            animation: slideOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-slate-100 min-h-screen flex">
+
+    <div id="toast-container"></div>
 
     <aside class="w-72 bg-white dark:bg-[#1e293b] border-r border-slate-200 dark:border-slate-800 hidden lg:flex flex-col h-screen sticky top-0 z-50">
         <div class="p-8">
@@ -114,8 +143,8 @@
                     <p class="text-xs text-slate-500">Interactive sales data for the last 7 days.</p>
                 </div>
                 <div class="flex p-1.5 bg-slate-100 dark:bg-slate-800 rounded-2xl">
-                    <button class="px-6 py-2 bg-white dark:bg-slate-700 shadow-sm rounded-xl text-xs font-bold transition-all">Weekly</button>
-                    <button class="px-6 py-2 text-slate-400 text-xs font-bold hover:text-slate-600 dark:hover:text-slate-200 transition-colors">Monthly</button>
+                    <button onclick="showToast('Loading weekly data...', 'info')" class="px-6 py-2 bg-white dark:bg-slate-700 shadow-sm rounded-xl text-xs font-bold transition-all">Weekly</button>
+                    <button onclick="showToast('Monthly view coming soon!', 'info')" class="px-6 py-2 text-slate-400 text-xs font-bold hover:text-slate-600 dark:hover:text-slate-200 transition-colors">Monthly</button>
                 </div>
             </div>
             
@@ -125,15 +154,38 @@
         </div>
     </main>
 
-    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 p-4 px-8 flex justify-between items-center z-50">
-        <a href="index.html" class="text-blue-600 p-2"><i data-lucide="layout-grid" class="w-6 h-6"></i></a>
-        <a href="users.html" class="text-slate-400 p-2"><i data-lucide="users" class="w-6 h-6"></i></a>
-        <a href="orders.html" class="text-slate-400 p-2"><i data-lucide="shopping-bag" class="w-6 h-6"></i></a>
-        <a href="settings.html" class="text-slate-400 p-2"><i data-lucide="settings" class="w-6 h-6"></i></a>
-    </div>
-
     <script>
         lucide.createIcons();
+
+        // --- Toast Functionality ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            // Define colors/icons based on type
+            const types = {
+                success: { bg: 'bg-green-500', icon: 'check-circle' },
+                error: { bg: 'bg-rose-500', icon: 'alert-circle' },
+                info: { bg: 'bg-blue-500', icon: 'info' }
+            };
+
+            const config = types[type] || types.success;
+
+            toast.className = `toast flex items-center p-4 rounded-2xl shadow-2xl text-white ${config.bg} backdrop-blur-md border border-white/10`;
+            toast.innerHTML = `
+                <i data-lucide="${config.icon}" class="w-5 h-5 mr-3"></i>
+                <span class="text-xs font-bold">${message}</span>
+            `;
+
+            container.appendChild(toast);
+            lucide.createIcons(); // Initialize the new icon
+
+            // Auto-remove after 4 seconds
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 400);
+            }, 4000);
+        }
 
         // 1. نظام تبديل الثيم والمزامنة مع LocalStorage
         const themeBtn = document.getElementById('themeToggle');
@@ -141,15 +193,16 @@
             document.documentElement.classList.toggle('dark');
             const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
             localStorage.setItem('theme', theme);
-            // إعادة رسم الشارت لتغيير ألوان الشبكة عند تغيير الثيم
-            window.location.reload(); 
+            showToast(`Switching to ${theme} mode`, 'info');
+            // نعيد تحميل الصفحة لتحديث ألوان الشارت
+            setTimeout(() => window.location.reload(), 500);
         });
 
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
         }
 
-        // 2. جلب اسم المستخدم وصورته
+        // 2. جلب البيانات وتهيئة الصفحة
         document.addEventListener('DOMContentLoaded', () => {
             const currentName = localStorage.getItem('userName') || 'Marwan';
             const currentAvatar = localStorage.getItem('userAvatar');
@@ -161,11 +214,12 @@
                 document.getElementById('sideAvatar').innerHTML = `<img src="${currentAvatar}" class="w-full h-full object-cover">`;
             }
 
+            // ترحيب عند الدخول
+            setTimeout(() => showToast(`Welcome back, ${currentName}!`, 'success'), 800);
+
             // 3. إعداد الرسم البياني Chart.js
             const ctx = document.getElementById('revenueChart').getContext('2d');
             const isDark = document.documentElement.classList.contains('dark');
-
-            // إنشاء تدرج لوني تحت الخط
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
             gradient.addColorStop(0, 'rgba(37, 99, 235, 0.2)');
             gradient.addColorStop(1, 'rgba(37, 99, 235, 0)');
@@ -192,33 +246,15 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
                         y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
-                                drawBorder: false
-                            },
-                            ticks: {
-                                color: '#94a3b8',
-                                font: { size: 11, weight: '600' }
-                            }
+                            grid: { color: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)', drawBorder: false },
+                            ticks: { color: '#94a3b8', font: { size: 11, weight: '600' } }
                         },
-                        x: {
-                            grid: { display: false },
-                            ticks: {
-                                color: '#94a3b8',
-                                font: { size: 11, weight: '600' }
-                            }
-                        }
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 11, weight: '600' } } }
                     },
-                    interaction: {
-                        intersect: false,
-                        mode: 'index',
-                    }
+                    interaction: { intersect: false, mode: 'index' }
                 }
             });
         });
