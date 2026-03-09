@@ -1,101 +1,123 @@
 /**
- * @project: EliteDash - Premium Glassmorphism Admin Dashboard
- * @version: 1.0.0
- * @author: Marwan Al-Pumu
- * @description: Core application logic handling routing, localization (RTL/LTR), 
- * and dynamic theme management (Dark/Light mode).
+ * @file App.jsx
+ * @description The main entry point for the EliteDash terminal. 
+ * Manages global state, localization, and dynamic component rendering.
+ * @author [Your Name/Brand]
+ * @version 1.0.0
+ * @license MIT
  */
 
-import React, { useState } from 'react';
-import { 
-  LayoutGrid, FileText, ShoppingCart, Users, Settings, 
-  Globe, Sun, Moon, Menu, X, Bell, BarChart3, MessageSquare 
-} from 'lucide-react';
+import React, { useState, useCallback } from 'react';
+import OrderTerminal from './OrderTerminal';
+import ProfileSecurity from './ProfileSecurity';
+import NotificationCenter from './NotificationCenter';
+import { LayoutDashboard, ShieldCheck, Bell } from 'lucide-react';
 
-// --- PAGE COMPONENTS ---
-import DashboardHome from './pages/DashboardHome';
-import Invoices from './pages/Invoices';
-import Orders from './pages/Orders';
-import UsersPage from './pages/UsersPage';
-import SettingsPage from './pages/SettingsPage';
-import Analytics from './pages/Analytics'; 
-import ChatPage from './pages/ChatPage'; 
-
+/**
+ * @component App
+ * @description The root component that houses the navigation and sub-modules.
+ * @returns {JSX.Element} The rendered dashboard layout.
+ */
 export default function App() {
-  // --- STATE MANAGEMENT ---
-  const [activePage, setActivePage] = useState('dashboard');
-  const [lang, setLang] = useState('ar');
-  const [dark, setDark] = useState(true);
-  const [sidebar, setSidebar] = useState(false);
+  /** @state {string} activeTab - Determines which view is currently visible. */
+  const [activeTab, setActiveTab] = useState('orders');
 
-  // --- MENU CONFIGURATION ---
-  const menu = [
-    { id: 'dashboard', icon: <LayoutGrid />, label: lang === 'ar' ? 'الرئيسية' : 'Dashboard' },
-    { id: 'analytics', icon: <BarChart3 />, label: lang === 'ar' ? 'التحليلات' : 'Analytics' },
-    { id: 'invoices', icon: <FileText />, label: lang === 'ar' ? 'الفواتير' : 'Invoices' },
-    { id: 'orders', icon: <ShoppingCart />, label: lang === 'ar' ? 'الطلبات' : 'Orders' },
-    { id: 'chat', icon: <MessageSquare />, label: lang === 'ar' ? 'المحادثة' : 'Messages' },
-    { id: 'users', icon: <Users />, label: lang === 'ar' ? 'المستخدمين' : 'Users' },
-    { id: 'settings', icon: <Settings />, label: lang === 'ar' ? 'الإعدادات' : 'Settings' },
-  ];
+  /** @state {string} lang - Global language state ('ar' for Arabic, 'en' for English). */
+  const [lang, setLang] = useState('ar');
+
+  /**
+   * @function toggleLanguage
+   * @description Switches the dashboard language between Arabic and English.
+   */
+  const toggleLanguage = useCallback(() => {
+    setLang((prev) => (prev === 'ar' ? 'en' : 'ar'));
+  }, []);
+
+  /**
+   * @function renderActiveTab
+   * @description Selectively renders the component based on the active tab state.
+   * @returns {JSX.Element} The selected sub-component.
+   */
+  const renderActiveTab = () => {
+    switch (activeTab) {
+      case 'orders':
+        return <OrderTerminal lang={lang} />;
+      case 'security':
+        return <ProfileSecurity lang={lang} />;
+      case 'alerts':
+        return <NotificationCenter lang={lang} />;
+      default:
+        return <OrderTerminal lang={lang} />;
+    }
+  };
 
   return (
-    <div 
-      className={`min-h-screen flex transition-all duration-500 ${dark ? 'bg-[#030712] text-white' : 'bg-slate-50 text-slate-900'}`} 
-      dir={lang === 'ar' ? 'rtl' : 'ltr'}
-    >
-      {/* GLOW BACKGROUND EFFECTS */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden no-print">
-        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-600/10 blur-[120px] rounded-full" />
-      </div>
-
-      {/* SIDEBAR */}
-      <aside className={`fixed inset-y-0 z-50 w-64 transition-all bg-white/5 backdrop-blur-3xl border-white/10 border-x no-print
-        ${sidebar ? 'translate-x-0' : (lang === 'ar' ? 'translate-x-full' : '-translate-x-full')} lg:translate-x-0`}>
-        <div className="p-8 flex justify-between items-center text-2xl font-black text-indigo-500 italic uppercase tracking-tighter">
-          EliteDash
-          <button className="lg:hidden text-white" onClick={() => setSidebar(false)}><X /></button>
+    <div className={`min-h-screen bg-[#020617] text-slate-300 pb-24 ${lang === 'ar' ? 'font-sans-ar' : 'font-sans-en'}`}>
+      
+      {/* --- HEADER NAVIGATION --- */}
+      <header className="sticky top-0 z-50 bg-[#020617]/80 backdrop-blur-3xl border-b border-white/5 px-6 py-5 flex justify-between items-center">
+        <div className="flex items-center gap-4">
+          <h1 className="text-2xl font-black italic text-white uppercase tracking-tighter group cursor-default">
+            ELITE<span className="text-indigo-500 transition-colors group-hover:text-indigo-400">DASH</span>
+          </h1>
         </div>
-        <nav className="px-4 space-y-2">
-          {menu.map(item => (
-            <button key={item.id} onClick={() => {setActivePage(item.id); setSidebar(false);}} 
-              className={`w-full flex items-center gap-4 px-5 py-4 rounded-[1.5rem] transition-all duration-300 
-              ${activePage === item.id ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20' : 'hover:bg-white/5 text-slate-400 hover:text-white'}`}>
-              {item.icon} <span className="font-bold text-sm">{item.label}</span>
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      {/* MAIN CONTENT AREA */}
-      <main className={`flex-1 lg:p-6 transition-all ${lang === 'ar' ? 'lg:mr-64' : 'lg:ml-64'}`}>
         
-        {/* HEADER BAR */}
-        <header className="sticky top-4 z-40 mx-4 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-4 flex justify-between items-center shadow-2xl no-print">
-          <button className="lg:hidden p-3 bg-white/5 rounded-xl text-indigo-400" onClick={() => setSidebar(true)}><Menu size={22}/></button>
-          <div className="flex items-center gap-3">
-            <button onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')} className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl transition"><Globe size={18}/></button>
-            <button onClick={() => setDark(!dark)} className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl transition">{dark ? <Sun size={18}/> : <Moon size={18}/>}</button>
-            <div className="relative p-3 bg-white/5 rounded-2xl cursor-pointer">
-               <Bell size={20} />
-               <span className="absolute top-3 right-3 w-2 h-2 bg-red-500 rounded-full animate-ping" />
-            </div>
-            <div className="w-10 h-10 rounded-full border-2 border-indigo-500 bg-slate-800" />
-          </div>
-        </header>
+        <button 
+          onClick={toggleLanguage}
+          className="px-5 py-2 border border-white/10 rounded-2xl text-[10px] font-black uppercase hover:bg-white/5 active:scale-95 transition-all tracking-widest"
+        >
+          {lang === 'ar' ? 'English Interface' : 'الواجهة العربية'}
+        </button>
+      </header>
 
-        {/* DYNAMIC PAGE RENDERER */}
-        <div className="p-4 md:p-8 mt-4">
-          {activePage === 'dashboard' && <DashboardHome lang={lang} />}
-          {activePage === 'analytics' && <Analytics lang={lang} />}
-          {activePage === 'invoices' && <Invoices lang={lang} />}
-          {activePage === 'orders' && <Orders lang={lang} />}
-          {activePage === 'chat' && <ChatPage lang={lang} />}
-          {activePage === 'users' && <UsersPage lang={lang} />}
-          {activePage === 'settings' && <SettingsPage lang={lang} />}
-        </div>
+      {/* --- MAIN CONTENT AREA --- */}
+      <main className="max-w-6xl mx-auto p-6 lg:p-12">
+        {renderActiveTab()}
       </main>
+
+      {/* --- MOBILE-OPTIMIZED BOTTOM BAR --- */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-[#0f172a]/90 backdrop-blur-2xl border-t border-white/5 p-4 flex justify-around items-center shadow-2xl">
+        <TabButton 
+          active={activeTab === 'orders'} 
+          icon={LayoutDashboard} 
+          label={lang === 'ar' ? 'الأصول' : 'Orders'} 
+          onClick={() => setActiveTab('orders')} 
+        />
+        <TabButton 
+          active={activeTab === 'security'} 
+          icon={ShieldCheck} 
+          label={lang === 'ar' ? 'الأمان' : 'Security'} 
+          onClick={() => setActiveTab('security')} 
+        />
+        <TabButton 
+          active={activeTab === 'alerts'} 
+          icon={Bell} 
+          label={lang === 'ar' ? 'التنبيهات' : 'Alerts'} 
+          onClick={() => setActiveTab('alerts')} 
+        />
+      </nav>
     </div>
+  );
+}
+
+/**
+ * @component TabButton
+ * @description A reusable button component for the bottom navigation bar.
+ * @param {Object} props - Component properties.
+ * @param {boolean} props.active - Whether the tab is currently active.
+ * @param {React.ElementType} props.icon - Lucide icon component.
+ * @param {string} props.label - Display label for the button.
+ * @param {Function} props.onClick - Click handler function.
+ */
+function TabButton({ active, icon: Icon, label, onClick }) {
+  return (
+    <button 
+      onClick={onClick} 
+      className={`flex flex-col items-center gap-1.5 transition-all duration-300 ${active ? 'text-indigo-400 scale-110' : 'text-slate-600 hover:text-slate-400'}`}
+    >
+      <Icon size={22} strokeWidth={active ? 2.5 : 2} />
+      <span className="text-[9px] font-black uppercase tracking-[0.15em]">{label}</span>
+      {active && <span className="w-1 h-1 bg-indigo-500 rounded-full animate-pulse"></span>}
+    </button>
   );
 }
