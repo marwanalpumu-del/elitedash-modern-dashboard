@@ -1,0 +1,99 @@
+/**
+ * @file index.css
+ * @description Global stylesheet for EliteDash Dashboard.
+ * Includes Tailwind CSS directives, typography, and professional print-media optimization.
+ */
+
+/* --- 1. TAILWIND CORE DIRECTIVES --- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- 2. GLOBAL RESET & BASE STYLES --- */
+@layer base {
+  :root {
+    --brand-indigo: 79, 70, 229; /* Indigo-600 RGB */
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+}
+
+/* --- 3. CUSTOM SCROLLBAR (Glassmorphism Styled) --- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.4);
+}
+
+/* --- 4. PROFESSIONAL PRINT LOGIC --- 
+   Optimized for A4 Paper Reports & Invoices.
+*/
+@media print {
+  /* Hide interactive elements, sidebars, and navigation headers */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Reset layout margins for maximum paper utilization */
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    position: static !important;
+  }
+
+  /* Force white background and black text for ink efficiency & readability */
+  body {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Remove glassmorphism effects and shadows for a flat professional look */
+  .backdrop-blur-xl, 
+  .backdrop-blur-2xl, 
+  .backdrop-blur-3xl {
+    backdrop-filter: none !important;
+    background: white !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+
+  .shadow-xl, 
+  .shadow-2xl {
+    box-shadow: none !important;
+  }
+
+  /* Ensure page breaks don't cut rows or headers */
+  tr {
+    page-break-inside: avoid !important;
+  }
+
+  header {
+    position: static !important;
+  }
+}
