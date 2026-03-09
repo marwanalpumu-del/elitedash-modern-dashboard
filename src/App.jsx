@@ -1,33 +1,39 @@
 /**
  * @file App.jsx
- * @description The main entry point for the EliteDash terminal. 
- * Manages global state, localization, and dynamic component rendering.
- * @author [Your Name/Brand]
+ * @description Main entry point for EliteDash. 
+ * Handles routing logic, internationalization state, and core layout structure.
  * @version 1.0.0
  * @license MIT
  */
 
 import React, { useState, useCallback } from 'react';
-import OrderTerminal from './OrderTerminal';
-import ProfileSecurity from './ProfileSecurity';
-import NotificationCenter from './NotificationCenter';
-import { LayoutDashboard, ShieldCheck, Bell } from 'lucide-react';
+
+// --- Component Imports ---
+import Navbar from './components/Navbar';
+import BottomNav from './components/BottomNav';
+
+// --- Page Imports ---
+import OrderTerminal from './pages/OrderTerminal';
+import ProfileSecurity from './pages/ProfileSecurity';
+import NotificationCenter from './pages/NotificationCenter';
+
+// --- Global Styles ---
+import './index.css';
 
 /**
  * @component App
- * @description The root component that houses the navigation and sub-modules.
- * @returns {JSX.Element} The rendered dashboard layout.
+ * @description Root component implementing the main dashboard architecture.
  */
 export default function App() {
-  /** @state {string} activeTab - Determines which view is currently visible. */
+  /** @state {string} activeTab - Manages current navigation state */
   const [activeTab, setActiveTab] = useState('orders');
 
-  /** @state {string} lang - Global language state ('ar' for Arabic, 'en' for English). */
+  /** @state {string} lang - Manages localization state (ar/en) */
   const [lang, setLang] = useState('ar');
 
   /**
    * @function toggleLanguage
-   * @description Switches the dashboard language between Arabic and English.
+   * @description Memoized function to toggle between RTL and LTR layouts.
    */
   const toggleLanguage = useCallback(() => {
     setLang((prev) => (prev === 'ar' ? 'en' : 'ar'));
@@ -35,8 +41,8 @@ export default function App() {
 
   /**
    * @function renderActiveTab
-   * @description Selectively renders the component based on the active tab state.
-   * @returns {JSX.Element} The selected sub-component.
+   * @description Dynamic content renderer based on navigation state.
+   * @returns {JSX.Element}
    */
   const renderActiveTab = () => {
     switch (activeTab) {
@@ -54,70 +60,21 @@ export default function App() {
   return (
     <div className={`min-h-screen bg-[#020617] text-slate-300 pb-24 ${lang === 'ar' ? 'font-sans-ar' : 'font-sans-en'}`}>
       
-      {/* --- HEADER NAVIGATION --- */}
-      <header className="sticky top-0 z-50 bg-[#020617]/80 backdrop-blur-3xl border-b border-white/5 px-6 py-5 flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-black italic text-white uppercase tracking-tighter group cursor-default">
-            ELITE<span className="text-indigo-500 transition-colors group-hover:text-indigo-400">DASH</span>
-          </h1>
-        </div>
-        
-        <button 
-          onClick={toggleLanguage}
-          className="px-5 py-2 border border-white/10 rounded-2xl text-[10px] font-black uppercase hover:bg-white/5 active:scale-95 transition-all tracking-widest"
-        >
-          {lang === 'ar' ? 'English Interface' : 'الواجهة العربية'}
-        </button>
-      </header>
+      {/* Shared Header Component */}
+      <Navbar lang={lang} toggleLanguage={toggleLanguage} />
 
-      {/* --- MAIN CONTENT AREA --- */}
+      {/* Main Viewport */}
       <main className="max-w-6xl mx-auto p-6 lg:p-12">
         {renderActiveTab()}
       </main>
 
-      {/* --- MOBILE-OPTIMIZED BOTTOM BAR --- */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-[#0f172a]/90 backdrop-blur-2xl border-t border-white/5 p-4 flex justify-around items-center shadow-2xl">
-        <TabButton 
-          active={activeTab === 'orders'} 
-          icon={LayoutDashboard} 
-          label={lang === 'ar' ? 'الأصول' : 'Orders'} 
-          onClick={() => setActiveTab('orders')} 
-        />
-        <TabButton 
-          active={activeTab === 'security'} 
-          icon={ShieldCheck} 
-          label={lang === 'ar' ? 'الأمان' : 'Security'} 
-          onClick={() => setActiveTab('security')} 
-        />
-        <TabButton 
-          active={activeTab === 'alerts'} 
-          icon={Bell} 
-          label={lang === 'ar' ? 'التنبيهات' : 'Alerts'} 
-          onClick={() => setActiveTab('alerts')} 
-        />
-      </nav>
+      {/* Navigation Controller */}
+      <BottomNav 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        lang={lang} 
+      />
+      
     </div>
-  );
-}
-
-/**
- * @component TabButton
- * @description A reusable button component for the bottom navigation bar.
- * @param {Object} props - Component properties.
- * @param {boolean} props.active - Whether the tab is currently active.
- * @param {React.ElementType} props.icon - Lucide icon component.
- * @param {string} props.label - Display label for the button.
- * @param {Function} props.onClick - Click handler function.
- */
-function TabButton({ active, icon: Icon, label, onClick }) {
-  return (
-    <button 
-      onClick={onClick} 
-      className={`flex flex-col items-center gap-1.5 transition-all duration-300 ${active ? 'text-indigo-400 scale-110' : 'text-slate-600 hover:text-slate-400'}`}
-    >
-      <Icon size={22} strokeWidth={active ? 2.5 : 2} />
-      <span className="text-[9px] font-black uppercase tracking-[0.15em]">{label}</span>
-      {active && <span className="w-1 h-1 bg-indigo-500 rounded-full animate-pulse"></span>}
-    </button>
   );
 }
