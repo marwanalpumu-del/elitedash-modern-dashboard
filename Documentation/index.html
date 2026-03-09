@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EliteDash - Documentation</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 40px; background: #f4f7f9; }
+        .container { background: white; padding: 40px; border-radius: 12px; shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e1e8ed; }
+        h1 { color: #4f46e5; border-bottom: 2px solid #4f46e5; padding-bottom: 10px; }
+        h2 { color: #1e293b; margin-top: 30px; border-left: 4px solid #4f46e5; padding-left: 15px; }
+        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #e11d48; }
+        pre { background: #1e293b; color: #f8fafc; padding: 20px; border-radius: 8px; overflow-x: auto; }
+        .badge { background: #4f46e5; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; text-transform: uppercase; }
+        .file-tree { list-style: none; padding-left: 20px; }
+        .file-tree li::before { content: "📁 "; }
+        .file-tree li.file::before { content: "📄 "; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EliteDash <span class="badge">v1.0.0</span></h1>
+        <p>Thank you for purchasing <strong>EliteDash</strong>. This documentation will help you set up and customize the dashboard.</p>
+
+        <h2>1. Project Structure</h2>
+        <ul class="file-tree">
+            <li>src/
+                <ul class="file-tree">
+                    <li class="file">App.jsx (Main Controller)</li>
+                    <li class="file">OrderTerminal.jsx (Assets & Table)</li>
+                    <li class="file">ProfileSecurity.jsx (Security Settings)</li>
+                    <li class="file">NotificationCenter.jsx (Alerts System)</li>
+                    <li class="file">index.css (Glassmorphism Styles)</li>
+                </ul>
+            </li>
+            <li class="file">package.json (Dependencies)</li>
+            <li class="file">tailwind.config.js (UI Configuration)</li>
+        </ul>
+
+        <h2>2. Installation Guide</h2>
+        <p>Follow these steps to get the project running on your local machine:</p>
+        <pre>
+# 1. Extract the zip file
+# 2. Open terminal in the project folder
+# 3. Install dependencies
+npm install
+
+# 4. Start the development server
+npm start</pre>
+
+        <h2>3. Customization</h2>
+        <p>To change the primary colors, edit <code>tailwind.config.js</code>. For the glassmorphism intensity, modify the <code>.glass-panel</code> class in <code>index.css</code>.</p>
+        
+        <h2>4. Credits & Assets</h2>
+        <ul>
+            <li><strong>Framework:</strong> React.js</li>
+            <li><strong>Styling:</strong> Tailwind CSS</li>
+            <li><strong>Icons:</strong> Lucide React</li>
+            <li><strong>Fonts:</strong> System UI / Inter</li>
+        </ul>
+
+        <p style="margin-top:50px; font-size: 0.9em; color: #64748b; text-align: center;">
+            &copy; 2026 EliteDash Terminal. All rights reserved.
+        </p>
+    </div>
+</body>
+</html>
