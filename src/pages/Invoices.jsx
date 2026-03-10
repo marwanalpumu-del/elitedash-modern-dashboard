@@ -1,96 +1,90 @@
 /**
- * @component Invoices
- * @description Professional billing management system with dynamic status tags, 
- * print capability, and glassmorphism styling.
+ * @page Invoices
+ * @description Main Billing Terminal combining data visualization and table management.
  */
 
-import React from 'react';
-import { Download, Printer, CheckCircle2, Clock } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, Printer, Download, CheckCircle2, Clock } from 'lucide-react';
+import RevenueChart from '../components/charts/RevenueChart';
 
-// --- MOCK DATA ---
-// Centralized data for easier API integration later
 const INVOICE_DATA = [
   { id: "INV-102", client: "Marwan Al-Pumu", date: "2026-03-09", amount: "$1,500", status: "Paid" },
   { id: "INV-103", client: "Global Tech", date: "2026-03-08", amount: "$2,300", status: "Pending" },
   { id: "INV-104", client: "Creative Agency", date: "2026-03-07", amount: "$850", status: "Paid" }
 ];
 
-export default function Invoices({ lang }) {
-
-  /**
-   * @function handlePrint
-   * @description Opens the browser print dialog. CSS in index.css handles 
-   * hiding sidebar/buttons for a clean PDF.
-   */
-  const handlePrint = () => {
-    window.print();
-  };
+export default function Invoices({ lang = 'ar' }) {
+  const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-700">
+    <div className="space-y-10 p-4 lg:p-8 max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-5 duration-700">
       
-      {/* HEADER SECTION - No Print Area */}
-      <div className="flex justify-between items-center px-4 no-print">
-        <h2 className="text-2xl font-black italic tracking-tighter uppercase text-indigo-500">
-          {lang === 'ar' ? 'نظام الفواتير' : 'Billing System'}
-        </h2>
-        <button 
-          onClick={handlePrint}
-          className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 transition shadow-lg shadow-indigo-600/30 active:scale-95"
-        >
-          <Printer size={18} /> {lang === 'ar' ? 'طباعة التقارير' : 'Print Reports'}
-        </button>
+      {/* 1. Analytic Section */}
+      <section className="no-print">
+        <RevenueChart lang={lang} />
+      </section>
+
+      {/* 2. Control Toolbar */}
+      <div className="flex flex-col lg:flex-row justify-between items-center gap-6 px-4 no-print">
+        <div className="relative flex-1 w-full lg:max-w-md group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-500 transition-colors" size={18} />
+          <input 
+            type="text" 
+            placeholder={lang === 'ar' ? 'بحث سريع عن فاتورة...' : 'Quick invoice search...'}
+            className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white text-xs outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all placeholder:text-slate-600"
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        
+        <div className="flex gap-4 w-full lg:w-auto">
+          <button className="flex-1 lg:flex-none bg-white/5 border border-white/10 p-4 rounded-2xl text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/30 transition-all active:scale-90">
+            <Download size={20}/>
+          </button>
+          <button 
+            onClick={() => window.print()}
+            className="flex-1 lg:flex-none bg-indigo-600 px-10 py-4 rounded-2xl text-white font-black text-[10px] tracking-widest uppercase hover:bg-indigo-500 shadow-2xl shadow-indigo-600/30 active:scale-95 transition-all flex items-center justify-center gap-3"
+          >
+            <Printer size={18}/> {lang === 'ar' ? 'طباعة التقارير' : 'Print Reports'}
+          </button>
+        </div>
       </div>
 
-      {/* GLASSMORPHISM TABLE CONTAINER */}
-      <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl print:bg-white print:text-black">
-        <table className="w-full text-right" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
-          <thead className="bg-white/5 text-slate-400 text-[10px] uppercase tracking-[0.2em] print:bg-slate-100 print:text-black">
-            <tr>
-              <th className="p-6">{lang === 'ar' ? 'رقم الفاتورة' : 'ID'}</th>
-              <th className="p-6">{lang === 'ar' ? 'العميل' : 'Client'}</th>
-              <th className="p-6">{lang === 'ar' ? 'الحالة' : 'Status'}</th>
-              <th className="p-6">{lang === 'ar' ? 'المبلغ' : 'Amount'}</th>
-              <th className="p-6 text-center no-print">{lang === 'ar' ? 'إجراء' : 'Actions'}</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5 print:divide-slate-200">
-            {INVOICE_DATA.map((inv) => (
-              <tr key={inv.id} className="group hover:bg-white/5 transition-all print:hover:bg-transparent">
-                <td className="p-6 font-mono text-indigo-400 font-bold">{inv.id}</td>
-                <td className="p-6">
-                  <div className="font-bold text-sm">{inv.client}</div>
-                  <div className="text-[10px] text-slate-500">{inv.date}</div>
-                </td>
-                <td className="p-6">
-                  {/* DYNAMIC STATUS TAGS */}
-                  <span className={`flex items-center gap-1.5 text-[10px] font-black px-3 py-1.5 rounded-full w-fit ${
-                    inv.status === 'Paid' 
-                    ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' 
-                    : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
-                  }`}>
-                    {inv.status === 'Paid' ? <CheckCircle2 size={12}/> : <Clock size={12}/>}
-                    {lang === 'ar' ? (inv.status === 'Paid' ? 'تم الدفع' : 'معلق') : inv.status}
-                  </span>
-                </td>
-                <td className="p-6 font-black text-lg tracking-tighter">{inv.amount}</td>
-                <td className="p-6 no-print">
-                  <div className="flex justify-center gap-2 opacity-40 group-hover:opacity-100 transition-opacity">
-                    <button className="p-2.5 bg-white/5 rounded-xl hover:bg-indigo-600 hover:text-white transition shadow-xl">
-                      <Download size={16}/>
-                    </button>
-                  </div>
-                </td>
+      {/* 3. Data Presentation Table */}
+      <div className="bg-[#020617]/40 backdrop-blur-3xl border border-white/10 rounded-[3rem] overflow-hidden shadow-2xl border-t-indigo-500/10">
+        <div className="overflow-x-auto">
+          <table className="w-full text-right" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+            <thead className="bg-white/5 text-slate-500 text-[10px] font-black uppercase tracking-[0.25em] border-b border-white/5">
+              <tr>
+                <th className="p-8">{lang === 'ar' ? 'المعرف' : 'ID'}</th>
+                <th className="p-8 text-center sm:text-right">{lang === 'ar' ? 'العميل' : 'Client'}</th>
+                <th className="p-8 text-center">{lang === 'ar' ? 'الحالة' : 'Status'}</th>
+                <th className="p-8">{lang === 'ar' ? 'المبلغ' : 'Amount'}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* FOOTER: Only visible on paper */}
-      <div className="hidden print:flex justify-between mt-12 pt-8 border-t border-slate-200 text-slate-400 text-[10px] font-bold">
-        <span>© 2026 EliteDash System - By Marwan Al-Pumu</span>
-        <span>Generated on: {new Date().toLocaleDateString()}</span>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {INVOICE_DATA.map((inv) => (
+                <tr key={inv.id} className="group hover:bg-white/[0.02] transition-colors cursor-default">
+                  <td className="p-8 font-mono text-indigo-400 font-black">{inv.id}</td>
+                  <td className="p-8">
+                    <div className="text-white font-black text-sm uppercase tracking-tight italic group-hover:text-indigo-300 transition-colors">{inv.client}</div>
+                    <div className="text-[9px] text-slate-600 font-bold mt-1 uppercase">{inv.date}</div>
+                  </td>
+                  <td className="p-8 text-center">
+                    <span className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase border ${
+                      inv.status === 'Paid' 
+                      ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' 
+                      : 'bg-amber-500/10 text-amber-500 border-amber-500/20'
+                    }`}>
+                      {inv.status === 'Paid' ? <CheckCircle2 size={12}/> : <Clock size={12}/>}
+                      {lang === 'ar' ? (inv.status === 'Paid' ? 'مكتمل' : 'معلق') : inv.status}
+                    </span>
+                  </td>
+                  <td className="p-8 text-2xl font-black text-white italic tracking-tighter">${inv.amount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
