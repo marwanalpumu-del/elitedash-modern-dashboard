@@ -1,8 +1,8 @@
 /**
  * @file index.css
- * @version 1.1.0
- * @description Global stylesheet for EliteDash Dashboard.
- * Includes Tailwind directives, Print Optimization, and Dynamic Color Protocols.
+ * @version 1.2.0
+ * @description Professional Global Stylesheet for EliteDash.
+ * Optimized for Dynamic Protocols, Glassmorphism, and Production-Grade Printing.
  */
 
 /* --- 1. TAILWIND CORE DIRECTIVES --- */
@@ -10,24 +10,25 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- 2. DYNAMIC COLOR PROTOCOLS (Theming System) --- */
+/* --- 2. DYNAMIC COLOR PROTOCOLS --- 
+   Note: Values are defined as Space-Separated RGB for Tailwind Opacity support.
+*/
 :root {
   /* Default: Cyber Purple (Protocol 01) */
-  --primary-glow: 99, 102, 241; /* Indigo-500 */
-  --accent-color: 139, 92, 246; /* Violet-500 */
-  --brand-indigo: 79, 70, 229;  /* Indigo-600 RGB */
+  --primary: 99 102 241; /* Indigo-500 */
+  --accent: 139 92 246;  /* Violet-500 */
 }
 
 /* Ocean Blue (Protocol 02) */
 [data-theme='ocean'] {
-  --primary-glow: 14, 165, 233; /* Sky-500 */
-  --accent-color: 6, 182, 212;  /* Cyan-500 */
+  --primary: 14 165 233; /* Sky-500 */
+  --accent: 6 182 212;   /* Cyan-500 */
 }
 
 /* Emerald Green (Protocol 03) */
 [data-theme='emerald'] {
-  --primary-glow: 16, 185, 129; /* Emerald-500 */
-  --accent-color: 34, 197, 94;  /* Green-500 */
+  --primary: 16 185 129; /* Emerald-500 */
+  --accent: 34 197 94;   /* Green-500 */
 }
 
 /* --- 3. GLOBAL RESET & BASE STYLES --- */
@@ -41,17 +42,23 @@
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background-color: #020617; /* Slate-950 */
+    background-color: #020617; /* Slate-950 Core */
+    /* High-fidelity typography stack */
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
+
+  /* Support for Arabic typography */
+  .font-sans-ar {
+    font-family: 'Noto Sans Arabic', system-ui, sans-serif;
+  }
 }
 
-/* --- 4. CUSTOM SCROLLBAR (Glassmorphism Styled) --- */
+/* --- 4. CUSTOM SCROLLBAR (Cyber-Minimalist) --- */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -59,18 +66,21 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  /* Dynamic Hover Color based on selected Protocol */
-  background: rgba(var(--primary-glow), 0.4);
+  /* Dynamic Protocol Highlight on Scroll */
+  background: rgb(var(--primary) / 0.5);
 }
 
-/* --- 5. PROFESSIONAL PRINT LOGIC --- 
-   Optimized for A4 Paper Reports & Invoices.
-*/
+/* --- 5. UTILITY CLASSES --- */
+.glass-effect {
+  @apply backdrop-blur-3xl border border-white/10 bg-white/5;
+}
+
+/* --- 6. PROFESSIONAL PRINT LOGIC --- */
 @media print {
   .no-print {
     display: none !important;
@@ -78,7 +88,7 @@
 
   main {
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 0.5in !important;
     width: 100% !important;
     position: static !important;
   }
@@ -90,12 +100,13 @@
     print-color-adjust: exact;
   }
 
+  /* Flatten Glassmorphism for physical ink */
   .backdrop-blur-xl, 
   .backdrop-blur-2xl, 
   .backdrop-blur-3xl {
     backdrop-filter: none !important;
-    background: white !important;
-    border: 1px solid #e2e8f0 !important;
+    background: transparent !important;
+    border: 1px solid #cbd5e1 !important;
   }
 
   .shadow-xl, 
@@ -103,11 +114,8 @@
     box-shadow: none !important;
   }
 
+  /* Data-table print optimizations */
   tr {
     page-break-inside: avoid !important;
-  }
-
-  header {
-    position: static !important;
   }
 }
