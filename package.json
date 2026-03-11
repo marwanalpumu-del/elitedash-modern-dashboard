@@ -1,31 +1,36 @@
 {
   "name": "elitedash-terminal-pro",
-  "version": "1.2.0",
+  "version": "1.5.0",
   "private": false,
-  "description": "Premium React Admin Dashboard featuring Cybernetic UI, Global Audio Protocols, and Multi-language Support.",
-  "author": "EliteDash Developer",
+  "description": "Engineered for Performance. React Admin Terminal featuring DSP Audio Signals, Dynamic Protocols (Rose Update), and Concurrent Mode.",
+  "author": "Marwan - EliteDash Core",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "recharts": "^2.10.0",
-    "lucide-react": "^0.284.0",
-    "clsx": "^2.0.0",
-    "tailwind-merge": "^1.14.0",
-    "framer-motion": "^10.16.4"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.7",
+    "lucide-react": "^0.395.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.3.0",
+    "framer-motion": "^11.2.10"
   },
   "devDependencies": {
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "@vitejs/plugin-react": "^4.0.0",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24",
-    "tailwindcss": "^3.3.2",
-    "vite": "^4.3.9"
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "vite": "^5.2.12",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.2",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.7"
   }
 }
