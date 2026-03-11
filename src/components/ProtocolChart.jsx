@@ -1,73 +1,110 @@
-import React from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
 /**
  * @component ProtocolChart
- * @version 1.0.0
- * @description Dynamic Data Visualization Engine. 
- * Fully synchronized with Global Color Protocols via CSS variables.
- * Features: High-precision rendering, Linear Gradients, and Responsive Scaling.
+ * @version 2.0.0
+ * @description Advanced data visualization engine.
+ * Features: Dynamic theme synchronization, High-fidelity gradients, 
+ * and responsive scaling using Recharts API.
  */
-export default function ProtocolChart() {
-  
-  /**
-   * @constant MOCK_DATA
-   * @description Simulated system throughput or financial performance metrics.
-   */
-  const data = [
-    { name: '00:00', val: 400 },
-    { name: '04:00', val: 300 },
-    { name: '08:00', val: 900 },
-    { name: '12:00', val: 500 },
-    { name: '16:00', val: 700 },
-    { name: '20:00', val: 1000 },
-  ];
+import React from 'react';
+import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer 
+} from 'recharts';
 
+/**
+ * @constant MOCK_STREAM_DATA
+ * @description Real-time simulated data points for system throughput monitoring.
+ */
+const data = [
+  { time: '00:00', flow: 450 },
+  { time: '04:00', flow: 890 },
+  { time: '08:00', flow: 620 },
+  { time: '12:00', flow: 1100 },
+  { time: '16:00', flow: 750 },
+  { time: '20:00', flow: 1300 },
+  { time: '23:59', flow: 980 },
+];
+
+export default function ProtocolChart() {
   return (
-    <div className="h-[300px] w-full mt-6 select-none">
+    <div className="h-[280px] w-full select-none">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data}>
-          {/* Dynamic Linear Gradient: Synchronized with --primary protocol */}
+        <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+          
+          {/* DEFINITIONS: DYNAMIC GRADIENT ENGINE */}
           <defs>
-            <linearGradient id="protocolGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="rgb(var(--primary))" stopOpacity={0.3}/>
-              <stop offset="95%" stopColor="rgb(var(--primary))" stopOpacity={0}/>
+            <linearGradient id="protocolGlow" x1="0" y1="0" x2="0" y2="1">
+              {/* This stop uses the global --primary variable for color-sync */}
+              <stop 
+                offset="5%" 
+                stopColor="rgb(var(--primary))" 
+                stopOpacity={0.4}
+              />
+              <stop 
+                offset="95%" 
+                stopColor="rgb(var(--primary))" 
+                stopOpacity={0}
+              />
             </linearGradient>
           </defs>
 
+          {/* GRID CONFIGURATION */}
           <CartesianGrid 
-            strokeDasharray="3 3" 
-            stroke="rgba(255,255,255,0.05)" 
+            strokeDasharray="6 6" 
+            stroke="rgba(255,255,255,0.02)" 
             vertical={false} 
           />
 
+          {/* AXIS CONFIGURATION */}
           <XAxis 
-            dataKey="name" 
+            dataKey="time" 
             axisLine={false} 
             tickLine={false} 
-            tick={{fill: '#64748b', fontSize: 10, fontWeight: 'bold'}}
-            dy={10}
+            tick={{ fill: '#475569', fontSize: 10, fontWeight: '900' }}
+            dy={15}
           />
+          
+          <YAxis hide domain={['auto', 'auto']} />
 
+          {/* CUSTOM TOOLTIP ENGINE */}
           <Tooltip 
-            contentStyle={{
-              backgroundColor: '#0f172a', 
+            cursor={{ 
+              stroke: 'rgb(var(--primary))', 
+              strokeWidth: 2, 
+              strokeDasharray: '4 4' 
+            }}
+            contentStyle={{ 
+              backgroundColor: '#020617', 
               border: '1px solid rgba(255,255,255,0.1)', 
               borderRadius: '16px',
-              fontSize: '12px'
+              boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
+              padding: '12px'
             }}
-            itemStyle={{color: 'rgb(var(--primary))', fontWeight: '900'}}
-            cursor={{ stroke: 'rgb(var(--primary))', strokeWidth: 1, strokeDasharray: '5 5' }}
+            itemStyle={{ 
+              color: 'rgb(var(--primary))', 
+              fontSize: '12px', 
+              fontWeight: 'bold',
+              textTransform: 'uppercase'
+            }}
           />
 
+          {/* THE MAIN AREA LAYER */}
           <Area 
             type="monotone" 
-            dataKey="val" 
+            dataKey="flow" 
             stroke="rgb(var(--primary))" 
-            strokeWidth={3}
+            strokeWidth={4} 
             fillOpacity={1} 
-            fill="url(#protocolGradient)" 
-            animationDuration={2000}
+            fill="url(#protocolGlow)" 
+            animationDuration={2500}
+            animationEasing="ease-in-out"
+            // Adding a subtle glow to the line itself
+            style={{ filter: 'drop-shadow(0px 4px 10px rgba(var(--primary), 0.5))' }}
           />
         </AreaChart>
       </ResponsiveContainer>
