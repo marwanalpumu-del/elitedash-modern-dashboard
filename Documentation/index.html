@@ -3,65 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EliteDash - Documentation</title>
+    <title>EliteDash PRO - Technical Documentation</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 40px; background: #f4f7f9; }
-        .container { background: white; padding: 40px; border-radius: 12px; shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e1e8ed; }
-        h1 { color: #4f46e5; border-bottom: 2px solid #4f46e5; padding-bottom: 10px; }
-        h2 { color: #1e293b; margin-top: 30px; border-left: 4px solid #4f46e5; padding-left: 15px; }
-        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-family: monospace; color: #e11d48; }
-        pre { background: #1e293b; color: #f8fafc; padding: 20px; border-radius: 8px; overflow-x: auto; }
-        .badge { background: #4f46e5; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; text-transform: uppercase; }
-        .file-tree { list-style: none; padding-left: 20px; }
-        .file-tree li::before { content: "📁 "; }
-        .file-tree li.file::before { content: "📄 "; }
+        :root { --primary: #6366f1; --bg: #f8fafc; --text: #1e293b; }
+        body { font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; color: var(--text); max-width: 1000px; margin: 0 auto; padding: 40px; background: var(--bg); }
+        .container { background: white; padding: 50px; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        h1 { color: var(--primary); font-size: 2.5rem; font-weight: 900; letter-spacing: -0.05em; border-bottom: 4px solid #f1f5f9; padding-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        h2 { color: #0f172a; margin-top: 40px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.1em; background: #f1f5f9; padding: 10px 20px; border-radius: 10px; display: inline-block; }
+        code { background: #fee2e2; padding: 3px 8px; border-radius: 6px; font-family: 'Fira Code', monospace; color: #be123c; font-size: 0.9em; }
+        pre { background: #0f172a; color: #38bdf8; padding: 25px; border-radius: 15px; overflow-x: auto; border: 1px solid #1e293b; font-size: 0.9em; line-height: 1.5; }
+        .badge { background: var(--primary); color: white; padding: 5px 15px; border-radius: 30px; font-size: 0.4em; vertical-align: middle; }
+        .file-tree { list-style: none; padding-left: 20px; border-left: 2px dashed #e2e8f0; margin: 20px 0; }
+        .file-tree li { margin: 8px 0; position: relative; padding-left: 25px; }
+        .file-tree li::before { content: "→"; position: absolute; left: 0; color: var(--primary); font-weight: bold; }
+        .tech-grid { display: grid; grid-cols: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .footer { margin-top: 60px; padding-top: 30px; border-top: 1px solid #f1f5f9; text-align: center; font-size: 0.8rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>EliteDash <span class="badge">v1.0.0</span></h1>
-        <p>Thank you for purchasing <strong>EliteDash</strong>. This documentation will help you set up and customize the dashboard.</p>
+        <h1>ELITEDASH PRO <span class="badge">v1.2.0 - VITE EDITION</span></h1>
+        <p>Welcome to the <strong>EliteDash PRO</strong> technical ecosystem. This version is optimized for high-performance <strong>Vite</strong> environments and features a strict <strong>Protocol-Based Theming</strong> system.</p>
 
-        <h2>1. Project Structure</h2>
+        <h2>1. Updated Project Architecture</h2>
         <ul class="file-tree">
-            <li>src/
-                <ul class="file-tree">
-                    <li class="file">App.jsx (Main Controller)</li>
-                    <li class="file">OrderTerminal.jsx (Assets & Table)</li>
-                    <li class="file">ProfileSecurity.jsx (Security Settings)</li>
-                    <li class="file">NotificationCenter.jsx (Alerts System)</li>
-                    <li class="file">index.css (Glassmorphism Styles)</li>
-                </ul>
-            </li>
-            <li class="file">package.json (Dependencies)</li>
-            <li class="file">tailwind.config.js (UI Configuration)</li>
+            <li><strong>src/main.jsx</strong> - Application Bootstrapper (Vite Entry)</li>
+            <li><strong>src/App.jsx</strong> - Global Controller & Protocol Manager</li>
+            <li><strong>src/components/charts/</strong> - Specialized Recharts Analytics Engines</li>
+            <li><strong>src/pages/AdminPanel.jsx</strong> - Root Security & Lockdown Interface</li>
+            <li><strong>src/index.css</strong> - Global CSS Variables & Tailwind Protocols</li>
+            <li><strong>vercel.json</strong> - Deployment & SPA Routing Configuration</li>
         </ul>
 
-        <h2>2. Installation Guide</h2>
-        <p>Follow these steps to get the project running on your local machine:</p>
+        <h2>2. Quick Start (Terminal Commands)</h2>
+        <p>Ensure you have <code>Node.js</code> installed before executing these commands:</p>
         <pre>
-# 1. Extract the zip file
-# 2. Open terminal in the project folder
-# 3. Install dependencies
+# 1. Initialize environment
 npm install
 
-# 4. Start the development server
-npm start</pre>
+# 2. Launch Development Server (HMR Enabled)
+npm run dev
 
-        <h2>3. Customization</h2>
-        <p>To change the primary colors, edit <code>tailwind.config.js</code>. For the glassmorphism intensity, modify the <code>.glass-panel</code> class in <code>index.css</code>.</p>
+# 3. Execute Production Build
+npm run build</pre>
+
+        <h2>3. Theme Protocol System</h2>
+        <p>This dashboard uses <strong>CSS Variable Injection</strong>. To add a new theme, update the <code>:root[data-theme='...']</code> block in <code>index.css</code>. All components (Charts, Buttons, Icons) will synchronize automatically.</p>
         
-        <h2>4. Credits & Assets</h2>
+        <h2>4. Tech Stack Standards</h2>
+        <p>The project strictly adheres to the following modern standards:</p>
         <ul>
-            <li><strong>Framework:</strong> React.js</li>
-            <li><strong>Styling:</strong> Tailwind CSS</li>
-            <li><strong>Icons:</strong> Lucide React</li>
-            <li><strong>Fonts:</strong> System UI / Inter</li>
+            <li><strong>Runtime:</strong> React 18 (Concurrent Mode)</li>
+            <li><strong>Engine:</strong> Vite 5.0</li>
+            <li><strong>Motion:</strong> Framer Motion 10+</li>
+            <li><strong>Icons:</strong> Lucide React (Tree-shakable)</li>
+            <li><strong>Charts:</strong> Recharts API (SVG-based)</li>
         </ul>
 
-        <p style="margin-top:50px; font-size: 0.9em; color: #64748b; text-align: center;">
-            &copy; 2026 EliteDash Terminal. All rights reserved.
-        </p>
+        <div class="footer">
+            &copy; 2026 ELITEDASH TERMINAL CORE. ENGINEERED FOR PERFORMANCE.
+        </div>
     </div>
 </body>
 </html>
