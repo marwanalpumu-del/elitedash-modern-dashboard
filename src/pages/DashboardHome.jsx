@@ -1,15 +1,16 @@
 /**
  * @component DashboardHome
- * @description The main overview page showcasing key performance indicators (KPIs), 
- * sales charts, and admin panels.
+ * @version 1.4.0
+ * @description The main overview page showcasing key performance indicators (KPIs).
  * Standards: Global Market Compliance (Clean Code & Professional Structure).
  */
 
 import React from 'react';
-import { TrendingUp, Users, DollarSign, ArrowUpRight, Activity, ShieldCheck } from 'lucide-react';
-// استيراد المكونات التي أنشأناها سابقاً
-import RevenueChart from '../components/charts/RevenueChart'; 
-import AdminPanel from '../components/dashboard/AdminPanel';
+import { TrendingUp, Users, DollarSign, ArrowUpRight } from 'lucide-react';
+
+// --- TECHNICAL CORRECTION: Importing the unified chart components ---
+// تأكد من أن هذه الملفات موجودة في مجلد components لديك
+import ProtocolChart from '../components/ProtocolChart'; 
 
 // --- MOCK DATA ---
 const RECENT_ACTIVITIES = [
@@ -19,22 +20,26 @@ const RECENT_ACTIVITIES = [
 ];
 
 export default function DashboardHome({ lang = 'ar' }) {
+  const isAr = lang === 'ar';
   
   const stats = [
-    { label: lang === 'ar' ? 'إجمالي المبيعات' : 'Total Sales', value: '$45,200', icon: <DollarSign />, color: 'emerald' },
-    { label: lang === 'ar' ? 'العملاء الجدد' : 'New Customers', value: '+1,240', icon: <Users />, color: 'indigo' },
-    { label: lang === 'ar' ? 'معدل النمو' : 'Growth Rate', value: '12.5%', icon: <TrendingUp />, color: 'fuchsia' },
+    { label: isAr ? 'إجمالي المبيعات' : 'Total Sales', value: '$45,200', icon: <DollarSign />, color: 'emerald' },
+    { label: isAr ? 'العملاء الجدد' : 'New Customers', value: '+1,240', icon: <Users />, color: 'indigo' },
+    { label: isAr ? 'معدل النمو' : 'Growth Rate', value: '12.5%', icon: <TrendingUp />, color: 'fuchsia' },
   ];
 
   return (
-    <div className="space-y-12 p-4 lg:p-8 animate-in fade-in zoom-in-95 duration-700">
+    <div className="space-y-12 p-2 lg:p-8 animate-in fade-in zoom-in-95 duration-700">
       
-      {/* 1. SECTION: KPI Cards (بطاقات المؤشرات الرئيسية) */}
+      {/* 1. SECTION: KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {stats.map((stat, i) => (
           <div key={i} className="group bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-[2.5rem] shadow-xl hover:bg-white/[0.08] transition-all relative overflow-hidden">
             <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10 group-hover:scale-110 transition-transform">
-              {React.cloneElement(stat.icon, { className: `text-${stat.color}-400`, size: 24 })}
+              {React.cloneElement(stat.icon, { 
+                className: stat.color === 'emerald' ? 'text-emerald-400' : stat.color === 'indigo' ? 'text-indigo-400' : 'text-fuchsia-400', 
+                size: 24 
+              })}
             </div>
             <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">{stat.label}</p>
             <div className="flex items-baseline gap-2 mt-2">
@@ -47,42 +52,37 @@ export default function DashboardHome({ lang = 'ar' }) {
         ))}
       </div>
 
-      {/* 2. SECTION: Advanced Revenue Chart (استدعاء الرسم البياني المتطور) */}
-      <section className="animate-in slide-in-from-bottom-5 duration-1000 delay-200">
-        <RevenueChart lang={lang} />
+      {/* 2. SECTION: Dynamic Protocol Chart */}
+      <section className="bg-white/5 border border-white/10 rounded-[3rem] p-8 backdrop-blur-3xl animate-in slide-in-from-bottom-5 duration-1000">
+        <div className="mb-6">
+           <h3 className="text-sm font-black text-white uppercase tracking-widest">
+             {isAr ? 'مراقبة التدفق المالي' : 'Financial Throughput'}
+           </h3>
+        </div>
+        <ProtocolChart />
       </section>
 
-      {/* 3. SECTION: Two-Column Layout (Activity + Admin Quick View) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
-        {/* Recent Activity Block */}
-        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 p-8 rounded-[3rem] shadow-2xl">
-          <h3 className="font-black text-lg mb-8 italic uppercase tracking-tighter text-white">
-            {lang === 'ar' ? 'النشاط الأخير' : 'Recent Activity'}
-          </h3>
-          <div className="space-y-6">
-            {RECENT_ACTIVITIES.map(item => (
-              <div key={item.id} className="flex items-center gap-4 group cursor-default p-2 rounded-2xl hover:bg-white/5 transition-all">
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-[10px] font-black text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-all">
-                  {item.id}
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-bold text-white tracking-tight">
-                    {lang === 'ar' ? `طلب جديد من ${item.user}` : `New Order from ${item.user}`}
-                  </p>
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{item.time}</p>
-                </div>
-                <span className="text-xs font-black text-emerald-400 italic">{item.amount}</span>
+      {/* 3. SECTION: Recent Activity Block */}
+      <div className="bg-white/5 backdrop-blur-2xl border border-white/10 p-8 rounded-[3rem] shadow-2xl max-w-2xl mx-auto md:mx-0">
+        <h3 className="font-black text-lg mb-8 italic uppercase tracking-tighter text-white">
+          {isAr ? 'النشاط الأخير' : 'Recent Activity'}
+        </h3>
+        <div className="space-y-6">
+          {RECENT_ACTIVITIES.map(item => (
+            <div key={item.id} className="flex items-center gap-4 group cursor-default p-2 rounded-2xl hover:bg-white/5 transition-all">
+              <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-[10px] font-black text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-all">
+                {item.id}
               </div>
-            ))}
-          </div>
+              <div className="flex-1">
+                <p className="text-sm font-bold text-white tracking-tight">
+                  {isAr ? `طلب جديد من ${item.user}` : `New Order from ${item.user}`}
+                </p>
+                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{item.time}</p>
+              </div>
+              <span className="text-xs font-black text-emerald-400 italic">{item.amount}</span>
+            </div>
+          ))}
         </div>
-
-        {/* Admin Panel Preview (استدعاء لوحة الإدارة كقسم معاينة) */}
-        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[3rem] overflow-hidden shadow-2xl">
-           <AdminPanel lang={lang} />
-        </div>
-
       </div>
     </div>
   );
