@@ -1,16 +1,26 @@
 {
-  "name": "elitedash-terminal",
-  "version": "1.0.0",
-  "private": true,
+  "name": "elitedash-terminal-pro",
+  "version": "1.2.0",
+  "private": false,
+  "description": "Premium React Admin Dashboard featuring Cybernetic UI, Global Audio Protocols, and Multi-language Support.",
+  "author": "EliteDash Developer",
+  "keywords": [
+    "react",
+    "dashboard",
+    "admin-panel",
+    "cyberpunk-ui",
+    "glassmorphism",
+    "audio-ui"
+  ],
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "recharts": "^2.10.0",
     "lucide-react": "^0.284.0",
-    "lucide-static": "^0.284.0",
     "react-scripts": "5.0.1",
     "clsx": "^2.0.0",
-    "tailwind-merge": "^1.14.0"
+    "tailwind-merge": "^1.14.0",
+    "framer-motion": "^10.16.4"
   },
   "scripts": {
     "start": "react-scripts start",
