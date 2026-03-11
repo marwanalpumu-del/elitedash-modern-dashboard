@@ -5,51 +5,44 @@ import DashboardHome from './pages/DashboardHome';
 import Invoices from './pages/Invoices';
 import ProfileSecurity from './pages/ProfileSecurity';
 import NotificationCenter from './pages/NotificationCenter';
-import AdminPanel from './pages/AdminPanel'; 
+import AdminPanel from './pages/AdminPanel';
+import SystemSettings from './pages/SystemSettings'; // Newly Integrated
 import Login from './pages/Login';
 import './index.css';
 
 /**
  * @file App.jsx
- * @version 1.1.0
+ * @version 1.2.0
  * @description Master Controller for EliteDash. 
- * Features: RBAC, Multi-language Support, and Dynamic "Color Protocol" System.
+ * Features: RBAC, Multi-language Support, Dynamic Themes, and Audio Feedback Control.
  */
-
 export default function App() {
   // --- 1. Application States ---
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState('user'); 
   const [activeTab, setActiveTab] = useState('home');
   const [lang, setLang] = useState('ar');
-  
-  // --- COLOR PROTOCOL STATE ---
-  const [theme, setTheme] = useState('purple'); // Options: 'purple' | 'ocean' | 'emerald'
+  const [theme, setTheme] = useState('purple'); 
+
+  // --- GLOBAL SYSTEM CONFIGURATION ---
+  const [appConfig, setAppConfig] = useState({
+    siteName: 'ELITEDASH',
+    audioEnabled: true, // Controls the Cyber Audio Protocol globally
+  });
 
   /**
    * @effect Theme Orchestrator
-   * @description Injects the selected theme protocol into the DOM root
    */
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  /**
-   * @function toggleLanguage
-   * @description Handlers RTL/LTR switching for Internationalization
-   */
   const toggleLanguage = useCallback(() => {
     setLang((prev) => (prev === 'ar' ? 'en' : 'ar'));
   }, []);
 
-  /**
-   * @function handleLogin
-   * @param {string} email - Auth identifier
-   * @description Determines access level and initial view upon login
-   */
   const handleLogin = (email = "") => {
     const isRoot = email.toLowerCase().includes('admin');
-    
     if (isRoot) {
       setUserRole('admin');
       setActiveTab('admin');
@@ -57,18 +50,16 @@ export default function App() {
       setUserRole('user');
       setActiveTab('home');
     }
-    
     setIsAuthenticated(true);
   };
 
-  // --- 2. Auth Guard Component ---
   if (!isAuthenticated) {
     return <Login onLogin={handleLogin} lang={lang} />;
   }
 
   /**
    * @function renderActiveTab
-   * @description View Engine for dynamic page rendering
+   * @description Updated View Engine to include the Settings module.
    */
   const renderActiveTab = () => {
     const content = (() => {
@@ -78,6 +69,7 @@ export default function App() {
         case 'admin':     return <AdminPanel lang={lang} />; 
         case 'security':  return <ProfileSecurity lang={lang} />;
         case 'alerts':    return <NotificationCenter lang={lang} />;
+        case 'settings':  return <SystemSettings lang={lang} config={appConfig} setConfig={setAppConfig} />;
         default:          return <DashboardHome lang={lang} />;
       }
     })();
@@ -95,23 +87,21 @@ export default function App() {
       ${lang === 'ar' ? 'font-sans-ar' : 'font-sans-en'}
       selection:bg-indigo-500/30
     `}>
-      {/* Global Header with Color Protocol Controls */}
       <header className="no-print sticky top-0 z-[60]">
         <Navbar 
           lang={lang} 
           toggleLanguage={toggleLanguage} 
           userRole={userRole}
           currentTheme={theme}
-          setTheme={setTheme} // Passing setter to allow Navbar to switch colors
+          setTheme={setTheme}
+          audioEnabled={appConfig.audioEnabled} // Passing audio permission
         />
       </header>
 
-      {/* Main Viewport */}
       <main className="max-w-[1440px] mx-auto p-4 lg:p-10 min-h-[calc(100vh-160px)]">
         {renderActiveTab()}
       </main>
 
-      {/* Persistent Navigation Dock */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 no-print">
         <div className="absolute inset-0 bg-gradient-to-t from-[#020617] to-transparent pointer-events-none h-24 -top-24" />
         <BottomNav 
