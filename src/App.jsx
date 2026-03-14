@@ -1,8 +1,9 @@
 /**
  * @file App.jsx
- * @version 1.5.0
- * @description Centralized Application Orchestrator. 
- * Manages Auth, RBAC, Protocols, and Routing.
+ * @version 1.6.0
+ * @author Marwan
+ * @description Centralized Application Orchestrator for EliteDash.
+ * Handles Global States: Auth, Routing, Theme (HSL), and Language (RTL/LTR).
  */
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
@@ -17,9 +18,9 @@ import Login from './pages/Login';
 
 export default function App() {
   // --- GLOBAL STATES ---
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Set to false for production
+  const [isAuthenticated, setIsAuthenticated] = useState(true); 
   const [activeTab, setActiveTab] = useState('home');
-  const [theme, setTheme] = useState('purple');
+  const [theme, setTheme] = useState('purple'); // Options: purple, ocean, emerald, rose
   const [lang, setLang] = useState('ar');
 
   // --- SYSTEM CONFIGURATION ---
@@ -27,31 +28,44 @@ export default function App() {
     audioEnabled: true,
   });
 
-  /** @effect ThemeOrchestrator - Syncs UI with selected Protocol */
+  /** * @effect SystemOrchestrator 
+   * Syncs Theme, Language, and Document Direction (RTL/LTR)
+   */
   useEffect(() => {
+    // Sync Theme Attribute
     document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+    
+    // Sync Document Language and Direction
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  }, [theme, lang]);
 
   // --- AUTH GUARD ---
   if (!isAuthenticated) return <Login onLogin={() => setIsAuthenticated(true)} lang={lang} />;
 
   /**
    * @function renderView
-   * @description Dynamic Router based on activeTab state.
+   * @description Dynamic Router with transition key to trigger re-animation on tab change.
    */
   const renderView = () => {
-    switch (activeTab) {
-      case 'home':      return <DashboardHome lang={lang} />;
-      case 'analytics': return <Analytics lang={lang} />;
-      case 'admin':     return <AdminPanel lang={lang} />;
-      case 'settings':  return <ProfileSettings lang={lang} />;
-      default:          return <DashboardHome lang={lang} />;
-    }
+    const views = {
+      home: <DashboardHome lang={lang} />,
+      analytics: <Analytics lang={lang} />,
+      admin: <AdminPanel lang={lang} />,
+      settings: <ProfileSettings lang={lang} />,
+    };
+    
+    return (
+      <div key={activeTab} className="animate-reveal">
+        {views[activeTab] || <DashboardHome lang={lang} />}
+      </div>
+    );
   };
 
   return (
-    <div className={`min-h-screen bg-[#020617] text-slate-300 pb-32 transition-all duration-700 ${lang === 'ar' ? 'font-sans-ar text-right' : 'font-sans-en text-left'}`}>
+    <div className={`min-h-screen bg-[#020617] text-slate-300 pb-32 transition-colors duration-700 selection:bg-primary/30`}>
       
+      {/* HEADER SECTION */}
       <Navbar 
         lang={lang} 
         toggleLanguage={() => setLang(prev => prev === 'ar' ? 'en' : 'ar')}
@@ -61,10 +75,12 @@ export default function App() {
         audioEnabled={appConfig.audioEnabled}
       />
       
-      <main className="max-w-7xl mx-auto p-4 md:p-10 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+      {/* MAIN CONTENT AREA */}
+      <main className="max-w-7xl mx-auto px-4 md:px-10 pt-4">
         {renderView()}
       </main>
 
+      {/* NAVIGATION SECTION */}
       <BottomNav 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
