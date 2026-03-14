@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; // هنا تم تصحيح حرف i
 import { motion, AnimatePresence } from 'framer-motion';
 import DashboardHome from './pages/DashboardHome';
 import ProfileSettings from './pages/ProfileSettings';
@@ -8,13 +8,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen relative bg-[#020617] overflow-hidden">
-      {/* إضاءة خلفية سينمائية - لرفع القيمة البيعية */}
-      <div className="fixed top-[-10%] left-[-10%] w-[60%] h-[60%] bg-purple-600/10 blur-[150px] rounded-full" />
-      <div className="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-teal-500/10 blur-[150px] rounded-full" />
+      {/* 🌌 إضاءة خلفية سينمائية - لرفع الجودة البصرية */}
+      <div className="fixed top-[-10%] left-[-10%] w-[60%] h-[60%] bg-purple-600/10 blur-[150px] rounded-full pointer-events-none" />
+      <div className="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-teal-500/10 blur-[150px] rounded-full pointer-events-none" />
 
       <main className="relative z-10 container mx-auto px-6 pt-12 pb-32">
-        <header className="mb-12 flex justify-between items-center animate-reveal">
-          <div>
+        <header className="mb-12 flex justify-between items-center">
+          <div className="animate-reveal">
             <h1 className="text-4xl selling-text">ELITEDASH</h1>
             <p className="text-[10px] uppercase tracking-[0.5em] text-slate-500 mt-2">Protocol v2.0.4 Premium</p>
           </div>
@@ -36,10 +36,20 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      {/* شريط التنقل السفلي - تصميم عصري جداً */}
-      <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/5 backdrop-blur-2xl border border-white/10 px-8 py-4 rounded-[2.5rem] flex gap-12 z-50">
-        <button onClick={() => setActiveTab('home')} className={`text-[10px] font-black uppercase tracking-widest ${activeTab === 'home' ? 'text-purple-400' : 'text-slate-500'}`}>Home</button>
-        <button onClick={() => setActiveTab('settings')} className={`text-[10px] font-black uppercase tracking-widest ${activeTab === 'settings' ? 'text-purple-400' : 'text-slate-500'}`}>Settings</button>
+      {/* 📱 شريط التنقل السفلي - التصميم البيعي النظيف */}
+      <nav className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-white/5 backdrop-blur-2xl border border-white/10 px-8 py-4 rounded-[3rem] flex gap-12 z-50 shadow-2xl">
+        <button 
+          onClick={() => setActiveTab('home')} 
+          className={`text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'home' ? 'text-purple-400 scale-110' : 'text-slate-500'}`}
+        >
+          Home
+        </button>
+        <button 
+          onClick={() => setActiveTab('settings')} 
+          className={`text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'settings' ? 'text-purple-400 scale-110' : 'text-slate-500'}`}
+        >
+          Settings
+        </button>
       </nav>
     </div>
   );
