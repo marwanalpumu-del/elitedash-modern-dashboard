@@ -11,8 +11,8 @@ export default function DashboardHome() {
       ].map((item, index) => (
         <div key={index} className="premium-card group hover:scale-[1.02] transition-all duration-500">
           <div className="flex justify-between items-start mb-6">
-            <div className={`p-3 bg-white/5 rounded-2xl border border-white/10 group-hover:border-${item.color}-500/50 transition-colors`}>
-               <div className={`w-6 h-6 bg-${item.color}-500/20 rounded-lg shadow-[0_0_15px_rgba(168,85,247,0.4)]`} />
+            <div className={`p-3 bg-white/5 rounded-2xl border border-white/10 group-hover:border-purple-500/50 transition-colors`}>
+               <div className="w-6 h-6 bg-purple-500/20 rounded-lg shadow-[0_0_15px_rgba(168,85,247,0.4)]" />
             </div>
             <span className="text-emerald-400 font-black text-[10px] bg-emerald-500/10 px-2 py-1 rounded-lg border border-emerald-500/20">
               {item.trend}
@@ -29,7 +29,6 @@ export default function DashboardHome() {
       
       {/* منطقة الرسم البياني الاحترافية */}
       <div className="md:col-span-3 premium-card h-72 flex flex-col items-center justify-center border-dashed border-white/10 relative overflow-hidden group">
-         {/* إضاءة داخلية خفيفة */}
          <div className="absolute inset-0 bg-gradient-to-t from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
          
          <div className="relative z-10 flex flex-col items-center">
@@ -37,7 +36,6 @@ export default function DashboardHome() {
               Main Graph Protocol
             </p>
             
-            {/* تمثيل مرئي للرسم البياني (Bars) */}
             <div className="flex gap-2 items-end h-24">
                {[40, 65, 45, 90, 55, 80, 60, 95, 70].map((h, i) => (
                  <div 
