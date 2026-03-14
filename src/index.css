@@ -1,9 +1,8 @@
 /**
  * @file index.css
- * @version 1.5.0
- * @author EliteDash Team
- * @description Professional-grade styling engine for high-end React dashboards.
- * This file implements Glassmorphism, Dynamic Theming, and Smooth Animations.
+ * @version 1.6.0 - THE ULTIMATE VISIBILITY & RESPONSIVE UPDATE
+ * @author Marwan & EliteDash Core
+ * @description Integrated engine for cross-device high-end UI.
  */
 
 /* --- 1. CORE TAILWIND DIRECTIVES --- */
@@ -12,20 +11,22 @@
 @tailwind utilities;
 
 /* --- 2. GLOBAL THEME VARIABLES --- 
-   Using HSL for better color manipulation and opacity control.
+   Updated with higher vibrancy for OLED/Mobile screens.
 */
 :root {
-  /* Core Colors (Cyber Purple Default) */
-  --primary: 243 75% 59%;    /* Indigo-500 equivalent */
-  --primary-glow: 243 75% 59% / 0.5;
-  --accent: 263 91% 64%;     /* Violet-500 equivalent */
+  /* Ultra-Vibrant Indigo (Primary) */
+  --primary: 243 90% 70%;    
+  --primary-glow: 243 90% 70% / 0.5;
   
-  /* System Backgrounds */
-  --bg-dark: 222 47% 5%;     /* Deep Slate-950 */
-  --card-bg: 222 47% 10%;    /* Lighter Slate for contrast */
+  /* Electric Violet (Accent) */
+  --accent: 263 91% 75%;     
+  
+  /* Background Protocol */
+  --bg-dark: 222 47% 4%;     
+  --card-bg: 222 47% 12%;    
 }
 
-/* --- 3. BASE STYLES & RESETS --- */
+/* --- 3. BASE STYLES & RESPONSIVE RESETS --- */
 @layer base {
   html {
     @apply scroll-smooth;
@@ -33,7 +34,8 @@
   }
 
   body {
-    @apply bg-[#020617] text-slate-300 antialiased selection:bg-indigo-500/30;
+    /* تم تحسين لون النص إلى slate-200 لزيادة التباين على الجوال */
+    @apply bg-[#020617] text-slate-200 antialiased selection:bg-primary/30;
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -41,15 +43,20 @@
     overflow-x: hidden;
   }
 
-  /* Typography optimization for Dashboard readability */
+  /* Typography: Responsive Sizes */
   h1, h2, h3, h4 {
-    @apply text-white font-bold tracking-tight;
+    @apply text-white font-black tracking-tight drop-shadow-[0_0_10px_rgba(255,255,255,0.1)];
+  }
+
+  /* Responsive font adjustments */
+  p {
+    @apply text-sm md:text-base leading-relaxed;
   }
 }
 
-/* --- 4. PROFESSIONAL SCROLLBAR (Minimalist Design) --- */
+/* --- 4. MINIMALIST SCROLLBAR --- */
 ::-webkit-scrollbar {
-  @apply w-1.5;
+  @apply w-1 md:w-1.5;
 }
 
 ::-webkit-scrollbar-track {
@@ -57,67 +64,84 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-white/5 rounded-full border-2 border-transparent bg-clip-content;
+  @apply bg-white/10 rounded-full border-2 border-transparent bg-clip-content;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-white/20;
 }
 
-/* --- 5. CUSTOM COMPONENT CLASSES --- */
+/* --- 5. COMPONENT CLASSES (The Glass Engine) --- */
 @layer components {
-  /* Premium Glassmorphism Panel */
+  /* Adaptive Glass Panel: Lighter on Mobile, Deeper on Desktop */
   .glass-panel {
-    @apply bg-white/[0.03] backdrop-blur-2xl border border-white/10 
-           shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] transition-all duration-300;
+    @apply bg-white/[0.05] backdrop-blur-2xl md:backdrop-blur-3xl 
+           border border-white/10 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] 
+           transition-all duration-300 rounded-3xl md:rounded-[2.5rem];
   }
 
-  /* High-Performance Neon Glow Effect */
+  /* Neon Text Glow - Enhanced for Daytime Visibility */
   .text-glow {
-    text-shadow: 0 0 15px hsl(var(--primary-glow));
+    text-shadow: 0 0 20px hsl(var(--primary-glow));
   }
 
-  /* Interactive Component Hover State */
-  .card-interactive {
-    @apply hover:bg-white/[0.05] hover:border-white/20 hover:-translate-y-1 transition-all duration-300;
+  /* Interactive Hover: Disabled on touch devices to prevent stickiness */
+  @media (hover: hover) {
+    .card-interactive:hover {
+      @apply bg-white/[0.08] border-white/30 -translate-y-1 scale-[1.01] shadow-primary/10;
+    }
   }
 }
 
-/* --- 6. ANIMATION UTILITIES --- */
+/* --- 6. ANIMATION & UTILITIES --- */
 @layer utilities {
-  /* Slow Subtle Tilt for Glowing Elements */
-  @keyframes tilt-slow {
-    0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(0.5deg); }
-    75% { transform: rotate(-0.5deg); }
-  }
-
-  .animate-tilt-slow {
-    animation: tilt-slow 8s infinite linear;
-  }
-
-  /* Fade-in Animation for Dynamic Content Loading */
+  /* Content Reveal Animation */
   .animate-reveal {
-    animation: reveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
   @keyframes reveal {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  /* Responsive Grid Container */
+  .dashboard-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6;
+  }
+
+  /* Background Glow Orbs (Optional for extra flair) */
+  .bg-orb {
+    @apply absolute -z-10 blur-[120px] rounded-full opacity-20 animate-pulse-slow;
+  }
 }
 
-/* --- 7. RTL SUPPORT (Arabic Optimization) --- */
+/* --- 7. RTL & ARABIC OPTIMIZATION --- */
 [dir='rtl'] .font-sans-ar {
   font-family: 'Noto Sans Arabic', sans-serif;
-  letter-spacing: 0; /* Reset letter spacing for Arabic scripts */
+  letter-spacing: 0;
+  line-height: 1.7;
 }
 
-/* --- 8. PRINT SETTINGS (Accessibility Compliance) --- */
+/* --- 8. ADAPTIVE LAYOUT FIXES (FOR TABLETS & LAPTOPS) --- */
+@media (max-width: 1024px) {
+  /* تصغير المسافات في التابلت والجوال لتوفير المساحة */
+  .container {
+    @apply px-4 max-w-full;
+  }
+}
+
+@media (min-width: 1280px) {
+  /* هوامش أكبر للشاشات الضخمة (Ultrawide) */
+  .container {
+    @apply max-w-[1440px] mx-auto;
+  }
+}
+
+/* --- 9. ACCESSIBILITY & PRINT --- */
 @media print {
   .glass-panel {
-    @apply border-slate-200 shadow-none bg-white text-black;
+    @apply bg-white text-black border-slate-300 shadow-none;
     backdrop-filter: none !important;
   }
-  .no-print { @apply hidden; }
 }
