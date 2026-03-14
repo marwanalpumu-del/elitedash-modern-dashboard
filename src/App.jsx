@@ -1,8 +1,8 @@
 /**
  * @file App.jsx
- * @version 1.6.0
+ * @version 1.6.1
  * @author Marwan
- * @description Centralized Application Orchestrator for EliteDash.
+ * @description Centralized Application Orchestrator for EliteDash with Safe-Area padding.
  */
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
@@ -19,7 +19,7 @@ export default function App() {
   // --- 1. GLOBAL STATES ---
   const [isAuthenticated, setIsAuthenticated] = useState(true); 
   const [activeTab, setActiveTab] = useState('home');
-  const [theme, setTheme] = useState('purple'); // purple, ocean, emerald, rose
+  const [theme, setTheme] = useState('purple'); 
   const [lang, setLang] = useState('ar');
 
   // --- 2. SYSTEM CONFIGURATION ---
@@ -28,17 +28,13 @@ export default function App() {
   });
 
   /** * @effect SystemOrchestrator 
-   * يقوم بمزامنة اللغة، الاتجاه (RTL/LTR)، والثيم مع الـ DOM الأساسي
+   * لمزامنة اللغة، الاتجاه، والثيم
    */
   useEffect(() => {
-    // تحديث السمة الخاصة بالثيم (يمكن استخدامها في CSS لتغيير المتغيرات)
     document.documentElement.setAttribute('data-theme', theme);
-    
-    // ضبط اتجاه الصفحة واللغة
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     
-    // إضافة كلاس للتحكم في الخطوط بناءً على اللغة
     if (lang === 'ar') {
       document.body.classList.add('font-sans-ar');
     } else {
@@ -51,7 +47,7 @@ export default function App() {
 
   /**
    * @function renderView
-   * @description نظام توجيه داخلي (Internal Router) مع أنيميشن عند التبديل
+   * نظام التوجيه الداخلي
    */
   const renderView = () => {
     const views = {
@@ -69,9 +65,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-200 pb-28 md:pb-10 transition-colors duration-700">
+    <div className="min-h-screen bg-[#020617] text-slate-200 transition-colors duration-700">
       
-      {/* 1. NAVBAR: ثابت في الأعلى (Desktop) أو مدمج (Mobile) */}
+      {/* 1. NAVBAR: القائمة العلوية */}
       <Navbar 
         lang={lang} 
         toggleLanguage={() => setLang(prev => prev === 'ar' ? 'en' : 'ar')}
@@ -81,14 +77,14 @@ export default function App() {
         audioEnabled={appConfig.audioEnabled}
       />
       
-      {/* 2. MAIN CONTENT: حاوية متجاوبة بذكاء */}
-      <main className="container mx-auto px-4 md:px-8 lg:px-12 pt-6 lg:pt-10">
+      {/* 2. MAIN CONTENT: منطقة المحتوى مع مساحة الأمان الجديدة */}
+      <main className="container mx-auto px-4 pb-24 pt-6 md:px-8 lg:px-12 lg:pt-10">
         <div className="max-w-[1600px] mx-auto">
           {renderView()}
         </div>
       </main>
 
-      {/* 3. NAVIGATION: شريط سفلي للجوال والتابلت */}
+      {/* 3. NAVIGATION: شريط التنقل السفلي */}
       <BottomNav 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
