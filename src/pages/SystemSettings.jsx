@@ -1,19 +1,16 @@
-import React, { useState } from 'react';
-import { Save, Globe, Volume2, Shield, Layout, Image as ImageIcon, Activity } from 'lucide-react';
-
 /**
  * @file SystemSettings.jsx
- * @module Administrative
- * @description Master Control Engine for platform-wide configurations and branding assets.
- * @version 1.2.0
+ * @version 1.3.0
+ * @author Marwan & EliteDash UI
+ * @description Master Control Engine for platform-wide configurations.
  */
 
-export default function SystemSettings() {
+import React, { useState } from 'react';
+import { Save, Globe, Volume2, Shield, Layout, Image as ImageIcon, Activity, Cpu } from 'lucide-react';
+
+export default function SystemSettings({ lang = 'ar' }) {
+  const isAr = lang === 'ar';
   
-  /**
-   * @state localSettings
-   * @description Local synchronization state for administrative parameters.
-   */
   const [localSettings, setLocalSettings] = useState({
     siteName: 'ELITEDASH',
     audioProtocol: true,
@@ -22,36 +19,34 @@ export default function SystemSettings() {
     securityLevel: 'Enterprise'
   });
 
-  /**
-   * @function syncConfiguration
-   * @description Broadcasts local state changes to the system backend.
-   */
   const syncConfiguration = () => {
     // Logic for API persistence
     console.log("Synchronizing System Protocols...", localSettings);
-    alert('System protocols synchronized successfully');
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-1000">
+    <div className="space-y-6 animate-reveal font-sans-ar pb-10">
       
-      {/* MODULE: Master Header */}
-      <div className="flex justify-between items-center bg-white/5 p-6 rounded-[2.5rem] border border-white/10 backdrop-blur-3xl shadow-2xl">
-        <div>
-          <h2 className="text-xl lg:text-2xl font-black text-white uppercase tracking-tighter">
-            System Configuration
+      {/* 1. MASTER HEADER CONTROL */}
+      <div className="flex flex-col md:flex-row justify-between items-center glass-panel p-6 md:p-8 rounded-[2.5rem] border-white/10 gap-6">
+        <div className={isAr ? 'text-right' : 'text-left'}>
+          <h2 className="text-2xl font-black text-white uppercase tracking-tighter text-glow">
+            {isAr ? 'إعدادات النظام' : 'System Configuration'}
           </h2>
-          <p className="text-[9px] text-indigo-400 font-bold uppercase tracking-[0.3em] mt-1">
-            Managing Terminal Root Parameters
+          <p className="text-[10px] text-primary font-black uppercase tracking-[0.3em] mt-2 opacity-70">
+            {isAr ? 'إدارة معلمات المحطة الجذرية' : 'Managing Terminal Root Parameters'}
           </p>
         </div>
         
         <button 
           onClick={syncConfiguration}
-          className="group flex items-center gap-3 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase transition-all shadow-xl shadow-indigo-600/20 active:scale-95"
+          className="group flex items-center gap-4 bg-primary text-white px-10 py-5 rounded-2xl text-[11px] font-black uppercase transition-all shadow-xl shadow-primary/20 active:scale-95 relative overflow-hidden"
         >
-          <Save size={16} className="group-hover:rotate-12 transition-transform" />
-          Apply Sync
+          <span className="relative z-10 flex items-center gap-3">
+            <Save size={18} className="group-hover:rotate-12 transition-transform" />
+            {isAr ? 'تطبيق المزامنة' : 'Apply Sync'}
+          </span>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
         </button>
       </div>
 
@@ -60,82 +55,83 @@ export default function SystemSettings() {
         {/* PANEL: Configuration Groups */}
         <div className="lg:col-span-2 space-y-6">
           
-          {/* GROUP: Branding Assets */}
-          <div className="bg-white/5 border border-white/10 p-8 rounded-[3rem] backdrop-blur-md relative overflow-hidden">
-            <h3 className="text-xs font-black text-slate-400 uppercase tracking-[4px] mb-8 flex items-center gap-3">
-              <Globe size={14} className="text-indigo-500" /> 
-              Branding & Identity
+          {/* GROUP: Branding & Identity */}
+          <div className="glass-panel p-8 rounded-[3rem] card-interactive">
+            <h3 className={`text-[10px] font-black text-slate-400 uppercase tracking-[4px] mb-8 flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
+              <Globe size={16} className="text-primary" /> 
+              {isAr ? 'الهوية والعلامة التجارية' : 'Branding & Identity'}
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-3">
-                <label className="text-[10px] text-slate-500 font-black uppercase tracking-widest ml-2 italic">
-                  Platform Title
+                <label className={`text-[10px] text-slate-500 font-black uppercase tracking-widest block ${isAr ? 'text-right' : 'text-left'}`}>
+                  {isAr ? 'عنوان المنصة' : 'Platform Title'}
                 </label>
                 <input 
                   type="text" 
+                  dir={isAr ? 'rtl' : 'ltr'}
                   value={localSettings.siteName}
                   onChange={(e) => setLocalSettings({...localSettings, siteName: e.target.value})}
-                  className="w-full bg-[#020617]/80 border border-white/5 rounded-2xl py-4 px-6 text-white text-xs outline-none focus:border-indigo-500/40 focus:ring-4 focus:ring-indigo-500/5 transition-all font-bold"
+                  className={`w-full bg-[#020617]/80 border border-white/5 rounded-2xl py-4 px-6 text-white text-xs outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all font-bold`}
                 />
               </div>
 
               <div className="space-y-3">
-                <label className="text-[10px] text-slate-500 font-black uppercase tracking-widest ml-2 italic">
-                  Logo Assets
+                <label className={`text-[10px] text-slate-500 font-black uppercase tracking-widest block ${isAr ? 'text-right' : 'text-left'}`}>
+                  {isAr ? 'أصول الشعار' : 'Logo Assets'}
                 </label>
-                <div className="flex gap-4">
-                  <div className="w-14 h-14 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-400">
+                <div className={`flex gap-4 ${isAr ? 'flex-row-reverse' : ''}`}>
+                  <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-2xl flex items-center justify-center text-primary shadow-inner">
                     <ImageIcon size={24} />
                   </div>
-                  <button className="flex-1 bg-white/5 border border-dashed border-white/10 rounded-2xl text-[9px] font-black uppercase hover:bg-white/10 transition-all text-slate-400 hover:text-white">
-                    Update Vector Asset
+                  <button className="flex-1 glass-panel border-dashed border-white/10 rounded-2xl text-[9px] font-black uppercase hover:bg-white/10 transition-all text-slate-400 hover:text-white">
+                    {isAr ? 'تحديث أصل المتجهات' : 'Update Vector Asset'}
                   </button>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* GROUP: Security & Feedback */}
-          <div className="bg-[#0f172a]/40 border border-white/5 p-8 rounded-[3rem]">
-            <h3 className="text-xs font-black text-slate-400 uppercase tracking-[4px] mb-8 flex items-center gap-3">
-              <Shield size={14} className="text-emerald-500" /> 
-              Security Protocols
+          {/* GROUP: Security Protocols */}
+          <div className="glass-panel p-8 rounded-[3rem] card-interactive">
+            <h3 className={`text-[10px] font-black text-slate-400 uppercase tracking-[4px] mb-8 flex items-center gap-3 ${isAr ? 'flex-row-reverse' : ''}`}>
+              <Shield size={16} className="text-emerald-500" /> 
+              {isAr ? 'بروتوكولات الأمان' : 'Security Protocols'}
             </h3>
             
             <div className="grid grid-cols-1 gap-4">
               {[
                 { 
-                  id: 'audio', 
+                  id: 'audioProtocol', 
                   icon: Volume2, 
-                  label: 'Audio Feedback Pulse', 
-                  desc: 'Toggle digital audio cues for terminal interactions', 
+                  label: isAr ? 'نبض الصوت التفاعلي' : 'Audio Feedback Pulse', 
+                  desc: isAr ? 'تبديل الإشارات الصوتية الرقمية' : 'Toggle digital audio cues', 
                   status: localSettings.audioProtocol 
                 },
                 { 
-                  id: 'maint', 
+                  id: 'maintenanceMode', 
                   icon: Layout, 
-                  label: 'Maintenance Protocol', 
-                  desc: 'Restrict user access during core infrastructure updates', 
+                  label: isAr ? 'بروتوكول الصيانة' : 'Maintenance Protocol', 
+                  desc: isAr ? 'تقييد الوصول أثناء التحديثات' : 'Restrict access during updates', 
                   status: localSettings.maintenanceMode 
                 },
               ].map((item) => (
-                <div key={item.id} className="flex items-center justify-between p-5 bg-white/5 rounded-[2rem] border border-white/5 hover:border-white/10 transition-all shadow-sm">
-                  <div className="flex items-center gap-5">
-                    <div className="p-4 bg-indigo-500/5 rounded-2xl text-indigo-400">
+                <div key={item.id} className={`flex items-center justify-between p-6 bg-white/[0.02] rounded-[2rem] border border-white/5 hover:border-white/10 transition-all ${isAr ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center gap-5 ${isAr ? 'flex-row-reverse text-right' : ''}`}>
+                    <div className="p-4 bg-primary/5 rounded-2xl text-primary">
                       <item.icon size={20} />
                     </div>
                     <div>
                       <p className="text-xs font-black text-white uppercase tracking-tight">{item.label}</p>
-                      <p className="text-[10px] text-slate-500 font-medium mt-0.5">{item.desc}</p>
+                      <p className="text-[10px] text-slate-500 font-bold mt-1 opacity-60">{item.desc}</p>
                     </div>
                   </div>
                   
                   <button 
-                    onClick={() => setLocalSettings(p => ({...p, [item.id === 'audio' ? 'audioProtocol' : 'maintenanceMode']: !item.status}))}
-                    className={`w-14 h-7 rounded-full transition-all relative p-1 ${item.status ? 'bg-indigo-600 shadow-[0_0_15px_rgba(79,70,229,0.4)]' : 'bg-slate-800'}`}
+                    onClick={() => setLocalSettings(p => ({...p, [item.id]: !item.status}))}
+                    className={`w-14 h-7 rounded-full transition-all relative p-1 ${item.status ? 'bg-primary shadow-[0_0_20px_hsla(var(--primary),0.4)]' : 'bg-slate-800'}`}
                   >
-                    <div className={`w-5 h-5 rounded-full bg-white transition-all shadow-md ${item.status ? 'translate-x-7' : 'translate-x-0'}`} />
+                    <div className={`w-5 h-5 rounded-full bg-white transition-all shadow-md ${item.status ? (isAr ? '-translate-x-7' : 'translate-x-7') : 'translate-x-0'}`} />
                   </button>
                 </div>
               ))}
@@ -143,25 +139,27 @@ export default function SystemSettings() {
           </div>
         </div>
 
-        {/* SIDEBAR: System Health Metrics */}
+        {/* SIDEBAR: System Integrity */}
         <div className="space-y-6">
-          <div className="bg-gradient-to-br from-indigo-900/40 to-[#020617] border border-white/10 p-8 rounded-[3rem] relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 opacity-10">
-              <Activity size={80} />
+          <div className="glass-panel p-8 rounded-[3rem] relative overflow-hidden group">
+            <div className={`absolute top-0 ${isAr ? 'left-0' : 'right-0'} p-4 opacity-5 group-hover:opacity-20 transition-opacity duration-1000`}>
+              <Cpu size={120} />
             </div>
             
-            <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em] mb-6">System Integrity</h4>
+            <h4 className={`text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-8 ${isAr ? 'text-right' : 'text-left'}`}>
+              {isAr ? 'سلامة النظام' : 'System Integrity'}
+            </h4>
             
-            <div className="space-y-5 relative z-10">
-              <div className="flex justify-between items-end">
-                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Build Status</span>
-                <span className="text-[10px] text-emerald-400 font-black">STABLE v1.2</span>
+            <div className="space-y-6 relative z-10">
+              <div className={`flex justify-between items-end ${isAr ? 'flex-row-reverse' : ''}`}>
+                <span className="text-[10px] text-slate-500 font-black uppercase tracking-widest">{isAr ? 'حالة البناء' : 'Build Status'}</span>
+                <span className="text-[10px] text-emerald-400 font-black tracking-widest">STABLE v1.3</span>
               </div>
-              <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-gradient-to-r from-indigo-500 to-purple-500 w-[92%] h-full rounded-full" />
+              <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden p-[1px]">
+                <div className="bg-primary w-[92%] h-full rounded-full shadow-[0_0_10px_hsla(var(--primary),0.5)]" />
               </div>
-              <p className="text-[9px] text-slate-500 leading-relaxed italic opacity-60">
-                Notice: Configuration persistence requires distributed node synchronization.
+              <p className={`text-[9px] text-slate-500 leading-relaxed font-bold uppercase tracking-tighter opacity-40 ${isAr ? 'text-right' : 'text-left'}`}>
+                {isAr ? 'ملاحظة: يتطلب استمرار التكوين مزامنة العقدة الموزعة.' : 'Notice: Configuration persistence requires node sync.'}
               </p>
             </div>
           </div>
