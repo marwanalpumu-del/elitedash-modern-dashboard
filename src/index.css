@@ -1,35 +1,92 @@
+/* * index.css - EliteDash Core Styles
+ * تصميم النخبة بنظام الزجاج المتطور
+ */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --primary: 192, 132, 252;   /* أرجواني */
+    --accent: 45, 212, 191;    /* فيروزي */
+    --bg-dark: 2, 6, 23;       /* كحلي غامق جداً */
+  }
+
   body {
-    background: radial-gradient(circle at top, #1a1c2e 0%, #020617 100%) no-repeat fixed;
-    @apply text-white antialiased;
+    background-color: rgb(var(--bg-dark));
+    /* خلفية متدرجة تمنع ظهور السواد القاتل */
+    background-image: 
+      radial-gradient(circle at 0% 0%, rgba(var(--primary), 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 100% 100%, rgba(var(--accent), 0.1) 0%, transparent 40%);
+    background-attachment: fixed;
+    @apply text-slate-200 antialiased min-h-screen;
     margin: 0;
+    font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
   }
 }
 
 @layer components {
+  /* كلاس الزجاج الفاخر - السر في جمال الواجهة */
   .glass-panel {
-    background: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(16px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-    @apply rounded-[2rem] p-6 mb-6 overflow-hidden;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  .glass-panel:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(var(--primary), 0.3);
+    transform: translateY(-2px);
+  }
+
+  /* تأثير النصوص المتوهجة */
   .text-glow {
-    text-shadow: 0 0 20px rgba(192, 132, 252, 0.8);
+    text-shadow: 0 0 15px rgba(var(--primary), 0.6), 0 0 5px rgba(var(--primary), 0.3);
     @apply text-white font-black;
   }
 
+  /* أنيميشن الظهور التدريجي */
   .animate-reveal {
-    animation: reveal 0.8s ease-out forwards;
+    animation: revealEffect 0.6s ease-out forwards;
   }
 
-  @keyframes reveal {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  @keyframes revealEffect {
+    from { opacity: 0; transform: translateY(15px); filter: blur(10px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+
+  /* تأثير اللمعان المتحرك (Shimmer) */
+  .animate-shimmer {
+    animation: shimmerEffect 2s infinite linear;
+  }
+
+  @keyframes shimmerEffect {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  
+  /* تحسين شكل المدخلات (Inputs) */
+  input {
+    @apply bg-black/40 border-white/10 text-white rounded-2xl transition-all outline-none;
+  }
+  
+  input:focus {
+    @apply border-primary/50 ring-1 ring-primary/20;
+  }
+}
+
+/* تعديلات خاصة للهواتف لضمان عدم اختفاء المحتوى */
+@media (max-width: 768px) {
+  .glass-panel {
+    @apply p-5 rounded-[1.5rem];
+  }
+  
+  body {
+    /* تقليل التدرج في الجوال لزيادة سرعة الأداء */
+    background-image: radial-gradient(circle at top, #1a1c2e 0%, #020617 100%);
   }
 }
