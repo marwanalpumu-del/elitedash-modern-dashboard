@@ -34,13 +34,16 @@
 
 @layer components {
   /* تعديل كلاس الزجاج ليكون واضحاً في الصور التي أرسلتها */
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(24px) !important;
-    -webkit-backdrop-filter: blur(24px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
-    @apply rounded-[2rem] transition-all duration-300;
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(25px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  /* إضافة توهج داخلي خفيف */
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 
+              0 20px 50px rgba(0, 0, 0, 0.5) !important;
+  @apply rounded-3xl transition-all duration-500;
+}
+ ;
   }
 
   /* توهج للنصوص لتظهر في العتمة */
