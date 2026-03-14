@@ -1,6 +1,4 @@
-/* * index.css - EliteDash Core Styles
- * تصميم النخبة بنظام الزجاج المتطور
- */
+/* index.css - EliteDash Ultra-Premium Core */
 
 @tailwind base;
 @tailwind components;
@@ -8,85 +6,70 @@
 
 @layer base {
   :root {
-    --primary: 192, 132, 252;   /* أرجواني */
-    --accent: 45, 212, 191;    /* فيروزي */
-    --bg-dark: 2, 6, 23;       /* كحلي غامق جداً */
+    --primary: 192 132 252;   /* أرجواني متوهج */
+    --accent: 45 212 191;    /* فيروزي نيون */
   }
 
   body {
-    background-color: rgb(var(--bg-dark));
-    /* خلفية متدرجة تمنع ظهور السواد القاتل */
-    background-image: 
-      radial-gradient(circle at 0% 0%, rgba(var(--primary), 0.15) 0%, transparent 40%),
-      radial-gradient(circle at 100% 100%, rgba(var(--accent), 0.1) 0%, transparent 40%);
-    background-attachment: fixed;
-    @apply text-slate-200 antialiased min-h-screen;
+    background-color: #020617; /* اللون الأساسي للنظام */
+    @apply text-slate-200 antialiased min-h-screen overflow-x-hidden;
     margin: 0;
+    /* خطوط مريحة للعين للجوال */
     font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
   }
 }
 
 @layer components {
-  /* كلاس الزجاج الفاخر - السر في جمال الواجهة */
+  /* تأثير الزجاج المتطور - يحل مشكلة العتمة في الصور */
   .glass-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(12px) saturate(160%);
-    -webkit-backdrop-filter: blur(12px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+    @apply rounded-[2rem] transition-all duration-500;
   }
 
-  .glass-panel:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(var(--primary), 0.3);
-    transform: translateY(-2px);
-  }
-
-  /* تأثير النصوص المتوهجة */
+  /* نصوص متوهجة لكسر سواد الخلفية */
   .text-glow {
-    text-shadow: 0 0 15px rgba(var(--primary), 0.6), 0 0 5px rgba(var(--primary), 0.3);
+    text-shadow: 0 0 15px rgba(192, 132, 252, 0.6);
     @apply text-white font-black;
   }
 
-  /* أنيميشن الظهور التدريجي */
+  /* أنيميشن الظهور التدريجي (Animate Reveal) */
   .animate-reveal {
-    animation: revealEffect 0.6s ease-out forwards;
+    animation: revealEffect 0.8s cubic-bezier(0, 0, 0.2, 1) forwards;
   }
 
   @keyframes revealEffect {
-    from { opacity: 0; transform: translateY(15px); filter: blur(10px); }
+    from { opacity: 0; transform: translateY(20px); filter: blur(10px); }
     to { opacity: 1; transform: translateY(0); filter: blur(0); }
   }
 
-  /* تأثير اللمعان المتحرك (Shimmer) */
+  /* تأثير اللمعان المتحرك للأزرار (Shimmer) */
   .animate-shimmer {
     animation: shimmerEffect 2s infinite linear;
   }
 
   @keyframes shimmerEffect {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-  
-  /* تحسين شكل المدخلات (Inputs) */
-  input {
-    @apply bg-black/40 border-white/10 text-white rounded-2xl transition-all outline-none;
-  }
-  
-  input:focus {
-    @apply border-primary/50 ring-1 ring-primary/20;
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
   }
 }
 
-/* تعديلات خاصة للهواتف لضمان عدم اختفاء المحتوى */
-@media (max-width: 768px) {
-  .glass-panel {
-    @apply p-5 rounded-[1.5rem];
-  }
-  
-  body {
-    /* تقليل التدرج في الجوال لزيادة سرعة الأداء */
-    background-image: radial-gradient(circle at top, #1a1c2e 0%, #020617 100%);
-  }
+/* تحسين شكل شريط التمرير ليناسب الفخامة */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(192, 132, 252, 0.2);
+  border-radius: 10px;
+}
+
+/* تخصيص الثيم الأرجواني */
+[data-theme='purple'] {
+  --primary: 192 132 252;
 }
