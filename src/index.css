@@ -1,147 +1,67 @@
 /**
  * @file index.css
- * @version 1.6.0 - THE ULTIMATE VISIBILITY & RESPONSIVE UPDATE
- * @author Marwan & EliteDash Core
- * @description Integrated engine for cross-device high-end UI.
+ * @version 1.6.1 - THE "BRIGHT VISION" UPDATE
  */
 
-/* --- 1. CORE TAILWIND DIRECTIVES --- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* --- 2. GLOBAL THEME VARIABLES --- 
-   Updated with higher vibrancy for OLED/Mobile screens.
-*/
 :root {
-  /* Ultra-Vibrant Indigo (Primary) */
-  --primary: 243 90% 70%;    
-  --primary-glow: 243 90% 70% / 0.5;
-  
-  /* Electric Violet (Accent) */
-  --accent: 263 91% 75%;     
-  
-  /* Background Protocol */
-  --bg-dark: 222 47% 4%;     
-  --card-bg: 222 47% 12%;    
+  /* تم تحويل القيم لتكون متوافقة تماماً مع Tailwind alpha-value */
+  --primary: 129 140 248;    /* Indigo 400 */
+  --primary-glow: 129 140 248;
+  --accent: 167 139 250;     /* Violet 400 */
 }
 
-/* --- 3. BASE STYLES & RESPONSIVE RESETS --- */
 @layer base {
-  html {
-    @apply scroll-smooth;
-    -webkit-tap-highlight-color: transparent;
-  }
-
   body {
-    /* تم تحسين لون النص إلى slate-200 لزيادة التباين على الجوال */
-    @apply bg-[#020617] text-slate-200 antialiased selection:bg-primary/30;
+    /* أجبرنا الخلفية على لون Slate داكن جداً لضمان ظهور المحتوى */
+    background-color: #020617 !important;
+    color: #f1f5f9 !important; /* أبيض صريح للقراءة */
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    font-family: 'Inter', 'Noto Sans Arabic', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
     overflow-x: hidden;
+    @apply antialiased;
   }
 
-  /* Typography: Responsive Sizes */
   h1, h2, h3, h4 {
-    @apply text-white font-black tracking-tight drop-shadow-[0_0_10px_rgba(255,255,255,0.1)];
-  }
-
-  /* Responsive font adjustments */
-  p {
-    @apply text-sm md:text-base leading-relaxed;
+    @apply text-white font-black drop-shadow-[0_0_15px_rgba(129,140,248,0.3)];
   }
 }
 
-/* --- 4. MINIMALIST SCROLLBAR --- */
-::-webkit-scrollbar {
-  @apply w-1 md:w-1.5;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-white/10 rounded-full border-2 border-transparent bg-clip-content;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-white/20;
-}
-
-/* --- 5. COMPONENT CLASSES (The Glass Engine) --- */
 @layer components {
-  /* Adaptive Glass Panel: Lighter on Mobile, Deeper on Desktop */
+  /* تعديل كلاس الزجاج ليكون واضحاً في الصور التي أرسلتها */
   .glass-panel {
-    @apply bg-white/[0.05] backdrop-blur-2xl md:backdrop-blur-3xl 
-           border border-white/10 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] 
-           transition-all duration-300 rounded-3xl md:rounded-[2.5rem];
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+    @apply rounded-[2rem] transition-all duration-300;
   }
 
-  /* Neon Text Glow - Enhanced for Daytime Visibility */
+  /* توهج للنصوص لتظهر في العتمة */
   .text-glow {
-    text-shadow: 0 0 20px hsl(var(--primary-glow));
-  }
-
-  /* Interactive Hover: Disabled on touch devices to prevent stickiness */
-  @media (hover: hover) {
-    .card-interactive:hover {
-      @apply bg-white/[0.08] border-white/30 -translate-y-1 scale-[1.01] shadow-primary/10;
-    }
+    text-shadow: 0 0 15px rgb(var(--primary-glow));
+    @apply text-white;
   }
 }
 
-/* --- 6. ANIMATION & UTILITIES --- */
 @layer utilities {
-  /* Content Reveal Animation */
   .animate-reveal {
     animation: reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
-
   @keyframes reveal {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
-  /* Responsive Grid Container */
-  .dashboard-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6;
-  }
-
-  /* Background Glow Orbs (Optional for extra flair) */
-  .bg-orb {
-    @apply absolute -z-10 blur-[120px] rounded-full opacity-20 animate-pulse-slow;
-  }
 }
 
-/* --- 7. RTL & ARABIC OPTIMIZATION --- */
+/* تحسين الخط العربي */
 [dir='rtl'] .font-sans-ar {
   font-family: 'Noto Sans Arabic', sans-serif;
-  letter-spacing: 0;
-  line-height: 1.7;
-}
-
-/* --- 8. ADAPTIVE LAYOUT FIXES (FOR TABLETS & LAPTOPS) --- */
-@media (max-width: 1024px) {
-  /* تصغير المسافات في التابلت والجوال لتوفير المساحة */
-  .container {
-    @apply px-4 max-w-full;
-  }
-}
-
-@media (min-width: 1280px) {
-  /* هوامش أكبر للشاشات الضخمة (Ultrawide) */
-  .container {
-    @apply max-w-[1440px] mx-auto;
-  }
-}
-
-/* --- 9. ACCESSIBILITY & PRINT --- */
-@media print {
-  .glass-panel {
-    @apply bg-white text-black border-slate-300 shadow-none;
-    backdrop-filter: none !important;
-  }
+  line-height: 1.8;
 }
