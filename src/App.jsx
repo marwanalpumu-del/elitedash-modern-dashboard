@@ -1,8 +1,8 @@
 /**
  * @file App.jsx
- * @version 1.6.1
+ * @version 1.7.0
  * @author Marwan
- * @description Centralized Application Orchestrator for EliteDash with Safe-Area padding.
+ * @description Centralized Application Orchestrator with Dynamic Background Glows.
  */
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
@@ -16,39 +16,20 @@ import ProfileSettings from './pages/ProfileSettings';
 import Login from './pages/Login';
 
 export default function App() {
-  // --- 1. GLOBAL STATES ---
   const [isAuthenticated, setIsAuthenticated] = useState(true); 
   const [activeTab, setActiveTab] = useState('home');
   const [theme, setTheme] = useState('purple'); 
   const [lang, setLang] = useState('ar');
 
-  // --- 2. SYSTEM CONFIGURATION ---
-  const [appConfig] = useState({
-    audioEnabled: true,
-  });
-
-  /** * @effect SystemOrchestrator 
-   * لمزامنة اللغة، الاتجاه، والثيم
-   */
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    
-    if (lang === 'ar') {
-      document.body.classList.add('font-sans-ar');
-    } else {
-      document.body.classList.remove('font-sans-ar');
-    }
+    document.body.className = lang === 'ar' ? 'font-sans-ar' : '';
   }, [theme, lang]);
 
-  // --- 3. AUTH GUARD ---
   if (!isAuthenticated) return <Login onLogin={() => setIsAuthenticated(true)} lang={lang} />;
 
-  /**
-   * @function renderView
-   * نظام التوجيه الداخلي
-   */
   const renderView = () => {
     const views = {
       home: <DashboardHome lang={lang} />,
@@ -65,31 +46,38 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-200 transition-colors duration-700">
+    <div className="min-h-screen bg-[#020617] text-slate-200 transition-colors duration-700 relative overflow-hidden">
       
-      {/* 1. NAVBAR: القائمة العلوية */}
-      <Navbar 
-        lang={lang} 
-        toggleLanguage={() => setLang(prev => prev === 'ar' ? 'en' : 'ar')}
-        currentTheme={theme} 
-        setTheme={setTheme}
-        userRole="admin" 
-        audioEnabled={appConfig.audioEnabled}
-      />
+      {/* 🌌 تأثيرات الإضاءة الخلفية (Glows) - لمنع "البهذلة" والسواد القاتل */}
+      <div className="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="fixed bottom-[10%] right-[-5%] w-[40%] h-[40%] bg-accent/10 blur-[120px] rounded-full pointer-events-none" />
+
+      {/* 1. NAVBAR */}
+      <div className="relative z-50">
+        <Navbar 
+          lang={lang} 
+          toggleLanguage={() => setLang(prev => prev === 'ar' ? 'en' : 'ar')}
+          currentTheme={theme} 
+          setTheme={setTheme}
+          userRole="admin" 
+        />
+      </div>
       
-      {/* 2. MAIN CONTENT: منطقة المحتوى مع مساحة الأمان الجديدة */}
-      <main className="container mx-auto px-4 pb-24 pt-6 md:px-8 lg:px-12 lg:pt-10">
-        <div className="max-w-[1600px] mx-auto">
+      {/* 2. MAIN CONTENT */}
+      <main className="container mx-auto px-4 pb-28 pt-8 relative z-10 md:px-8 lg:px-12">
+        <div className="max-w-[1400px] mx-auto">
           {renderView()}
         </div>
       </main>
 
-      {/* 3. NAVIGATION: شريط التنقل السفلي */}
-      <BottomNav 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        lang={lang} 
-      />
+      {/* 3. NAVIGATION */}
+      <div className="relative z-50">
+        <BottomNav 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab} 
+          lang={lang} 
+        />
+      </div>
       
     </div>
   );
