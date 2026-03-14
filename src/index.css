@@ -1,75 +1,38 @@
-/* index.css - EliteDash Ultra-Premium Core */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --primary: 192 132 252;   /* أرجواني متوهج */
-    --accent: 45 212 191;    /* فيروزي نيون */
+    --bg-main: #020617;
+    --primary-glow: rgba(192, 132, 252, 0.4);
+    --accent-glow: rgba(45, 212, 191, 0.3);
   }
 
   body {
-    background-color: #020617; /* اللون الأساسي للنظام */
-    @apply text-slate-200 antialiased min-h-screen overflow-x-hidden;
-    margin: 0;
-    /* خطوط مريحة للعين للجوال */
+    background: var(--bg-main);
+    @apply text-slate-200 antialiased overflow-x-hidden;
     font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
   }
 }
 
 @layer components {
-  /* تأثير الزجاج المتطور - يحل مشكلة العتمة في الصور */
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.03) !important;
-    backdrop-filter: blur(16px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
-    @apply rounded-[2rem] transition-all duration-500;
+  /* تأثير الزجاج النخبوي - Ultra Glass */
+  .premium-card {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    @apply rounded-[2.5rem] p-8 shadow-2xl transition-all duration-500 hover:bg-white/[0.04] hover:border-white/20;
   }
 
-  /* نصوص متوهجة لكسر سواد الخلفية */
-  .text-glow {
-    text-shadow: 0 0 15px rgba(192, 132, 252, 0.6);
-    @apply text-white font-black;
+  /* تأثير النصوص المشعة */
+  .selling-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-teal-400 font-black;
+    filter: drop-shadow(0 0 10px rgba(192, 132, 252, 0.3));
   }
 
-  /* أنيميشن الظهور التدريجي (Animate Reveal) */
-  .animate-reveal {
-    animation: revealEffect 0.8s cubic-bezier(0, 0, 0.2, 1) forwards;
+  /* زر المزامنة الاحترافي */
+  .btn-primary {
+    @apply relative overflow-hidden bg-gradient-to-r from-purple-600 to-indigo-600 px-8 py-4 rounded-2xl font-bold tracking-widest uppercase text-[11px] transition-all hover:scale-[1.02] active:scale-95 shadow-[0_10px_30px_rgba(124,58,237,0.3)];
   }
-
-  @keyframes revealEffect {
-    from { opacity: 0; transform: translateY(20px); filter: blur(10px); }
-    to { opacity: 1; transform: translateY(0); filter: blur(0); }
-  }
-
-  /* تأثير اللمعان المتحرك للأزرار (Shimmer) */
-  .animate-shimmer {
-    animation: shimmerEffect 2s infinite linear;
-  }
-
-  @keyframes shimmerEffect {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(100%); }
-  }
-}
-
-/* تحسين شكل شريط التمرير ليناسب الفخامة */
-::-webkit-scrollbar {
-  width: 4px;
-}
-::-webkit-scrollbar-track {
-  background: #020617;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(192, 132, 252, 0.2);
-  border-radius: 10px;
-}
-
-/* تخصيص الثيم الأرجواني */
-[data-theme='purple'] {
-  --primary: 192 132 252;
 }
