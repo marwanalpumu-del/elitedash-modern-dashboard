@@ -3,7 +3,6 @@
  * @version 1.6.0
  * @author Marwan
  * @description Centralized Application Orchestrator for EliteDash.
- * Handles Global States: Auth, Routing, Theme (HSL), and Language (RTL/LTR).
  */
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
@@ -17,35 +16,42 @@ import ProfileSettings from './pages/ProfileSettings';
 import Login from './pages/Login';
 
 export default function App() {
-  // --- GLOBAL STATES ---
+  // --- 1. GLOBAL STATES ---
   const [isAuthenticated, setIsAuthenticated] = useState(true); 
   const [activeTab, setActiveTab] = useState('home');
-  const [theme, setTheme] = useState('purple'); // Options: purple, ocean, emerald, rose
+  const [theme, setTheme] = useState('purple'); // purple, ocean, emerald, rose
   const [lang, setLang] = useState('ar');
 
-  // --- SYSTEM CONFIGURATION ---
-  const [appConfig, setAppConfig] = useState({
+  // --- 2. SYSTEM CONFIGURATION ---
+  const [appConfig] = useState({
     audioEnabled: true,
   });
 
   /** * @effect SystemOrchestrator 
-   * Syncs Theme, Language, and Document Direction (RTL/LTR)
+   * يقوم بمزامنة اللغة، الاتجاه (RTL/LTR)، والثيم مع الـ DOM الأساسي
    */
   useEffect(() => {
-    // Sync Theme Attribute
+    // تحديث السمة الخاصة بالثيم (يمكن استخدامها في CSS لتغيير المتغيرات)
     document.documentElement.setAttribute('data-theme', theme);
     
-    // Sync Document Language and Direction
+    // ضبط اتجاه الصفحة واللغة
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    
+    // إضافة كلاس للتحكم في الخطوط بناءً على اللغة
+    if (lang === 'ar') {
+      document.body.classList.add('font-sans-ar');
+    } else {
+      document.body.classList.remove('font-sans-ar');
+    }
   }, [theme, lang]);
 
-  // --- AUTH GUARD ---
+  // --- 3. AUTH GUARD ---
   if (!isAuthenticated) return <Login onLogin={() => setIsAuthenticated(true)} lang={lang} />;
 
   /**
    * @function renderView
-   * @description Dynamic Router with transition key to trigger re-animation on tab change.
+   * @description نظام توجيه داخلي (Internal Router) مع أنيميشن عند التبديل
    */
   const renderView = () => {
     const views = {
@@ -63,9 +69,9 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#020617] text-slate-300 pb-32 transition-colors duration-700 selection:bg-primary/30`}>
+    <div className="min-h-screen bg-[#020617] text-slate-200 pb-28 md:pb-10 transition-colors duration-700">
       
-      {/* HEADER SECTION */}
+      {/* 1. NAVBAR: ثابت في الأعلى (Desktop) أو مدمج (Mobile) */}
       <Navbar 
         lang={lang} 
         toggleLanguage={() => setLang(prev => prev === 'ar' ? 'en' : 'ar')}
@@ -75,12 +81,14 @@ export default function App() {
         audioEnabled={appConfig.audioEnabled}
       />
       
-      {/* MAIN CONTENT AREA */}
-      <main className="max-w-7xl mx-auto px-4 md:px-10 pt-4">
-        {renderView()}
+      {/* 2. MAIN CONTENT: حاوية متجاوبة بذكاء */}
+      <main className="container mx-auto px-4 md:px-8 lg:px-12 pt-6 lg:pt-10">
+        <div className="max-w-[1600px] mx-auto">
+          {renderView()}
+        </div>
       </main>
 
-      {/* NAVIGATION SECTION */}
+      {/* 3. NAVIGATION: شريط سفلي للجوال والتابلت */}
       <BottomNav 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
