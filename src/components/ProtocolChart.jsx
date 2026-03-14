@@ -1,9 +1,7 @@
 /**
  * @component ProtocolChart
- * @version 2.0.0
- * @description Advanced data visualization engine.
- * Features: Dynamic theme synchronization, High-fidelity gradients, 
- * and responsive scaling using Recharts API.
+ * @version 2.1.0
+ * @description Advanced visualization engine optimized for EliteDash standard.
  */
 import React from 'react';
 import { 
@@ -16,10 +14,6 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 
-/**
- * @constant MOCK_STREAM_DATA
- * @description Real-time simulated data points for system throughput monitoring.
- */
 const data = [
   { time: '00:00', flow: 450 },
   { time: '04:00', flow: 890 },
@@ -32,79 +26,71 @@ const data = [
 
 export default function ProtocolChart() {
   return (
-    <div className="h-[280px] w-full select-none">
+    <div className="h-full w-full select-none min-h-[250px]">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+        <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
           
-          {/* DEFINITIONS: DYNAMIC GRADIENT ENGINE */}
           <defs>
             <linearGradient id="protocolGlow" x1="0" y1="0" x2="0" y2="1">
-              {/* This stop uses the global --primary variable for color-sync */}
+              {/* Syncing with HSL variables from index.css */}
               <stop 
                 offset="5%" 
-                stopColor="rgb(var(--primary))" 
-                stopOpacity={0.4}
+                stopColor="hsl(var(--primary))" 
+                stopOpacity={0.3}
               />
               <stop 
                 offset="95%" 
-                stopColor="rgb(var(--primary))" 
+                stopColor="hsl(var(--primary))" 
                 stopOpacity={0}
               />
             </linearGradient>
           </defs>
 
-          {/* GRID CONFIGURATION */}
           <CartesianGrid 
-            strokeDasharray="6 6" 
-            stroke="rgba(255,255,255,0.02)" 
+            strokeDasharray="4 4" 
+            stroke="rgba(255,255,255,0.03)" 
             vertical={false} 
           />
 
-          {/* AXIS CONFIGURATION */}
           <XAxis 
             dataKey="time" 
             axisLine={false} 
             tickLine={false} 
-            tick={{ fill: '#475569', fontSize: 10, fontWeight: '900' }}
-            dy={15}
+            tick={{ fill: '#64748b', fontSize: 10, fontWeight: '600' }}
+            dy={10}
           />
           
           <YAxis hide domain={['auto', 'auto']} />
 
-          {/* CUSTOM TOOLTIP ENGINE */}
           <Tooltip 
             cursor={{ 
-              stroke: 'rgb(var(--primary))', 
-              strokeWidth: 2, 
-              strokeDasharray: '4 4' 
+              stroke: 'hsl(var(--primary))', 
+              strokeWidth: 1, 
+              strokeDasharray: '5 5' 
             }}
             contentStyle={{ 
-              backgroundColor: '#020617', 
+              backgroundColor: '#0f172a', 
               border: '1px solid rgba(255,255,255,0.1)', 
-              borderRadius: '16px',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
-              padding: '12px'
+              borderRadius: '12px',
+              fontSize: '12px',
+              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)'
             }}
-            itemStyle={{ 
-              color: 'rgb(var(--primary))', 
-              fontSize: '12px', 
-              fontWeight: 'bold',
-              textTransform: 'uppercase'
-            }}
+            itemStyle={{ color: 'white', fontWeight: '900' }}
+            labelStyle={{ color: '#64748b', marginBottom: '4px' }}
           />
 
-          {/* THE MAIN AREA LAYER */}
           <Area 
-            type="monotone" 
+            type="monotoneX" 
             dataKey="flow" 
-            stroke="rgb(var(--primary))" 
-            strokeWidth={4} 
+            stroke="hsl(var(--primary))" 
+            strokeWidth={3} 
             fillOpacity={1} 
             fill="url(#protocolGlow)" 
-            animationDuration={2500}
-            animationEasing="ease-in-out"
-            // Adding a subtle glow to the line itself
-            style={{ filter: 'drop-shadow(0px 4px 10px rgba(var(--primary), 0.5))' }}
+            animationDuration={2000}
+            // Adding the signature glow effect
+            style={{ 
+              filter: 'drop-shadow(0px 8px 12px hsla(var(--primary), 0.4))' 
+            }}
           />
         </AreaChart>
       </ResponsiveContainer>
