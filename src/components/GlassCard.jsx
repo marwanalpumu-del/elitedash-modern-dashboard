@@ -1,12 +1,21 @@
-import React from 'react';
-
 /**
  * @component GlassCard
- * @description A reusable glassmorphism container for consistent UI design.
+ * @version 1.1.0
+ * @author Marwan
+ * @description Superior reusable glassmorphism container. 
+ * Linked to global 'glass-panel' and 'card-interactive' definitions.
  */
-export default function GlassCard({ children, className = "" }) {
+import React from 'react';
+
+export default function GlassCard({ children, className = "", interactive = true }) {
   return (
-    <div className={`bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-6 ${className}`}>
+    <div className={`
+      glass-panel 
+      p-6 
+      rounded-[2.5rem] 
+      ${interactive ? 'card-interactive' : ''} 
+      ${className}
+    `}>
       {children}
     </div>
   );
